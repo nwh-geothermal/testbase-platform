@@ -97,7 +97,7 @@ const cooperationModes = [
 
 export function Cooperation() {
   return (
-    <section className='section-padding bg-gray-50'>
+    <section id='cooperation' className='section-padding bg-gray-50'>
       <div className='max-w-7xl mx-auto'>
         <motion.div
           initial={{ opacity: 0, y: 30 }}

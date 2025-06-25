@@ -38,7 +38,7 @@ export function Footer() {
             <ul className='space-y-2'>
               <li>
                 <Link
-                  href='/technology'
+                  href='#technology'
                   className='text-gray-300 hover:text-geothermal-orange transition-colors'
                 >
                   技术体系
@@ -46,7 +46,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href='/operations'
+                  href='#operations'
                   className='text-gray-300 hover:text-geothermal-orange transition-colors'
                 >
                   智慧运维
@@ -54,7 +54,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href='/achievements'
+                  href='#achievements'
                   className='text-gray-300 hover:text-geothermal-orange transition-colors'
                 >
                   成果展示
@@ -62,7 +62,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href='/cooperation'
+                  href='#cooperation'
                   className='text-gray-300 hover:text-geothermal-orange transition-colors'
                 >
                   产学研合作
@@ -95,13 +95,13 @@ export function Footer() {
           </p>
           <div className='flex space-x-6 mt-4 md:mt-0'>
             <Link
-              href='/privacy'
+              href='#privacy'
               className='text-gray-400 hover:text-geothermal-orange text-sm transition-colors'
             >
               隐私政策
             </Link>
             <Link
-              href='/terms'
+              href='#terms'
               className='text-gray-400 hover:text-geothermal-orange text-sm transition-colors'
             >
               使用条款

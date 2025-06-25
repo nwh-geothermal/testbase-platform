@@ -49,7 +49,7 @@ export function Hero() {
             className='flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-12'
           >
             <Link
-              href='/technology'
+              href='#technology'
               className='bg-white text-geothermal-blue px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-300 flex items-center space-x-2 shadow-lg'
             >
               <span>探索技术体系</span>

@@ -116,7 +116,7 @@ const awards = [
 
 export function Achievements() {
   return (
-    <section className='section-padding bg-white'>
+    <section id='achievements' className='section-padding bg-white'>
       <div className='max-w-7xl mx-auto'>
         <motion.div
           initial={{ opacity: 0, y: 30 }}

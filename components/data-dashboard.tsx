@@ -88,7 +88,7 @@ const metrics = [
 
 export function DataDashboard() {
   return (
-    <section className='section-padding bg-gray-50'>
+    <section id='operations' className='section-padding bg-gray-50'>
       <div className='max-w-7xl mx-auto'>
         <motion.div
           initial={{ opacity: 0, y: 30 }}

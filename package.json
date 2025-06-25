@@ -8,7 +8,9 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "type-check": "tsc --noEmit"
+        "type-check": "tsc --noEmit",
+        "export": "next build && next export",
+        "deploy": "npm run build && touch out/.nojekyll && echo 'geothermal-base.cn' > out/CNAME"
     },
     "dependencies": {
         "next": "^14.0.0",
