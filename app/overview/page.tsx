@@ -41,7 +41,7 @@ export default function OverviewPage() {
           <div className='relative bg-white rounded-2xl shadow-2xl p-8 border border-gray-100'>
             <div className='relative w-full h-[600px] rounded-xl overflow-hidden bg-gray-100'>
               <Image
-                src='/testbase.jpg'
+                src='./testbase.jpg'
                 alt='陕西省地热能开发利用技术中试基地全景'
                 fill
                 className='object-cover'
