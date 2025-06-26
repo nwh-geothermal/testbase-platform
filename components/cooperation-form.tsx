@@ -13,6 +13,7 @@ import {
   Users,
   Home
 } from 'lucide-react'
+import { getAssetPath } from '@/lib/utils'
 
 interface FormData {
   name: string
@@ -212,7 +213,7 @@ export function CooperationForm() {
                     <div className='flex flex-col items-center h-full'>
                       <div className='w-30 h-30 flex items-center justify-center mb-3'>
                         <img
-                          src='/xjtu.svg'
+                          src={getAssetPath('/xjtu.svg')}
                           alt='西安交通大学'
                           width={120}
                           height={120}
@@ -227,7 +228,7 @@ export function CooperationForm() {
                     <div className='flex flex-col items-center h-full'>
                       <div className='w-30 h-30 rounded-lg flex items-center justify-center overflow-hidden mb-3'>
                         <img
-                          src='/hit.svg'
+                          src={getAssetPath('/hit.svg')}
                           alt='哈尔滨工业大学'
                           width={120}
                           height={120}
@@ -242,7 +243,7 @@ export function CooperationForm() {
                     <div className='flex flex-col items-center h-full'>
                       <div className='w-30 h-30 rounded-lg flex items-center justify-center overflow-hidden mb-3'>
                         <img
-                          src='/bjut.svg'
+                          src={getAssetPath('/bjut.svg')}
                           alt='北京工业大学'
                           width={120}
                           height={120}
@@ -257,7 +258,7 @@ export function CooperationForm() {
                     <div className='flex flex-col items-center h-full'>
                       <div className='w-30 h-30 rounded-lg flex items-center justify-center mb-3'>
                         <img
-                          src='/chd.jpg'
+                          src={getAssetPath('/chd.jpg')}
                           alt='长安大学'
                           width={120}
                           height={120}
@@ -272,7 +273,7 @@ export function CooperationForm() {
                     <div className='flex flex-col items-center h-full'>
                       <div className='w-30 h-30 rounded-lg flex items-center justify-center mb-3'>
                         <img
-                          src='/xauat.jpeg'
+                          src={getAssetPath('/xauat.jpeg')}
                           alt='西安建筑科技大学'
                           width={120}
                           height={120}
@@ -287,7 +288,7 @@ export function CooperationForm() {
                     <div className='flex flex-col items-center h-full'>
                       <div className='w-30 h-30 rounded-lg flex items-center justify-center mb-3'>
                         <img
-                          src='/xsyu.jpg'
+                          src={getAssetPath('/xsyu.jpg')}
                           alt='西安石油大学'
                           width={120}
                           height={120}
@@ -312,7 +313,7 @@ export function CooperationForm() {
                     <div className='flex flex-col items-center h-full'>
                       <div className='w-30 h-30 rounded-lg flex items-center justify-center mb-3'>
                         <img
-                          src='/chd.svg'
+                          src={getAssetPath('/chd.svg')}
                           alt='华电集团'
                           width={120}
                           height={120}
@@ -327,7 +328,7 @@ export function CooperationForm() {
                     <div className='flex flex-col items-center h-full'>
                       <div className='w-30 h-30 rounded-lg flex items-center justify-center mb-3'>
                         <img
-                          src='/chn.svg'
+                          src={getAssetPath('/chn.svg')}
                           alt='国家能源集团'
                           width={120}
                           height={120}
@@ -342,7 +343,7 @@ export function CooperationForm() {
                     <div className='flex flex-col items-center h-full'>
                       <div className='w-30 h-30 rounded-lg flex items-center justify-center mb-3'>
                         <img
-                          src='/cdt.svg'
+                          src={getAssetPath('/cdt.svg')}
                           alt='大唐集团'
                           width={120}
                           height={120}
@@ -360,7 +361,7 @@ export function CooperationForm() {
                     <div className='flex flex-col items-center h-full'>
                       <div className='w-60 h-32 rounded-lg flex items-center justify-center mb-3'>
                         <img
-                          src='/chng.png'
+                          src={getAssetPath('/chng.png')}
                           alt='华能集团'
                           width={240}
                           height={120}
@@ -375,7 +376,7 @@ export function CooperationForm() {
                     <div className='flex flex-col items-center h-full'>
                       <div className='w-60 h-32 rounded-lg flex items-center justify-center mb-3'>
                         <img
-                          src='/ccteg.png'
+                          src={getAssetPath('/ccteg.png')}
                           alt='中煤科工西安研究院'
                           width={240}
                           height={120}
@@ -393,7 +394,7 @@ export function CooperationForm() {
                     <div className='flex flex-col items-center h-full'>
                       <div className='w-60 h-32 rounded-lg flex items-center justify-center mb-3'>
                         <img
-                          src='/sxsgs.png'
+                          src={getAssetPath('/sxsgs.png')}
                           alt='陕西省地质调查院'
                           width={240}
                           height={120}
@@ -408,7 +409,7 @@ export function CooperationForm() {
                     <div className='flex flex-col items-center h-full'>
                       <div className='w-60 h-32 rounded-lg flex items-center justify-center mb-3'>
                         <img
-                          src='/sxgky.png'
+                          src={getAssetPath('/sxgky.png')}
                           alt='陕西工程勘察研究院'
                           width={240}
                           height={120}
