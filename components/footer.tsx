@@ -44,14 +44,14 @@ export function Footer() {
                   技术体系
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href='#operations'
                   className='text-gray-300 hover:text-geothermal-orange transition-colors'
                 >
                   智慧运维
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   href='#achievements'

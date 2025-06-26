@@ -5,22 +5,31 @@ import Link from 'next/link'
 import { Menu, X, ChevronDown } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const navigationItems = [
+interface NavigationItem {
+  name: string
+  href: string
+  submenu?: { name: string; href: string }[]
+}
+
+const navigationItems: NavigationItem[] = [
   { name: '首页', href: '/' },
-  {
-    name: '技术体系',
-    href: '#technology',
-    submenu: [
-      { name: '技术研发', href: '#technology-research' },
-      { name: '产品试制', href: '#technology-products' },
-      { name: '工艺改进', href: '#technology-process' }
-    ]
-  },
-  { name: '智慧运维', href: '#operations' },
-  { name: '投资评价', href: '#investment' },
-  { name: '成果展示', href: '#achievements' },
-  { name: '产学研合作', href: '#cooperation' },
-  { name: '关于我们', href: '#about' }
+  { name: '基地概览', href: '/overview' },
+  { name: '服务清单', href: '#services' },
+  { name: '加入平台', href: '#join' },
+  // {
+  //   name: '技术体系',
+  //   href: '#technology',
+  //   submenu: [
+  //     { name: '技术研发', href: '#technology-research' },
+  //     { name: '产品试制', href: '#technology-products' },
+  //     { name: '工艺改进', href: '#technology-process' }
+  //   ]
+  // },
+  // { name: '智慧运维', href: '#operations' },
+  // { name: '投资评价', href: '#investment' },
+  { name: '成果展示', href: '/achievements' },
+  { name: '产学研合作', href: '/cooperation' },
+  { name: '关于我们', href: '/about' }
 ]
 
 export function Navigation() {
