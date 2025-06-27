@@ -6,11 +6,8 @@ const nextConfig = {
     unoptimized: true
   },
   assetPrefix:
-    process.env.NODE_ENV === 'production'
-      ? '/geothermal-testbase-platform'
-      : '',
-  basePath:
-    process.env.NODE_ENV === 'production' ? '/geothermal-testbase-platform' : ''
+    process.env.NODE_ENV === 'production' ? '/testbase-platform' : '',
+  basePath: process.env.NODE_ENV === 'production' ? '/testbase-platform' : ''
 }
 
 module.exports = nextConfig
