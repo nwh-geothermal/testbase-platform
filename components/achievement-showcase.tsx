@@ -342,9 +342,9 @@ export function AchievementShowcase() {
             {filteredAchievements.map((achievement, index) => (
               <motion.div
                 key={achievement.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
                 className={`bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 ${
                   index === currentIndex ? 'ring-2 ring-geothermal-orange' : ''
                 }`}

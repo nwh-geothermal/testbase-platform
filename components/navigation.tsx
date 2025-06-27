@@ -14,8 +14,8 @@ interface NavigationItem {
 const navigationItems: NavigationItem[] = [
   { name: '首页', href: '/' },
   { name: '基地概览', href: '/overview' },
-  { name: '服务清单', href: '#services' },
-  { name: '加入平台', href: '#join' },
+  { name: '服务清单', href: '/services' },
+  { name: '加入平台', href: '/join' },
   // {
   //   name: '技术体系',
   //   href: '#technology',

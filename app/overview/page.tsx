@@ -69,7 +69,7 @@ export default function OverviewPage() {
           className='grid grid-cols-1 lg:grid-cols-2 gap-12'
         >
           {/* Left Column - Overview */}
-          <div className='space-y-8'>
+          <div className='flex flex-col space-y-8'>
             <div className='bg-white rounded-xl p-8 shadow-lg border border-gray-100'>
               <h2 className='text-2xl font-bold text-gray-900 mb-6 flex items-center'>
                 <div className='w-1 h-8 bg-geothermal-orange mr-4'></div>
@@ -85,9 +85,9 @@ export default function OverviewPage() {
               </div>
             </div>
 
-            <div className='bg-white rounded-xl p-8 shadow-lg border border-gray-100'>
+            <div className='bg-white rounded-xl p-8 shadow-lg border border-gray-100 flex-1 flex flex-col'>
               <h3 className='text-xl font-bold text-gray-900 mb-4'>核心功能</h3>
-              <div className='grid grid-cols-2 gap-4'>
+              <div className='grid grid-cols-2 gap-4 flex-1'>
                 {[
                   '技术研发',
                   '产品试制',
@@ -108,7 +108,7 @@ export default function OverviewPage() {
           </div>
 
           {/* Right Column - Technical Details */}
-          <div className='space-y-8'>
+          <div className='flex flex-col space-y-8'>
             <div className='bg-white rounded-xl p-8 shadow-lg border border-gray-100'>
               <h2 className='text-2xl font-bold text-gray-900 mb-6 flex items-center'>
                 <div className='w-1 h-8 bg-geothermal-blue mr-4'></div>
