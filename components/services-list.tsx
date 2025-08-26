@@ -270,7 +270,7 @@ export function ServicesList() {
                 {/* Action Button */}
                 <div className='mt-6 pt-6 border-t border-gray-100'>
                   <button className='w-full py-3 px-4 bg-gradient-to-r from-geothermal-blue to-geothermal-green text-white rounded-lg font-medium hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5'>
-                    了解详情
+                    申请
                   </button>
                 </div>
               </div>
