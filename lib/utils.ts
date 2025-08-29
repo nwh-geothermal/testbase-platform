@@ -1,12 +1,12 @@
-import { clsx, type ClassValue } from 'clsx'
-import { twMerge } from 'tailwind-merge'
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
 export function getAssetPath(path: string): string {
-  const basePath =
-    process.env.NODE_ENV === 'production' ? '/geothermal-testbase-platform' : ''
-  return `${basePath}${path}`
+  // Remove the leading slash if present and return the path
+  // This is a simple implementation for the asset path handling
+  return path.startsWith('/') ? path : `/${path}`
 }

@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion'
 import { ChevronRight, Play, Zap, Globe, Target } from 'lucide-react'
 import Link from 'next/link'
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 
 export function Hero() {
   return (
@@ -48,18 +50,21 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className='flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-12'
           >
-            <Link
-              href='#technology'
-              className='bg-white text-geothermal-blue px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors duration-300 flex items-center space-x-2 shadow-lg'
-            >
-              <span>探索技术体系</span>
-              <ChevronRight className='w-5 h-5' />
-            </Link>
+            <Button size="lg" asChild className="bg-white text-geothermal-blue hover:bg-gray-100 rounded-full px-8 py-6 text-lg shadow-lg">
+              <Link href='#technology' className='flex items-center space-x-2'>
+                <span>探索技术体系</span>
+                <ChevronRight className='w-5 h-5' />
+              </Link>
+            </Button>
 
-            <button className='bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-geothermal-blue transition-colors duration-300 flex items-center space-x-2'>
-              <Play className='w-5 h-5' />
+            <Button
+              variant="outline"
+              size="lg"
+              className='border-2 border-white text-white hover:bg-white hover:text-geothermal-blue rounded-full px-8 py-6 text-lg bg-transparent'
+            >
+              <Play className='w-5 h-5 mr-2' />
               <span>观看介绍视频</span>
-            </button>
+            </Button>
           </motion.div>
 
           {/* 关键数据展示 */}
@@ -69,29 +74,35 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.6 }}
             className='grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto'
           >
-            <div className='bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center'>
-              <div className='w-12 h-12 bg-geothermal-orange rounded-xl flex items-center justify-center mx-auto mb-4'>
-                <Zap className='w-6 h-6 text-white' />
-              </div>
-              <h3 className='text-2xl font-bold text-white mb-2'>10+</h3>
-              <p className='text-white/80'>核心技术专利</p>
-            </div>
+            <Card className='bg-white/10 backdrop-blur-sm border-none'>
+              <CardContent className='p-6 text-center'>
+                <div className='w-12 h-12 bg-geothermal-orange rounded-xl flex items-center justify-center mx-auto mb-4'>
+                  <Zap className='w-6 h-6 text-white' />
+                </div>
+                <h3 className='text-2xl font-bold text-white mb-2'>10+</h3>
+                <p className='text-white/80'>核心技术专利</p>
+              </CardContent>
+            </Card>
 
-            <div className='bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center'>
-              <div className='w-12 h-12 bg-geothermal-green rounded-xl flex items-center justify-center mx-auto mb-4'>
-                <Globe className='w-6 h-6 text-white' />
-              </div>
-              <h3 className='text-2xl font-bold text-white mb-2'>20+</h3>
-              <p className='text-white/80'>合作院校企业</p>
-            </div>
+            <Card className='bg-white/10 backdrop-blur-sm border-none'>
+              <CardContent className='p-6 text-center'>
+                <div className='w-12 h-12 bg-geothermal-green rounded-xl flex items-center justify-center mx-auto mb-4'>
+                  <Globe className='w-6 h-6 text-white' />
+                </div>
+                <h3 className='text-2xl font-bold text-white mb-2'>20+</h3>
+                <p className='text-white/80'>合作院校企业</p>
+              </CardContent>
+            </Card>
 
-            <div className='bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center'>
-              <div className='w-12 h-12 bg-geothermal-blue rounded-xl flex items-center justify-center mx-auto mb-4'>
-                <Target className='w-6 h-6 text-white' />
-              </div>
-              <h3 className='text-2xl font-bold text-white mb-2'>95%</h3>
-              <p className='text-white/80'>能效转换率</p>
-            </div>
+            <Card className='bg-white/10 backdrop-blur-sm border-none'>
+              <CardContent className='p-6 text-center'>
+                <div className='w-12 h-12 bg-geothermal-blue rounded-xl flex items-center justify-center mx-auto mb-4'>
+                  <Target className='w-6 h-6 text-white' />
+                </div>
+                <h3 className='text-2xl font-bold text-white mb-2'>95%</h3>
+                <p className='text-white/80'>能效转换率</p>
+              </CardContent>
+            </Card>
           </motion.div>
         </motion.div>
       </div>
