@@ -494,47 +494,6 @@ export function ServicesList() {
           </Card>
         </motion.div>
 
-        {/* Service Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.0 }}
-          className='mt-16'
-        >
-          <Card>
-            <CardHeader>
-              <CardTitle className='text-2xl text-center'>服务统计</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className='grid grid-cols-2 md:grid-cols-4 gap-8'>
-                <div className='text-center'>
-                  <div className='text-4xl font-bold text-geothermal-orange mb-2'>
-                    200+
-                  </div>
-                  <div className='text-gray-600'>完成项目</div>
-                </div>
-                <div className='text-center'>
-                  <div className='text-4xl font-bold text-geothermal-blue mb-2'>
-                    95%
-                  </div>
-                  <div className='text-gray-600'>客户满意度</div>
-                </div>
-                <div className='text-center'>
-                  <div className='text-4xl font-bold text-geothermal-green mb-2'>
-                    50+
-                  </div>
-                  <div className='text-gray-600'>专业技术人员</div>
-                </div>
-                <div className='text-center'>
-                  <div className='text-4xl font-bold text-purple-600 mb-2'>
-                    24/7
-                  </div>
-                  <div className='text-gray-600'>技术支持</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
       </div>
     </div>
   )
