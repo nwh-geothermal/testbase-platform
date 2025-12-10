@@ -258,7 +258,7 @@ export default function ServiceDashboard() {
             className='mb-8'
           >
             <h1 className='text-4xl font-bold text-gray-900 mb-4'>
-              服务工作台
+              服务进度
             </h1>
             <p className='text-lg text-gray-600'>
               跟踪您的服务申请状态和试验进度

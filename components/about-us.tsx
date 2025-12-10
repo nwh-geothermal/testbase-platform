@@ -122,7 +122,7 @@ export function AboutUs() {
             animate={{ opacity: 1, y: 0 }}
             className='text-4xl md:text-6xl font-bold text-gray-900 mb-6'
           >
-            关于我们
+            关于基地
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
