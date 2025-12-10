@@ -242,6 +242,7 @@ export function JoinForm() {
 
       // Show success toast and message
       toast.success('注册成功！欢迎加入地热能技术中试基地！')
+      setIsSubmitting(false)
       setIsSubmitted(true)
 
       // Reset form after 3 seconds
