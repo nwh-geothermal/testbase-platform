@@ -11,6 +11,8 @@ import {
   Globe2,
   Video,
   Image as ImageIcon,
+  FileText,
+  X,
   Save,
   Loader2,
   Phone,
@@ -37,7 +39,7 @@ import { Button } from '@/components/ui/button'
 type MediaAsset = {
   name: string
   url: string
-  type: 'image' | 'video'
+  type: 'image' | 'video' | 'pdf'
   uploaded_at: string
 }
 
@@ -54,7 +56,7 @@ type CompanyProfile = {
   phone?: string
   email?: string
   expectations?: string
-  cooperation_interests?: string[]
+  notes?: string
   publicity_assets?: MediaAsset[]
   status?: string
   updated_at?: string
@@ -77,14 +79,14 @@ export default function WorkbenchPage() {
     phone: '',
     email: '',
     expectations: '',
-    cooperation_interests: [],
+    notes: '',
     publicity_assets: []
   })
-  const [cooperationText, setCooperationText] = useState('')
   const [loadingProfile, setLoadingProfile] = useState(true)
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [uploadHint, setUploadHint] = useState('')
+  const [deletingAsset, setDeletingAsset] = useState<string | null>(null)
 
   const profileCompleteness = useMemo(() => {
     const fields = [
@@ -142,7 +144,7 @@ export default function WorkbenchPage() {
           phone: data.phone || '',
           email: data.email || data.auth_email || '',
           expectations: data.expectations || '',
-          cooperation_interests: data.cooperation_interests || [],
+          notes: data.notes || '',
           publicity_assets,
           status: data.status || 'pending',
           updated_at: data.updated_at
@@ -162,10 +164,6 @@ export default function WorkbenchPage() {
       return
     }
     setSaving(true)
-    const cooperation_interests = cooperationText
-      .split(/,|，/)
-      .map((item) => item.trim())
-      .filter(Boolean)
 
     try {
       const { error } = await supabase
@@ -182,7 +180,7 @@ export default function WorkbenchPage() {
           phone: profile.phone,
           email: profile.email,
           expectations: profile.expectations,
-          cooperation_interests,
+          notes: profile.notes,
           publicity_assets: profile.publicity_assets
         })
         .eq('id', profile.id)
@@ -192,7 +190,6 @@ export default function WorkbenchPage() {
         toast.error('保存失败，请稍后再试')
       } else {
         toast.success('企业信息已更新')
-        setProfile((prev) => ({ ...prev, cooperation_interests }))
       }
     } catch (err) {
       console.error('Unexpected error saving profile', err)
@@ -237,10 +234,16 @@ export default function WorkbenchPage() {
           .from(publicityBucket)
           .getPublicUrl(path)
 
+        const assetType = file.type.startsWith('video')
+          ? 'video'
+          : file.type === 'application/pdf'
+          ? 'pdf'
+          : 'image'
+
         uploaded.push({
           name: file.name,
           url: data.publicUrl,
-          type: file.type.startsWith('video') ? 'video' : 'image',
+          type: assetType,
           uploaded_at: new Date().toISOString()
         })
       }
@@ -270,6 +273,35 @@ export default function WorkbenchPage() {
     }
   }
 
+  const handleDeleteAsset = async (asset: MediaAsset) => {
+    if (!profile.id) return
+    setDeletingAsset(asset.url)
+    try {
+      const remaining = (profile.publicity_assets || []).filter(
+        (item) =>
+          !(item.url === asset.url && item.uploaded_at === asset.uploaded_at)
+      )
+
+      const { error } = await supabase
+        .from('company')
+        .update({ publicity_assets: remaining })
+        .eq('id', profile.id)
+
+      if (error) {
+        console.error('Failed to delete asset from profile', error)
+        toast.error('删除失败，请稍后再试')
+      } else {
+        setProfile((prev) => ({ ...prev, publicity_assets: remaining }))
+        toast.success('素材已删除')
+      }
+    } catch (err) {
+      console.error('Unexpected delete error', err)
+      toast.error('删除过程中出现问题')
+    } finally {
+      setDeletingAsset(null)
+    }
+  }
+
   if (loading || loadingProfile) {
     return (
       <div className='min-h-screen bg-gradient-to-br from-amber-50 via-white to-blue-50 flex items-center justify-center'>
@@ -286,7 +318,7 @@ export default function WorkbenchPage() {
       <div className='relative overflow-hidden'>
         <div className='absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,159,64,0.15),transparent_25%),radial-gradient(circle_at_80%_0%,rgba(56,189,248,0.18),transparent_30%)]' />
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12 relative'>
-          <div className='grid md:grid-cols-3 gap-4 mb-8'>
+          <div className='grid md:grid-cols-2 gap-4 mb-8'>
             <Card className='shadow-sm border-none bg-white/80 backdrop-blur col-span-1'>
               <CardHeader className='pb-2'>
                 <CardTitle className='flex items-center space-x-2 text-lg'>
@@ -327,34 +359,6 @@ export default function WorkbenchPage() {
                 <div className='flex items-center space-x-2 text-gray-600'>
                   <Mail className='w-4 h-4' />
                   <span>{profile.email || '邮箱未填写'}</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className='shadow-sm border-none bg-white/80 backdrop-blur col-span-1'>
-              <CardHeader className='pb-2'>
-                <CardTitle className='flex items-center space-x-2 text-lg'>
-                  <Sparkles className='w-5 h-5 text-sky-500' />
-                  <span>宣传素材</span>
-                </CardTitle>
-                <CardDescription>
-                  已上传 {profile.publicity_assets?.length || 0} 个文件
-                </CardDescription>
-              </CardHeader>
-              <CardContent className='space-y-2 text-sm text-gray-700'>
-                <div className='flex items-center space-x-2'>
-                  <Badge
-                    variant='secondary'
-                    className='bg-orange-100 text-orange-800'
-                  >
-                    图片
-                  </Badge>
-                  <Badge
-                    variant='secondary'
-                    className='bg-blue-100 text-blue-800'
-                  >
-                    视频
-                  </Badge>
                 </div>
               </CardContent>
             </Card>
@@ -519,24 +523,29 @@ export default function WorkbenchPage() {
                       />
                     </div>
                     <div className='space-y-2'>
-                      <Label htmlFor='cooperation'>合作意向</Label>
+                      <Label htmlFor='expectations'>合作意向</Label>
                       <Input
-                        id='cooperation'
-                        value={cooperationText}
-                        onChange={(e) => setCooperationText(e.target.value)}
+                        id='expectations'
+                        value={profile.expectations || ''}
+                        onChange={(e) =>
+                          setProfile((prev) => ({
+                            ...prev,
+                            expectations: e.target.value
+                          }))
+                        }
                       />
                     </div>
                   </div>
 
                   <div className='space-y-2'>
-                    <Label htmlFor='expectations'>期望与备注</Label>
+                    <Label htmlFor='notes'>备注</Label>
                     <Textarea
-                      id='expectations'
-                      value={profile.expectations || ''}
+                      id='notes'
+                      value={profile.notes || ''}
                       onChange={(e) =>
                         setProfile((prev) => ({
                           ...prev,
-                          expectations: e.target.value
+                          notes: e.target.value
                         }))
                       }
                       rows={3}
@@ -562,9 +571,39 @@ export default function WorkbenchPage() {
             </div>
 
             <div className='space-y-6'>
-              <Card className='shadow-sm'>
+              <Card className='shadow-sm h-full'>
                 <CardHeader>
-                  <CardTitle>宣传素材</CardTitle>
+                  <div className='flex items-start justify-between'>
+                    <div>
+                      <CardTitle className='flex items-center space-x-2'>
+                        <Sparkles className='w-5 h-5 text-sky-500' />
+                        <span>宣传素材</span>
+                      </CardTitle>
+                      <CardDescription className='mt-1'>
+                        已上传 {profile.publicity_assets?.length || 0} 个文件
+                      </CardDescription>
+                    </div>
+                    <div className='flex items-center space-x-2'>
+                      <Badge
+                        variant='secondary'
+                        className='bg-orange-100 text-orange-800'
+                      >
+                        图片
+                      </Badge>
+                      <Badge
+                        variant='secondary'
+                        className='bg-blue-100 text-blue-800'
+                      >
+                        视频
+                      </Badge>
+                      <Badge
+                        variant='secondary'
+                        className='bg-gray-100 text-gray-800'
+                      >
+                        PDF
+                      </Badge>
+                    </div>
+                  </div>
                 </CardHeader>
                 <CardContent className='space-y-4'>
                   <div className='border-2 border-dashed border-orange-200 rounded-xl p-4 bg-orange-50/50'>
@@ -584,7 +623,7 @@ export default function WorkbenchPage() {
                     <Input
                       type='file'
                       multiple
-                      accept='image/*,video/*'
+                      accept='image/*,video/*,.pdf,application/pdf'
                       onChange={handleFileUpload}
                       disabled={uploading}
                     />
@@ -599,23 +638,40 @@ export default function WorkbenchPage() {
                     {(profile.publicity_assets || []).map((asset) => (
                       <div
                         key={`${asset.url}-${asset.uploaded_at}`}
-                        className='relative overflow-hidden rounded-lg border bg-white shadow-sm'
+                        className='relative overflow-hidden rounded-lg border bg-white shadow-sm group'
                       >
+                        <button
+                          type='button'
+                          onClick={() => handleDeleteAsset(asset)}
+                          disabled={deletingAsset === asset.url}
+                          className='absolute top-2 right-2 z-10 rounded-full bg-white/90 shadow text-gray-600 hover:text-red-600 hover:bg-white transition disabled:opacity-50 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto w-5 h-5 flex items-center justify-center'
+                          aria-label='删除素材'
+                        >
+                          <X className='w-3 h-3' />
+                        </button>
                         <div className='absolute top-2 left-2'>
                           <Badge
                             variant='secondary'
                             className={
                               asset.type === 'video'
                                 ? 'bg-blue-100 text-blue-800'
+                                : asset.type === 'pdf'
+                                ? 'bg-gray-100 text-gray-800'
                                 : 'bg-orange-100 text-orange-800'
                             }
                           >
                             {asset.type === 'video' ? (
                               <Video className='w-3 h-3 mr-1' />
+                            ) : asset.type === 'pdf' ? (
+                              <FileText className='w-3 h-3 mr-1' />
                             ) : (
                               <ImageIcon className='w-3 h-3 mr-1' />
                             )}
-                            {asset.type === 'video' ? '视频' : '图片'}
+                            {asset.type === 'video'
+                              ? '视频'
+                              : asset.type === 'pdf'
+                              ? 'PDF'
+                              : '图片'}
                           </Badge>
                         </div>
                         {asset.type === 'video' ? (
@@ -624,6 +680,13 @@ export default function WorkbenchPage() {
                             className='w-full h-32 object-cover bg-black/5'
                             src={asset.url}
                           />
+                        ) : asset.type === 'pdf' ? (
+                          <div className='w-full h-32 bg-gray-50 flex flex-col items-center justify-center text-gray-700'>
+                            <FileText className='w-8 h-8 mb-2' />
+                            <span className='text-xs line-clamp-2 px-3 text-center'>
+                              {asset.name}
+                            </span>
+                          </div>
                         ) : (
                           <img
                             src={asset.url}
@@ -632,9 +695,11 @@ export default function WorkbenchPage() {
                             loading='lazy'
                           />
                         )}
-                        <div className='px-3 py-2 text-xs text-gray-700 line-clamp-2 bg-white'>
-                          {asset.name}
-                        </div>
+                        {asset.type !== 'pdf' && (
+                          <div className='px-3 py-2 text-xs text-gray-700 line-clamp-2 bg-white'>
+                            {asset.name}
+                          </div>
+                        )}
                       </div>
                     ))}
                     {profile.publicity_assets?.length === 0 && (
@@ -645,7 +710,6 @@ export default function WorkbenchPage() {
                   </div>
                 </CardContent>
               </Card>
-
             </div>
           </div>
         </div>
