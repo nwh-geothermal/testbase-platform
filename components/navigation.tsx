@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Menu, LogOut, LogIn } from 'lucide-react'
+import { Menu, LogOut, LogIn, ClipboardList, Blocks } from 'lucide-react'
 import { useAuthContext } from './auth-provider'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
@@ -36,7 +36,7 @@ const navigationItems: NavigationItem[] = [
   { name: '加入平台', href: '/join' },
   { name: '成果展示', href: '/achievements' },
   { name: '产学研合作', href: '/cooperation' },
-  { name: '关于我们', href: '/about' }
+  { name: '关于基地', href: '/about' }
 ]
 
 export function Navigation() {
@@ -64,12 +64,9 @@ export function Navigation() {
         ...visibleNavigationItems,
         { name: '服务申请', href: '/admin/service-inquiries' }
       ]
-    : user 
-      ? [
-          ...visibleNavigationItems,
-          { name: '服务工作台', href: '/user/service-dashboard' }
-        ]
-      : visibleNavigationItems
+    : user
+    ? [...visibleNavigationItems]
+    : visibleNavigationItems
 
   const handleSignOut = async () => {
     await signOut()
@@ -136,29 +133,51 @@ export function Navigation() {
               <div className='flex items-center space-x-4'>
                 <Separator orientation='vertical' className='h-6' />
                 {user ? (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant='ghost'
-                        size='icon'
-                        className='h-8 w-8 rounded-full p-0'
-                      >
-                        <Avatar className='h-8 w-8'>
-                          <AvatarFallback>
-                            {user.user_metadata?.contactPerson?.charAt(0) ||
-                              user.email?.charAt(0) ||
-                              'U'}
-                          </AvatarFallback>
-                        </Avatar>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align='end'>
-                      <DropdownMenuItem onClick={handleSignOut}>
-                        <LogOut className='mr-2 h-4 w-4' />
-                        <span>退出登录</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  <div className='flex items-center space-x-2'>
+                    <Button
+                      variant='ghost'
+                      size='icon'
+                      className='h-8 w-8'
+                      asChild
+                      aria-label='工作台'
+                    >
+                      <Link href='/user/workbench'>
+                        <Blocks className='h-5 w-5 text-gray-700 hover:text-geothermal-orange transition-colors' />
+                      </Link>
+                    </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant='ghost'
+                          size='icon'
+                          className='h-8 w-8 rounded-full p-0'
+                        >
+                          <Avatar className='h-8 w-8'>
+                            <AvatarFallback>
+                              {user.user_metadata?.contactPerson?.charAt(0) ||
+                                user.email?.charAt(0) ||
+                                'U'}
+                            </AvatarFallback>
+                          </Avatar>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align='end'>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            href='/user/service-dashboard'
+                            className='flex items-center'
+                          >
+                            <ClipboardList className='mr-2 h-4 w-4' />
+                            <span>服务进度</span>
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleSignOut}>
+                          <LogOut className='mr-2 h-4 w-4' />
+                          <span>退出登录</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                 ) : (
                   <Button variant='ghost' asChild>
                     <Link href='/login' className='flex items-center space-x-2'>
@@ -224,6 +243,28 @@ export function Navigation() {
                               {user.user_metadata?.contactPerson || user.email}
                             </span>
                           </div>
+                          <Button
+                            variant='ghost'
+                            className='w-full justify-start'
+                            asChild
+                            onClick={() => setIsOpen(false)}
+                          >
+                            <Link href='/user/workbench'>
+                              <Blocks className='w-5 h-5 mr-2' />
+                              <span>工作台</span>
+                            </Link>
+                          </Button>
+                          <Button
+                            variant='ghost'
+                            className='w-full justify-start'
+                            asChild
+                            onClick={() => setIsOpen(false)}
+                          >
+                            <Link href='/user/service-dashboard'>
+                              <ClipboardList className='w-5 h-5 mr-2' />
+                              <span>服务进度</span>
+                            </Link>
+                          </Button>
                           <Button
                             variant='ghost'
                             className='w-full justify-start'
