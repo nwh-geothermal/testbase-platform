@@ -38,6 +38,28 @@ type MediaAsset = {
   uploaded_at?: string
 }
 
+const WHITELIST_NAMES = [
+  '陕西中禾技术有限公司',
+  '西北水利水电工程有限责任公司',
+  '深圳市华聚科学仪器有限公司',
+  '北京热热文化科技有限公司',
+  '四川集思数源信息技术有限公司',
+  '西安恒歌数码科技有限责任公司',
+  '中服软件（西安）有限公司',
+  '广东元能星泰孪生科技创新有限公司',
+  '陕西华辉科技有限公司',
+  '西安拉贝得信息科技有限公司',
+  '西安数驱智信息科技有限公司',
+  '五环绿能（北京）工程科技有限公司',
+  '浪潮云洲工业互联网有限公司',
+  '中国电建集团西北勘测设计研究院有限公司'
+]
+
+const isWhitelisted = (name?: string) => {
+  if (!name) return false
+  return WHITELIST_NAMES.includes(name.trim())
+}
+
 export function CooperationForm() {
   const [companyProfiles, setCompanyProfiles] = useState<CompanyProfile[]>([])
   const [loadingCompany, setLoadingCompany] = useState(false)
@@ -46,22 +68,236 @@ export function CooperationForm() {
   )
   const [dialogImageIndex, setDialogImageIndex] = useState(0)
 
+  const extractSupplierList = (payload: any) => {
+    if (!payload) return []
+    if (Array.isArray(payload)) return payload
+    if (Array.isArray(payload?.data?.list)) return payload.data.list
+    if (Array.isArray(payload?.data?.records)) return payload.data.records
+    if (Array.isArray(payload?.data?.items)) return payload.data.items
+    if (Array.isArray(payload?.data?.content)) return payload.data.content
+    if (Array.isArray(payload?.data)) return payload.data
+    if (Array.isArray(payload?.records)) return payload.records
+    if (Array.isArray(payload?.list)) return payload.list
+    return []
+  }
+
+  const normalizeSupplier = (item: any, idx: number): CompanyProfile => {
+    const logoCandidate =
+      item?.logo ||
+      item?.avatar ||
+      item?.image ||
+      item?.cover ||
+      item?.logoUrl ||
+      ''
+
+    const address =
+      item?.address ||
+      item?.address_detail ||
+      item?.detailAddress ||
+      item?.addressDetail ||
+      [item?.province, item?.city, item?.district || item?.area, item?.street]
+        .filter(Boolean)
+        .join(' ')
+
+    const productText = [
+      item?.main_products,
+      item?.mainProducts,
+      item?.products,
+      item?.product,
+      Array.isArray(item?.productList)
+        ? item.productList.filter(Boolean).join('、')
+        : '',
+      Array.isArray(item?.coreCompetence)
+        ? item.coreCompetence.filter(Boolean).join('、')
+        : ''
+    ]
+      .filter(Boolean)
+      .join('、')
+
+    const businessScope = [
+      item?.business_scope,
+      item?.businessScope,
+      item?.scope,
+      Array.isArray(item?.scopeList)
+        ? item.scopeList.filter(Boolean).join('、')
+        : '',
+      Array.isArray(item?.tags) ? item.tags.filter(Boolean).join('、') : '',
+      Array.isArray(item?.coreCompetence)
+        ? item.coreCompetence.filter(Boolean).join('、')
+        : ''
+    ]
+      .filter(Boolean)
+      .join('、')
+
+    const expectations =
+      item?.expectations ||
+      item?.cooperationIntention ||
+      item?.intentions ||
+      item?.intention ||
+      item?.status ||
+      ''
+
+    const technicalCapabilities =
+      item?.technical_capabilities ||
+      item?.capabilities ||
+      item?.abilities ||
+      (Array.isArray(item?.skills)
+        ? item.skills.filter(Boolean).join('、')
+        : '')
+
+    return {
+      id: String(
+        item?.id ?? item?.supplierId ?? item?.companyId ?? item?.code ?? idx
+      ),
+      company_name:
+        item?.company_name ||
+        item?.companyName ||
+        item?.supplierName ||
+        item?.name ||
+        item?.organizeName ||
+        '未命名企业',
+      company_type:
+        item?.company_type ||
+        item?.companyType ||
+        item?.type ||
+        item?.category ||
+        (Array.isArray(item?.categoryList)
+          ? item.categoryList.filter(Boolean).join('、')
+          : '') ||
+        '',
+      contact_person:
+        item?.contact_person ||
+        item?.contactPerson ||
+        item?.contact ||
+        item?.linkMan ||
+        item?.connector ||
+        '',
+      phone:
+        item?.phone ||
+        item?.telephone ||
+        item?.tel ||
+        item?.mobile ||
+        item?.contactPhone ||
+        '',
+      email: item?.email || item?.contactEmail || item?.mail || '',
+      address,
+      business_scope: businessScope,
+      main_products: productText,
+      technical_capabilities: technicalCapabilities,
+      expectations,
+      publicity_assets:
+        item?.publicity_assets ||
+        (logoCandidate &&
+          isWhitelisted(item?.organizeName || item?.companyName || item?.name))
+          ? [
+              {
+                url: logoCandidate,
+                name: item?.companyName || item?.name || '企业logo',
+                type: 'image'
+              }
+            ]
+          : []
+    }
+  }
+
   useEffect(() => {
     const fetchCompanyProfiles = async () => {
       setLoadingCompany(true)
-      const { data, error } = await supabase
-        .from('company')
-        .select(
-          'id, company_name, company_type, contact_person, phone, email, address, business_scope, main_products, technical_capabilities, expectations, publicity_assets'
+      const getKey = (item: CompanyProfile) =>
+        item.id || item.company_name || ''
+      const mergeById = (
+        primary: CompanyProfile[],
+        secondary: CompanyProfile[]
+      ) => {
+        const seen = new Set(
+          primary.map((item) => getKey(item)).filter(Boolean)
         )
-        .order('updated_at', { ascending: false })
-
-      if (!error && data) {
-        setCompanyProfiles(data)
-      } else {
-        setCompanyProfiles([])
+        const merged = [...primary]
+        secondary.forEach((item) => {
+          const key = getKey(item)
+          if (key && !seen.has(key)) {
+            seen.add(key)
+            merged.push(item)
+          }
+        })
+        return merged
       }
-      setLoadingCompany(false)
+
+      try {
+        const { data: localData, error: localError } = await supabase
+          .from('company')
+          .select(
+            'id, company_name, company_type, contact_person, phone, email, address, business_scope, main_products, technical_capabilities, expectations, publicity_assets'
+          )
+          .order('updated_at', { ascending: false })
+
+        const localProfiles =
+          !localError && Array.isArray(localData) ? localData : []
+
+        let mergedProfiles = [...localProfiles]
+
+        try {
+          const response = await fetch(
+            'https://equipms.inspuriip.com/gateway/service/hall/service/supplier',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+              },
+              body: JSON.stringify({
+                pageNo: 1,
+                pageSize: 60,
+                organizeIds: [],
+                status: '',
+                tenantId: '',
+                domainList: [],
+                industryList: [],
+                keyWord: '',
+                supplierCategoryIds: [],
+                areaList: [],
+                publishDateOrder: 'desc'
+              })
+            }
+          )
+
+          if (!response.ok) {
+            throw new Error(`Supplier API error: ${response.status}`)
+          }
+
+          const payload = await response.json()
+          const supplierList = extractSupplierList(payload)
+
+          if (Array.isArray(supplierList) && supplierList.length) {
+            const normalized = supplierList.map((item, idx) =>
+              normalizeSupplier(item, idx)
+            )
+            mergedProfiles = mergeById(localProfiles, normalized)
+          }
+        } catch (error) {
+          console.error('Failed to fetch supplier data', error)
+        }
+
+        const localKeys = new Set(
+          localProfiles.map((item) => getKey(item)).filter(Boolean)
+        )
+        const remoteProfiles = mergedProfiles.filter(
+          (item) => !localKeys.has(getKey(item))
+        )
+        const sortedRemote = [...remoteProfiles].sort((a, b) => {
+          const aWhiteListed = isWhitelisted(a.company_name)
+          const bWhiteListed = isWhitelisted(b.company_name)
+          if (aWhiteListed === bWhiteListed) return 0
+          return aWhiteListed ? -1 : 1
+        })
+
+        setCompanyProfiles([...localProfiles, ...sortedRemote])
+      } catch (error) {
+        console.error('Failed to load local companies', error)
+        setCompanyProfiles([])
+      } finally {
+        setLoadingCompany(false)
+      }
     }
 
     fetchCompanyProfiles()
@@ -171,7 +407,7 @@ export function CooperationForm() {
                                   {profile.address}
                                 </p>
                               )}
-                              <div className='flex flex-row flex-wrap text-sm text-gray-700 mt-2'>
+                              <div className='flex flex-row flex-wrap text-sm text-gray-700 mt-5'>
                                 <div className='flex flex-wrap gap-0'>
                                   {businessScopeTags.length ? (
                                     businessScopeTags.map((tag, idx) => (
@@ -646,7 +882,9 @@ export function CooperationForm() {
                     <div className='grid grid-cols-1 xl:grid-cols-4 gap-6'>
                       <div className='space-y-3'>
                         <div className='flex items-center justify-start gap-2'>
-                          <span className='text-sm uppercase tracking-wide text-gray-600'>业务范围</span>
+                          <span className='text-sm uppercase tracking-wide text-gray-600'>
+                            业务范围
+                          </span>
                         </div>
                         <div className='flex flex-wrap gap-1'>
                           {(activeCompany.business_scope || '')
@@ -662,14 +900,18 @@ export function CooperationForm() {
                               </span>
                             ))}
                           {!(activeCompany.business_scope || '').trim() && (
-                            <span className='text-xs text-gray-500'>暂无资料</span>
+                            <span className='text-xs text-gray-500'>
+                              暂无资料
+                            </span>
                           )}
                         </div>
                       </div>
 
                       <div className='space-y-3'>
                         <div className='flex items-center justify-start gap-2'>
-                          <span className='text-sm uppercase tracking-wide text-gray-600'>技术能力</span>
+                          <span className='text-sm uppercase tracking-wide text-gray-600'>
+                            技术能力
+                          </span>
                         </div>
                         <div className='flex flex-wrap gap-1'>
                           {(activeCompany.technical_capabilities || '')
@@ -684,30 +926,44 @@ export function CooperationForm() {
                                 {tag}
                               </span>
                             ))}
-                          {!(activeCompany.technical_capabilities || '').trim() && (
-                            <span className='text-xs text-gray-500'>暂无资料</span>
+                          {!(
+                            activeCompany.technical_capabilities || ''
+                          ).trim() && (
+                            <div className='leading-relaxed text-gray-900 text-sm font-medium'>
+                              <span className='text-xs text-gray-500'>
+                                暂无资料
+                              </span>
+                            </div>
                           )}
                         </div>
                       </div>
 
                       <div className='space-y-3'>
                         <div className='flex items-center justify-start gap-2'>
-                          <span className='text-sm uppercase tracking-wide text-gray-600'>主要产品</span>
+                          <span className='text-sm uppercase tracking-wide text-gray-600'>
+                            主要产品
+                          </span>
                         </div>
-                        <div className='leading-relaxed text-gray-800 text-sm'>
+                        <div className='leading-relaxed text-gray-900 text-sm font-medium'>
                           {activeCompany.main_products || (
-                            <span className='text-xs text-gray-500'>暂无资料</span>
+                            <span className='text-xs text-gray-500'>
+                              暂无资料
+                            </span>
                           )}
                         </div>
                       </div>
 
                       <div className='space-y-3'>
                         <div className='flex items-center justify-start gap-2'>
-                          <span className='text-sm uppercase tracking-wide text-gray-600'>合作意向</span>
+                          <span className='text-sm uppercase tracking-wide text-gray-600'>
+                            合作意向
+                          </span>
                         </div>
-                        <div className='leading-relaxed text-gray-800 text-sm'>
+                        <div className='leading-relaxed text-gray-900 text-sm font-medium'>
                           {activeCompany.expectations || (
-                            <span className='text-xs text-gray-500'>暂无资料</span>
+                            <span className='text-xs text-gray-500'>
+                              暂无资料
+                            </span>
                           )}
                         </div>
                       </div>
