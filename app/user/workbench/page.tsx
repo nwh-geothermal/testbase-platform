@@ -323,7 +323,7 @@ export default function WorkbenchPage() {
               <CardHeader className='pb-2'>
                 <CardTitle className='flex items-center space-x-2 text-lg'>
                   <Building2 className='w-5 h-5 text-orange-500' />
-                  <span>企业概览</span>
+                  <div>企业概览</div>
                 </CardTitle>
               </CardHeader>
               <CardContent className='space-y-2 text-sm text-gray-700'>
@@ -332,11 +332,11 @@ export default function WorkbenchPage() {
                 </div>
                 <div className='flex items-center space-x-2 text-gray-600'>
                   <Network className='w-4 h-4' />
-                  <span>{profile.company_type || '类型未设置'}</span>
+                  <div>{profile.company_type || '类型未设置'}</div>
                 </div>
                 <div className='flex items-center space-x-2 text-gray-600'>
                   <Globe2 className='w-4 h-4' />
-                  <span>{profile.website || '官网未填写'}</span>
+                  <div>{profile.website || '官网未填写'}</div>
                 </div>
               </CardContent>
             </Card>
@@ -345,7 +345,7 @@ export default function WorkbenchPage() {
               <CardHeader className='pb-2'>
                 <CardTitle className='flex items-center space-x-2 text-lg'>
                   <ShieldCheck className='w-5 h-5 text-green-500' />
-                  <span>联系人</span>
+                  <div>联系人</div>
                 </CardTitle>
               </CardHeader>
               <CardContent className='space-y-2 text-sm text-gray-700'>
@@ -354,11 +354,11 @@ export default function WorkbenchPage() {
                 </div>
                 <div className='flex items-center space-x-2 text-gray-600'>
                   <Phone className='w-4 h-4' />
-                  <span>{profile.phone || '电话未填写'}</span>
+                  <div>{profile.phone || '电话未填写'}</div>
                 </div>
                 <div className='flex items-center space-x-2 text-gray-600'>
                   <Mail className='w-4 h-4' />
-                  <span>{profile.email || '邮箱未填写'}</span>
+                  <div>{profile.email || '邮箱未填写'}</div>
                 </div>
               </CardContent>
             </Card>
@@ -563,7 +563,7 @@ export default function WorkbenchPage() {
                       ) : (
                         <Save className='w-4 h-4' />
                       )}
-                      <span>{saving ? '保存中...' : '保存资料'}</span>
+                      <div>{saving ? '保存中...' : '保存资料'}</div>
                     </Button>
                   </div>
                 </CardContent>
@@ -577,7 +577,7 @@ export default function WorkbenchPage() {
                     <div>
                       <CardTitle className='flex items-center space-x-2'>
                         <Sparkles className='w-5 h-5 text-sky-500' />
-                        <span>宣传素材</span>
+                        <div>宣传素材</div>
                       </CardTitle>
                       <CardDescription className='mt-1'>
                         已上传 {profile.publicity_assets?.length || 0} 个文件
@@ -683,9 +683,9 @@ export default function WorkbenchPage() {
                         ) : asset.type === 'pdf' ? (
                           <div className='w-full h-32 bg-gray-50 flex flex-col items-center justify-center text-gray-700'>
                             <FileText className='w-8 h-8 mb-2' />
-                            <span className='text-xs line-clamp-2 px-3 text-center'>
+                            <div className='text-xs line-clamp-2 px-3 text-center'>
                               {asset.name}
-                            </span>
+                            </div>
                           </div>
                         ) : (
                           <img

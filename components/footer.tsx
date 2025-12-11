@@ -77,13 +77,13 @@ export function Footer() {
             <div className='space-y-3'>
               <div className='flex items-center space-x-2'>
                 <MapPin className='w-4 h-4 text-geothermal-orange' />
-                <span className='text-gray-300 text-sm'>
+                <div className='text-gray-300 text-sm'>
                   陕西省西安市长安区城南大道18号
-                </span>
+                </div>
               </div>
               <div className='flex items-center space-x-2'>
                 <Phone className='w-4 h-4 text-geothermal-orange' />
-                <span className='text-gray-300 text-sm'>+86-29-89810100</span>
+                <div className='text-gray-300 text-sm'>+86-29-89810100</div>
               </div>
             </div>
           </div>

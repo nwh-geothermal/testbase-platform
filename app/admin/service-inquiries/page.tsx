@@ -244,7 +244,7 @@ export default function ServiceInquiriesAdmin() {
             <Card>
               <CardHeader>
                 <CardTitle className='flex items-center justify-between'>
-                  <span>服务申请列表</span>
+                  <div>服务申请列表</div>
                   <Badge variant='outline'>{inquiries.length} 个申请</Badge>
                 </CardTitle>
                 <CardDescription>查看和管理所有服务申请的状态</CardDescription>

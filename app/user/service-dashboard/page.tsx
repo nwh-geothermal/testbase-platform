@@ -257,9 +257,7 @@ export default function ServiceDashboard() {
             animate={{ opacity: 1, y: 0 }}
             className='mb-8'
           >
-            <h1 className='text-4xl font-bold text-gray-900 mb-4'>
-              服务进度
-            </h1>
+            <h1 className='text-4xl font-bold text-gray-900 mb-4'>服务进度</h1>
             <p className='text-lg text-gray-600'>
               跟踪您的服务申请状态和试验进度
             </p>
@@ -273,7 +271,7 @@ export default function ServiceDashboard() {
             <Card>
               <CardHeader>
                 <CardTitle className='flex items-center justify-between'>
-                  <span>我的服务申请</span>
+                  <div>我的服务申请</div>
                   <Badge variant='outline'>{inquiries.length} 个申请</Badge>
                 </CardTitle>
                 <CardDescription>
@@ -345,27 +343,27 @@ export default function ServiceDashboard() {
                                 <AccordionContent>
                                   <div className='grid grid-cols-2 gap-4 text-sm'>
                                     <div>
-                                      <span className='font-medium'>
+                                      <div className='font-medium'>
                                         预算范围：
-                                      </span>
-                                      <span className='text-gray-600'>
+                                      </div>
+                                      <div className='text-gray-600'>
                                         {inquiry.budget_range}
-                                      </span>
+                                      </div>
                                     </div>
                                     <div>
-                                      <span className='font-medium'>
+                                      <div className='font-medium'>
                                         时间安排：
-                                      </span>
-                                      <span className='text-gray-600'>
+                                      </div>
+                                      <div className='text-gray-600'>
                                         {inquiry.timeline}
-                                      </span>
+                                      </div>
                                     </div>
                                   </div>
                                   {inquiry.project_description && (
                                     <div className='mt-3'>
-                                      <span className='font-medium block mb-1'>
+                                      <div className='font-medium block mb-1'>
                                         项目描述：
-                                      </span>
+                                      </div>
                                       <p className='text-gray-600 text-sm bg-gray-50 p-2 rounded'>
                                         {inquiry.project_description}
                                       </p>
@@ -388,16 +386,16 @@ export default function ServiceDashboard() {
                                       <div className='flex items-center space-x-3'>
                                         <Calendar className='w-4 h-4 text-geothermal-blue' />
                                         <div>
-                                          <span className='font-medium'>
+                                          <div className='font-medium'>
                                             开始时间：
-                                          </span>
-                                          <span className='text-gray-600'>
+                                          </div>
+                                          <div className='text-gray-600'>
                                             {experimentInfo.startDate
                                               ? new Date(
                                                   experimentInfo.startDate
                                                 ).toLocaleDateString('zh-CN')
                                               : '待安排'}
-                                          </span>
+                                          </div>
                                         </div>
                                       </div>
 
@@ -405,9 +403,9 @@ export default function ServiceDashboard() {
                                       <div>
                                         <div className='flex items-center space-x-2 mb-2'>
                                           <AlertTriangle className='w-4 h-4 text-orange-500' />
-                                          <span className='font-medium'>
+                                          <div className='font-medium'>
                                             需要准备：
-                                          </span>
+                                          </div>
                                         </div>
                                         <div className='grid grid-cols-2 gap-2'>
                                           {experimentInfo.preparation.map(
@@ -417,9 +415,9 @@ export default function ServiceDashboard() {
                                                 className='flex items-center space-x-2 text-sm'
                                               >
                                                 <div className='w-2 h-2 bg-geothermal-orange rounded-full'></div>
-                                                <span className='text-gray-600'>
+                                                <div className='text-gray-600'>
                                                   {item}
-                                                </span>
+                                                </div>
                                               </div>
                                             )
                                           )}
@@ -431,9 +429,9 @@ export default function ServiceDashboard() {
                                         <div>
                                           <div className='flex items-center space-x-2 mb-2'>
                                             <CheckCircle className='w-4 h-4 text-green-600' />
-                                            <span className='font-medium'>
+                                            <div className='font-medium'>
                                               试验结果：
-                                            </span>
+                                            </div>
                                           </div>
                                           <p className='text-gray-600 text-sm bg-green-50 p-3 rounded'>
                                             {experimentInfo.results}
@@ -447,9 +445,9 @@ export default function ServiceDashboard() {
                                           <div>
                                             <div className='flex items-center space-x-2 mb-2'>
                                               <FileText className='w-4 h-4 text-geothermal-blue' />
-                                              <span className='font-medium'>
+                                              <div className='font-medium'>
                                                 试验数据：
-                                              </span>
+                                              </div>
                                             </div>
                                             <div className='space-y-2'>
                                               {experimentInfo.dataFiles.map(
@@ -458,9 +456,9 @@ export default function ServiceDashboard() {
                                                     key={index}
                                                     className='flex items-center justify-between bg-gray-50 p-2 rounded'
                                                   >
-                                                    <span className='text-sm text-gray-700'>
+                                                    <div className='text-sm text-gray-700'>
                                                       {file}
-                                                    </span>
+                                                    </div>
                                                     <Button
                                                       size='sm'
                                                       variant='outline'

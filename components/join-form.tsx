@@ -199,42 +199,44 @@ export function JoinForm() {
       if (authData.user) {
         try {
           // Use a service role approach or direct insert with user context
-          const { error: dbError } = await supabase
-            .from('company')
-            .insert({
-              user_id: authData.user.id,
-              company_name: formData.companyName,
-              company_type: formData.companyType,
-              established_year: formData.establishedYear,
-              registered_capital: formData.registeredCapital,
-              employees: formData.employees,
-              contact_person: formData.contactPerson,
-              position: formData.position,
-              phone: formData.phone,
-              email: formData.email,
-              address: formData.address,
-              website: formData.website,
-              business_scope: formData.businessScope,
-              main_products: formData.mainProducts,
-              technical_capabilities: formData.technicalCapabilities,
-              cooperation_interests: formData.cooperationInterests,
-              certifications: formData.certifications,
-              annual_revenue: formData.annualRevenue,
-              previous_projects: formData.previousProjects,
-              expectations: formData.expectations,
-              status: 'pending'
-            })
+          const { error: dbError } = await supabase.from('company').insert({
+            user_id: authData.user.id,
+            company_name: formData.companyName,
+            company_type: formData.companyType,
+            established_year: formData.establishedYear,
+            registered_capital: formData.registeredCapital,
+            employees: formData.employees,
+            contact_person: formData.contactPerson,
+            position: formData.position,
+            phone: formData.phone,
+            email: formData.email,
+            address: formData.address,
+            website: formData.website,
+            business_scope: formData.businessScope,
+            main_products: formData.mainProducts,
+            technical_capabilities: formData.technicalCapabilities,
+            cooperation_interests: formData.cooperationInterests,
+            certifications: formData.certifications,
+            annual_revenue: formData.annualRevenue,
+            previous_projects: formData.previousProjects,
+            expectations: formData.expectations,
+            status: 'pending'
+          })
 
           if (dbError) {
             console.error('Error saving company data:', dbError)
             // Show a toast instead of setting form error for better UX
-            toast.error('用户注册成功！企业信息保存失败，请登录后在个人中心完善企业信息。')
+            toast.error(
+              '用户注册成功！企业信息保存失败，请登录后在个人中心完善企业信息。'
+            )
             setIsSubmitting(false)
             return
           }
         } catch (insertError) {
           console.error('Error during company data insertion:', insertError)
-          toast.error('用户注册成功！企业信息保存失败，请登录后在个人中心完善企业信息。')
+          toast.error(
+            '用户注册成功！企业信息保存失败，请登录后在个人中心完善企业信息。'
+          )
           setIsSubmitting(false)
           return
         }
@@ -782,12 +784,12 @@ export function JoinForm() {
                     {isSubmitting ? (
                       <>
                         <div className='w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2' />
-                        <span>提交中...</span>
+                        <div>提交中...</div>
                       </>
                     ) : (
                       <>
                         <Send className='w-5 h-5 mr-2' />
-                        <span>提交申请</span>
+                        <div>提交申请</div>
                       </>
                     )}
                   </Button>

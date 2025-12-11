@@ -408,9 +408,7 @@ export function ServicesList() {
                           className='flex items-center space-x-2'
                         >
                           <div className='w-2 h-2 bg-geothermal-green rounded-full flex-shrink-0'></div>
-                          <span className='text-sm text-gray-700'>
-                            {feature}
-                          </span>
+                          <div className='text-sm text-gray-700'>{feature}</div>
                         </div>
                       ))}
                     </div>
@@ -493,7 +491,6 @@ export function ServicesList() {
             </CardContent>
           </Card>
         </motion.div>
-
       </div>
     </div>
   )

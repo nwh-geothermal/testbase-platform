@@ -5,30 +5,36 @@ import { motion } from 'framer-motion'
 import { Mail, Lock, Eye, EyeOff, LogIn } from 'lucide-react'
 import { useAuth } from '@/lib/auth-hooks'
 import { useRouter } from 'next/navigation'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { toast } from 'sonner'
 import Link from 'next/link'
 
 export function LoginForm() {
   const { signIn } = useAuth()
   const router = useRouter()
-  
+
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   })
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value
     }))
@@ -40,7 +46,10 @@ export function LoginForm() {
     setError('')
 
     try {
-      const { data, error: authError } = await signIn(formData.email, formData.password)
+      const { data, error: authError } = await signIn(
+        formData.email,
+        formData.password
+      )
 
       if (authError) {
         setError(authError.message)
@@ -65,11 +74,11 @@ export function LoginForm() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="w-full max-w-md"
+        className='w-full max-w-md'
       >
         <Card>
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold">登录平台</CardTitle>
+          <CardHeader className='text-center'>
+            <CardTitle className='text-2xl font-bold'>登录平台</CardTitle>
             <CardDescription>
               欢迎回到陕西省地热能开发利用技术中试基地平台
             </CardDescription>
@@ -77,12 +86,12 @@ export function LoginForm() {
           <CardContent>
             <form onSubmit={handleSubmit} className='space-y-4'>
               {/* Email Field */}
-              <div className="space-y-2">
-                <Label htmlFor="email">邮箱地址 *</Label>
+              <div className='space-y-2'>
+                <Label htmlFor='email'>邮箱地址 *</Label>
                 <div className='relative'>
                   <Mail className='absolute left-3 top-3 w-4 h-4 text-gray-400' />
                   <Input
-                    id="email"
+                    id='email'
                     type='email'
                     name='email'
                     value={formData.email}
@@ -95,12 +104,12 @@ export function LoginForm() {
               </div>
 
               {/* Password Field */}
-              <div className="space-y-2">
-                <Label htmlFor="password">密码 *</Label>
+              <div className='space-y-2'>
+                <Label htmlFor='password'>密码 *</Label>
                 <div className='relative'>
                   <Lock className='absolute left-3 top-3 w-4 h-4 text-gray-400' />
                   <Input
-                    id="password"
+                    id='password'
                     type={showPassword ? 'text' : 'password'}
                     name='password'
                     value={formData.password}
@@ -111,22 +120,24 @@ export function LoginForm() {
                   />
                   <Button
                     type='button'
-                    variant="ghost"
-                    size="sm"
+                    variant='ghost'
+                    size='sm'
                     onClick={() => setShowPassword(!showPassword)}
                     className='absolute right-1 top-1 h-8 w-8 p-0'
                   >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showPassword ? (
+                      <EyeOff className='w-4 h-4' />
+                    ) : (
+                      <Eye className='w-4 h-4' />
+                    )}
                   </Button>
                 </div>
               </div>
 
               {/* Error Display */}
               {error && (
-                <Alert variant="destructive">
-                  <AlertDescription>
-                    {error}
-                  </AlertDescription>
+                <Alert variant='destructive'>
+                  <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
 
@@ -134,17 +145,17 @@ export function LoginForm() {
               <Button
                 type='submit'
                 disabled={!isFormValid || isSubmitting}
-                className="w-full"
+                className='w-full'
               >
                 {isSubmitting ? (
                   <>
                     <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2' />
-                    <span>登录中...</span>
+                    <div>登录中...</div>
                   </>
                 ) : (
                   <>
                     <LogIn className='w-4 h-4 mr-2' />
-                    <span>登录</span>
+                    <div>登录</div>
                   </>
                 )}
               </Button>

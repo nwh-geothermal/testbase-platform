@@ -3,8 +3,8 @@
 import { motion } from 'framer-motion'
 import { ChevronRight, Play, Zap, Globe, Target } from 'lucide-react'
 import Link from 'next/link'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 
 export function Hero() {
   return (
@@ -21,9 +21,9 @@ export function Hero() {
           <h1 className='text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight'>
             陕西省地热能开发利用
             <br />
-            <span className='block mt-2 text-geothermal-orange'>
+            <div className='block mt-2 text-geothermal-orange'>
               技术中试基地
-            </span>
+            </div>
           </h1>
 
           <motion.div
@@ -33,11 +33,11 @@ export function Hero() {
             className='text-xl md:text-2xl text-white/90 mb-8 max-w-4xl mx-auto leading-relaxed'
           >
             <div className='flex items-center justify-center space-x-8 text-lg md:text-xl mb-6'>
-              <span>可视化</span>
-              <span>·</span>
-              <span>实时化</span>
-              <span>·</span>
-              <span>示范化</span>
+              <div>可视化</div>
+              <div>·</div>
+              <div>实时化</div>
+              <div>·</div>
+              <div>示范化</div>
             </div>
             集技术研发、产品试制、工艺改进、智慧运维、投资评价和成果展示于一体的
             <br />
@@ -50,20 +50,24 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className='flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-12'
           >
-            <Button size="lg" asChild className="bg-white text-geothermal-blue hover:bg-gray-100 rounded-full px-8 py-6 text-lg shadow-lg">
+            <Button
+              size='lg'
+              asChild
+              className='bg-white text-geothermal-blue hover:bg-gray-100 rounded-full px-8 py-6 text-lg shadow-lg'
+            >
               <Link href='#technology' className='flex items-center space-x-2'>
-                <span>探索技术体系</span>
+                <div>探索技术体系</div>
                 <ChevronRight className='w-5 h-5' />
               </Link>
             </Button>
 
             <Button
-              variant="outline"
-              size="lg"
+              variant='outline'
+              size='lg'
               className='border-2 border-white text-white hover:bg-white hover:text-geothermal-blue rounded-full px-8 py-6 text-lg bg-transparent'
             >
               <Play className='w-5 h-5 mr-2' />
-              <span>观看介绍视频</span>
+              <div>观看介绍视频</div>
             </Button>
           </motion.div>
 

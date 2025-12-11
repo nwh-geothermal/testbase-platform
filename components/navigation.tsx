@@ -78,11 +78,11 @@ export function Navigation() {
           <div className='flex items-center'>
             <Link href='/' className='flex items-center space-x-2'>
               <div className='w-8 h-8 bg-geothermal-gradient rounded-lg flex items-center justify-center'>
-                <span className='text-white font-bold text-lg'>G</span>
+                <div className='text-white font-bold text-lg'>G</div>
               </div>
-              <span className='text-xl font-bold text-geothermal-gray'>
+              <div className='text-xl font-bold text-geothermal-gray'>
                 陕西省地热能开发利用技术中试基地
-              </span>
+              </div>
             </Link>
           </div>
 
@@ -167,12 +167,12 @@ export function Navigation() {
                             className='flex items-center'
                           >
                             <ClipboardList className='mr-2 h-4 w-4' />
-                            <span>服务进度</span>
+                            <div>服务进度</div>
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={handleSignOut}>
                           <LogOut className='mr-2 h-4 w-4' />
-                          <span>退出登录</span>
+                          <div>退出登录</div>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -181,7 +181,7 @@ export function Navigation() {
                   <Button variant='ghost' asChild>
                     <Link href='/login' className='flex items-center space-x-2'>
                       <LogIn className='w-4 h-4' />
-                      <span>登录</span>
+                      <div>登录</div>
                     </Link>
                   </Button>
                 )}
@@ -238,9 +238,9 @@ export function Navigation() {
                                   'U'}
                               </AvatarFallback>
                             </Avatar>
-                            <span>
+                            <div>
                               {user.user_metadata?.contactPerson || user.email}
-                            </span>
+                            </div>
                           </div>
                           <Button
                             variant='ghost'
@@ -250,7 +250,7 @@ export function Navigation() {
                           >
                             <Link href='/user/workbench'>
                               <Blocks className='w-5 h-5 mr-2' />
-                              <span>工作台</span>
+                              <div>工作台</div>
                             </Link>
                           </Button>
                           <Button
@@ -261,7 +261,7 @@ export function Navigation() {
                           >
                             <Link href='/user/service-dashboard'>
                               <ClipboardList className='w-5 h-5 mr-2' />
-                              <span>服务进度</span>
+                              <div>服务进度</div>
                             </Link>
                           </Button>
                           <Button
@@ -273,7 +273,7 @@ export function Navigation() {
                             }}
                           >
                             <LogOut className='w-5 h-5 mr-2' />
-                            <span>退出登录</span>
+                            <div>退出登录</div>
                           </Button>
                         </div>
                       ) : (
@@ -285,7 +285,7 @@ export function Navigation() {
                         >
                           <Link href='/login'>
                             <LogIn className='w-5 h-5 mr-2' />
-                            <span>登录</span>
+                            <div>登录</div>
                           </Link>
                         </Button>
                       )}

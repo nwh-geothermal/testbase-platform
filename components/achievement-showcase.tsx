@@ -436,9 +436,9 @@ export function AchievementShowcase() {
                           <Badge variant='outline' className='text-xs'>
                             {achievement.highlights.length} 个亮点
                           </Badge>
-                          <span className='text-geothermal-orange text-sm font-medium hover:text-geothermal-orange/80'>
+                          <div className='text-geothermal-orange text-sm font-medium hover:text-geothermal-orange/80'>
                             查看详情 →
-                          </span>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
