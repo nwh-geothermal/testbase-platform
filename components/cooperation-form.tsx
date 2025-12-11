@@ -11,10 +11,12 @@ import {
   Phone,
   Mail,
   MapPin,
-  User
+  User,
+  Search
 } from 'lucide-react'
 import { getAssetPath } from '@/lib/utils'
 import { supabase } from '@/lib/supabase'
+import { Input } from '@/components/ui/input'
 
 type CompanyProfile = {
   id?: string
@@ -60,6 +62,24 @@ const isWhitelisted = (name?: string) => {
   return WHITELIST_NAMES.includes(name.trim())
 }
 
+const normalizeProvinceCityName = (value?: string) => {
+  if (!value || typeof value !== 'string') return ''
+  const cleaned = value.trim()
+  if (!cleaned) return ''
+  const municipalities = ['北京', '上海', '天津', '重庆']
+  const hasMunicipality = municipalities.some((name) => cleaned.includes(name))
+  if (hasMunicipality && cleaned.includes('.')) {
+    return cleaned.split('.')[0].trim()
+  }
+  return cleaned.replace(/\./g, ' ').replace(/\s+/g, ' ')
+}
+
+const formatAddressSpacing = (value?: string) => {
+  if (typeof value !== 'string') return ''
+  // Insert a space after any '省' that is not already followed by whitespace.
+  return value.replace(/省(?!\s)/g, '省 ')
+}
+
 export function CooperationForm() {
   const [companyProfiles, setCompanyProfiles] = useState<CompanyProfile[]>([])
   const [loadingCompany, setLoadingCompany] = useState(false)
@@ -67,6 +87,10 @@ export function CooperationForm() {
     null
   )
   const [dialogImageIndex, setDialogImageIndex] = useState(0)
+  const [columnCount, setColumnCount] = useState(1)
+  const [companyFilter, setCompanyFilter] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const PAGE_SIZE = 9
 
   const extractSupplierList = (payload: any) => {
     if (!payload) return []
@@ -90,20 +114,22 @@ export function CooperationForm() {
       item?.logoUrl ||
       ''
 
+    const provinceCityName = normalizeProvinceCityName(
+      item?.provinceAndCityName
+    )
+    const locationParts = [
+      item?.province,
+      item?.city,
+      item?.district || item?.area,
+      item?.street
+    ].filter(Boolean)
+
+    const formattedAddress = formatAddressSpacing(item?.address)
     const address =
-      item?.address ||
-      item?.address_detail ||
-      item?.detailAddress ||
-      item?.addressDetail ||
-      [item?.province, item?.city, item?.district || item?.area, item?.street]
-        .filter(Boolean)
-        .join(' ')
+      provinceCityName || formattedAddress || locationParts.join(' ') || ''
 
     const productText = [
       item?.main_products,
-      item?.mainProducts,
-      item?.products,
-      item?.product,
       Array.isArray(item?.productList)
         ? item.productList.filter(Boolean).join('、')
         : '',
@@ -201,6 +227,71 @@ export function CooperationForm() {
   }
 
   useEffect(() => {
+    const getColumns = () => {
+      if (typeof window === 'undefined') return 1
+      if (window.innerWidth >= 1024) return 3
+      if (window.innerWidth >= 768) return 2
+      return 1
+    }
+
+    const handleResize = () => setColumnCount(getColumns())
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [companyFilter, companyProfiles.length])
+
+  const filteredProfiles = companyProfiles.filter((profile) => {
+    if (!companyFilter.trim()) return true
+    const query = companyFilter.trim().toLowerCase()
+    const haystack = [
+      profile.company_name,
+      profile.address,
+      profile.main_products,
+      profile.business_scope,
+      profile.technical_capabilities
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase()
+    return haystack.includes(query)
+  })
+
+  const totalPages = Math.max(1, Math.ceil(filteredProfiles.length / PAGE_SIZE))
+  const currentPageSafe = Math.min(currentPage, totalPages)
+  const startIndex = (currentPageSafe - 1) * PAGE_SIZE
+  const pageProfiles = filteredProfiles.slice(
+    startIndex,
+    startIndex + PAGE_SIZE
+  )
+
+  useEffect(() => {
+    const maxPage = Math.max(1, Math.ceil(filteredProfiles.length / PAGE_SIZE))
+    setCurrentPage((p) => Math.min(p, maxPage))
+  }, [filteredProfiles.length, PAGE_SIZE])
+
+  const getPageItems = (current: number, total: number) => {
+    if (total <= 7) {
+      return Array.from({ length: total }, (_, i) => i + 1)
+    }
+    const items: (number | '...')[] = [1]
+    if (current > 4) items.push('...')
+
+    const start = Math.max(2, current - 1)
+    const end = Math.min(total - 1, current + 1)
+    for (let i = start; i <= end; i++) {
+      items.push(i)
+    }
+
+    if (current < total - 3) items.push('...')
+    items.push(total)
+    return items
+  }
+
+  useEffect(() => {
     const fetchCompanyProfiles = async () => {
       setLoadingCompany(true)
       const getKey = (item: CompanyProfile) =>
@@ -231,8 +322,12 @@ export function CooperationForm() {
           )
           .order('updated_at', { ascending: false })
 
-        const localProfiles =
+        const localProfiles = (
           !localError && Array.isArray(localData) ? localData : []
+        ).map((item) => ({
+          ...item,
+          address: formatAddressSpacing(item.address)
+        }))
 
         let mergedProfiles = [...localProfiles]
 
@@ -303,6 +398,301 @@ export function CooperationForm() {
     fetchCompanyProfiles()
   }, [])
 
+  const reorderForColumns = (
+    profiles: CompanyProfile[],
+    cols: number
+  ): CompanyProfile[] => {
+    if (cols <= 1) return profiles
+    const result: CompanyProfile[] = []
+    for (let col = 0; col < cols; col++) {
+      for (let row = 0; row * cols + col < profiles.length; row++) {
+        result.push(profiles[row * cols + col])
+      }
+    }
+    return result
+  }
+
+  const renderCompanyDialog = () => {
+    if (!activeCompany) return null
+
+    const dialogAssets = (activeCompany.publicity_assets || []).filter(
+      (asset) =>
+        asset.type === 'image' ||
+        asset.type === undefined ||
+        asset.type === null
+    )
+    const videoAssets = (activeCompany.publicity_assets || []).filter(
+      (asset) =>
+        asset.type === 'video' ||
+        (typeof asset.url === 'string' &&
+          /\.(mp4|webm|ogg|ogv|mov)(\?|$)/i.test(asset.url))
+    )
+    const pdfAssets = (activeCompany.publicity_assets || []).filter(
+      (asset) =>
+        asset.type === 'pdf' ||
+        (typeof asset.url === 'string' && /\.pdf($|\?)/i.test(asset.url))
+    )
+    const safeIndex =
+      dialogAssets.length > 0 ? dialogImageIndex % dialogAssets.length : 0
+    const dialogAsset = dialogAssets[safeIndex]
+
+    return (
+      <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4'>
+        <div className='bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto'>
+          <div className='flex items-start justify-between border-b border-gray-200 p-4'>
+            <div>
+              <h3 className='text-xl font-bold text-gray-900'>
+                {activeCompany.company_name || '未命名企业'}
+              </h3>
+              {activeCompany.company_type && (
+                <p className='text-sm text-gray-500 mt-1'>
+                  {activeCompany.company_type}
+                </p>
+              )}
+            </div>
+            <button
+              type='button'
+              onClick={() => setActiveCompany(null)}
+              className='text-gray-500 hover:text-gray-700'
+              aria-label='关闭'
+            >
+              ×
+            </button>
+          </div>
+          <div className='p-4 md:p-6 space-y-6 text-sm text-gray-700'>
+            <div className='relative'>
+              <div className='w-full h-[420px] rounded-lg overflow-hidden bg-white flex items-center justify-center'>
+                {dialogAsset?.url ? (
+                  <img
+                    src={dialogAsset.url}
+                    alt={dialogAsset.name || '企业宣传图'}
+                    className='h-full w-full object-contain'
+                  />
+                ) : (
+                  <div className='h-full w-full bg-gradient-to-br from-geothermal-blue/20 via-white to-geothermal-orange/20 flex items-center justify-center text-sm text-gray-500'>
+                    暂无宣传图片
+                  </div>
+                )}
+              </div>
+              {dialogAssets.length > 1 && (
+                <div className='absolute inset-0 flex items-center justify-between px-3'>
+                  <button
+                    type='button'
+                    onClick={() =>
+                      setDialogImageIndex(
+                        (prev) =>
+                          (prev - 1 + dialogAssets.length) % dialogAssets.length
+                      )
+                    }
+                    className='w-9 h-9 rounded-full bg-white/80 text-gray-700 shadow hover:bg-white transition'
+                    aria-label='上一张'
+                  >
+                    {'<'}
+                  </button>
+                  <button
+                    type='button'
+                    onClick={() =>
+                      setDialogImageIndex(
+                        (prev) => (prev + 1) % dialogAssets.length
+                      )
+                    }
+                    className='w-9 h-9 rounded-full bg-white/80 text-gray-700 shadow hover:bg-white transition'
+                    aria-label='下一张'
+                  >
+                    {'>'}
+                  </button>
+                </div>
+              )}
+            </div>
+            <div className='rounded-xl border border-gray-100 bg-gray-50 p-4'>
+              <div className='grid grid-cols-1 xl:grid-cols-4 gap-3'>
+                {[
+                  {
+                    label: '联系人',
+                    value: activeCompany.contact_person || '-',
+                    icon: User
+                  },
+                  {
+                    label: '电话',
+                    value: activeCompany.phone || '-',
+                    icon: Phone
+                  },
+                  {
+                    label: '邮箱',
+                    value: activeCompany.email || '-',
+                    icon: Mail
+                  },
+                  {
+                    label: '地址',
+                    value: activeCompany.address || '-',
+                    icon: MapPin
+                  }
+                ].map(({ label, value, icon: Icon }) => (
+                  <div
+                    key={label}
+                    className='flex items-start space-x-3 rounded-lg bg-white/60 p-3 shadow-sm border border-white'
+                  >
+                    <div className='w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center text-geothermal-blue'>
+                      <Icon className='w-4 h-4' />
+                    </div>
+                    <div className='flex-1 min-w-0'>
+                      <p className='text-sm uppercase tracking-wide text-gray-600'>
+                        {label}
+                      </p>
+                      <p className='font-medium text-gray-900 truncate'>
+                        {value}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className='mt-6 rounded-xl border border-gray-200 bg-white shadow-sm p-5'>
+              <div className='grid grid-cols-1 xl:grid-cols-4 gap-6'>
+                <div className='space-y-3'>
+                  <div className='flex items-center justify-start gap-2'>
+                    <div className='text-sm uppercase tracking-wide text-gray-600'>
+                      业务范围
+                    </div>
+                  </div>
+                  <div className='flex flex-wrap gap-1'>
+                    {(activeCompany.business_scope || '')
+                      .split(/[,，、/;；\n]+/)
+                      .map((item) => item.trim())
+                      .filter(Boolean)
+                      .map((tag, idx) => (
+                        <div
+                          className='inline-flex items-center px-3 py-1 rounded-full text-[11px] font-medium bg-geothermal-blue/10 text-geothermal-blue border border-geothermal-blue/20'
+                          key={`${tag}-scope-${idx}`}
+                        >
+                          {tag}
+                        </div>
+                      ))}
+                    {!(activeCompany.business_scope || '').trim() && (
+                      <div className='text-xs text-gray-500'>/</div>
+                    )}
+                  </div>
+                </div>
+
+                <div className='space-y-3'>
+                  <div className='flex items-center justify-start gap-2'>
+                    <div className='text-sm uppercase tracking-wide text-gray-600'>
+                      技术能力
+                    </div>
+                  </div>
+                  <div className='flex flex-wrap gap-1'>
+                    {(activeCompany.technical_capabilities || '')
+                      .split(/[,，、/;；\n]+/)
+                      .map((item) => item.trim())
+                      .filter(Boolean)
+                      .map((tag, idx) => (
+                        <div
+                          className='inline-flex items-center px-3 py-1 rounded-full text-[11px] font-medium bg-geothermal-green/10 text-geothermal-green border border-geothermal-green/20'
+                          key={`${tag}-tech-${idx}`}
+                        >
+                          {tag}
+                        </div>
+                      ))}
+                    {!(activeCompany.technical_capabilities || '').trim() && (
+                      <div className='leading-relaxed text-gray-900 text-sm font-medium'>
+                        <div className='text-xs text-gray-500'>/</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className='space-y-3'>
+                  <div className='flex items-center justify-start gap-2'>
+                    <div className='text-sm uppercase tracking-wide text-gray-600'>
+                      主要产品
+                    </div>
+                  </div>
+                  <div className='leading-relaxed text-gray-900 text-sm font-medium'>
+                    {activeCompany.main_products || (
+                      <div className='text-xs text-gray-500'>/</div>
+                    )}
+                  </div>
+                </div>
+
+                <div className='space-y-3'>
+                  <div className='flex items-center justify-start gap-2'>
+                    <div className='text-sm uppercase tracking-wide text-gray-600'>
+                      合作意向
+                    </div>
+                  </div>
+                  <div className='leading-relaxed text-gray-900 text-sm font-medium'>
+                    {activeCompany.expectations || (
+                      <div className='text-xs text-gray-500'>/</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {pdfAssets.length > 0 && (
+              <div className='space-y-3'>
+                <h4 className='text-base font-semibold text-gray-900'>
+                  公司资料
+                </h4>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                  {pdfAssets.map((asset, idx) => (
+                    <div
+                      key={`${asset.url || 'pdf'}-${idx}`}
+                      className='rounded-lg border border-gray-200 overflow-hidden bg-white'
+                    >
+                      <div className='h-64 bg-gray-50'>
+                        <iframe
+                          src={`${asset.url}#page=1&toolbar=0&navpanes=0`}
+                          title={asset.name || '公司资料'}
+                          className='w-full h-full'
+                        />
+                      </div>
+                      <div className='px-3 py-2 text-xs text-gray-700 truncate'>
+                        {asset.name || asset.url || 'PDF'}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {videoAssets.length > 0 && (
+              <div className='space-y-3'>
+                <h4 className='text-base font-semibold text-gray-900'>
+                  公司视频
+                </h4>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                  {videoAssets.map((asset, idx) => (
+                    <div
+                      key={`${asset.url || 'video'}-${idx}`}
+                      className='rounded-lg border border-gray-200 overflow-hidden bg-black'
+                    >
+                      <div className='h-64 bg-black flex items-center justify-center'>
+                        {asset.url ? (
+                          <video
+                            src={asset.url}
+                            controls
+                            className='w-full h-full object-contain bg-black'
+                          />
+                        ) : (
+                          <div className='text-xs text-gray-400'>无法播放视频</div>
+                        )}
+                      </div>
+                      <div className='px-3 py-2 text-xs text-gray-700 bg-white truncate'>
+                        {asset.name || asset.url || '视频'}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 to-blue-50'>
       {/* Header */}
@@ -336,113 +726,218 @@ export function CooperationForm() {
           >
             <div className='space-y-10'>
               <section className='bg-white rounded-2xl border border-gray-100 shadow-md p-8'>
-                <div className='mb-4'>
-                  <p className='text-xs uppercase tracking-[0.2em] text-geothermal-orange'>
-                    Company Hub
-                  </p>
-                  <h2 className='text-2xl font-bold text-gray-900 mt-2'>
-                    企业用户
-                  </h2>
+                <div className='mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
+                  <div>
+                    <p className='text-xs uppercase tracking-[0.2em] text-geothermal-orange'>
+                      Company Hub
+                    </p>
+                    <h2 className='text-2xl font-bold text-gray-900 mt-2'>
+                      企业用户
+                    </h2>
+                  </div>
+                  <div className='w-full sm:w-72'>
+                    <div className='relative'>
+                      <Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none' />
+                      <Input
+                        id='company-filter'
+                        type='text'
+                        value={companyFilter}
+                        onChange={(e) => setCompanyFilter(e.target.value)}
+                        placeholder='请输入关键词'
+                        className='pl-9 pr-8'
+                      />
+                      {companyFilter && (
+                        <button
+                          type='button'
+                          onClick={() => setCompanyFilter('')}
+                          className='absolute inset-y-0 right-2 flex items-center text-gray-400 hover:text-gray-600'
+                          aria-label='清除搜索'
+                        >
+                          ×
+                        </button>
+                      )}
+                    </div>
+                  </div>
                 </div>
                 {loadingCompany ? (
                   <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-pulse'>
-                    {Array.from({ length: 6 }).map((_, idx) => (
-                      <div key={idx} className='h-48 rounded-xl bg-gray-100' />
+                    {Array.from({ length: 3 }).map((_, idx) => (
+                      <div
+                        key={idx}
+                        className='h-[320px] rounded-xl bg-gray-100 border border-gray-200'
+                      />
                     ))}
                   </div>
                 ) : companyProfiles.length ? (
-                  <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-                    {companyProfiles.map((profile) => {
-                      const heroAsset = (profile.publicity_assets || []).find(
-                        (asset) =>
-                          asset.type === 'image' ||
-                          asset.type === undefined ||
-                          asset.type === null
-                      )
-                      const tagClassName =
-                        'inline-flex items-center px-3 py-0.5 rounded-md text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200 mr-2'
-                      const businessScopeTags = (profile.business_scope || '')
-                        .split(/[,，、/;；\n]+/)
-                        .map((item) => item.trim())
-                        .filter(Boolean)
-                      const technicalTags = (
-                        profile.technical_capabilities || ''
-                      )
-                        .split(/[,，、/;；\n]+/)
-                        .map((item) => item.trim())
-                        .filter(Boolean)
-                      return (
-                        <div key={profile.id || profile.company_name}>
-                          <div className='rounded-xl overflow-hidden border border-gray-100 shadow-sm bg-gray-50'>
-                            {heroAsset?.url ? (
-                              <img
-                                src={heroAsset.url}
-                                alt={heroAsset.name || '企业宣传图'}
-                                className='w-full h-48 object-cover'
-                              />
-                            ) : (
-                              <div className='w-full h-48 bg-gradient-to-br from-geothermal-blue/20 via-white to-geothermal-orange/20 flex items-center justify-center text-sm text-gray-500'>
-                                暂无宣传图片
-                              </div>
-                            )}
-                            <div className='p-3 bg-white'>
-                              <div className='flex items-center justify-between'>
-                                <div className='text-xl font-bold text-gray-900'>
-                                  {profile.company_name || '未命名企业'}
-                                </div>
-                                <button
-                                  type='button'
-                                  onClick={() => {
-                                    setActiveCompany(profile)
-                                    setDialogImageIndex(0)
-                                  }}
-                                  className='w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition'
-                                  aria-label='查看企业详情'
-                                >
-                                  <ArrowRight className='w-4 h-4 text-gray-600' />
-                                </button>
-                              </div>
-                              {profile.address && (
-                                <p className='text-xs text-gray-500 mt-1 line-clamp-1'>
-                                  {profile.address}
-                                </p>
-                              )}
-                              <div className='flex flex-row flex-wrap text-sm text-gray-700 mt-5'>
-                                <div className='flex flex-wrap gap-0'>
-                                  {businessScopeTags.length ? (
-                                    businessScopeTags.map((tag, idx) => (
-                                      <span
-                                        className={tagClassName}
-                                        key={`${tag}-scope-${idx}`}
-                                      >
-                                        {tag}
-                                      </span>
-                                    ))
+                  filteredProfiles.length ? (
+                    <>
+                      <div className='columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4'>
+                        {reorderForColumns(pageProfiles, columnCount).map(
+                          (profile) => {
+                            const heroAsset = (
+                              profile.publicity_assets || []
+                            ).find(
+                              (asset) =>
+                                asset.type === 'image' ||
+                                asset.type === undefined ||
+                                asset.type === null
+                            )
+                            const tagClassName =
+                              'inline-flex items-center px-3 py-0.5 rounded-md text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200'
+                            const businessScopeTags = (
+                              profile.business_scope || ''
+                            )
+                              .split(/[,，、/;；\n]+/)
+                              .map((item) => item.trim())
+                              .filter(Boolean)
+                            const technicalTags = (
+                              profile.technical_capabilities || ''
+                            )
+                              .split(/[,，、/;；\n]+/)
+                              .map((item) => item.trim())
+                              .filter(Boolean)
+                            return (
+                              <div
+                                key={profile.id || profile.company_name}
+                                className='break-inside-avoid'
+                                style={{ breakInside: 'avoid' }}
+                              >
+                                <div className='rounded-xl overflow-hidden border border-gray-100 shadow-sm bg-gray-50'>
+                                  {heroAsset?.url ? (
+                                    <img
+                                      src={heroAsset.url}
+                                      alt={heroAsset.name || '企业宣传图'}
+                                      className='w-full h-48 object-contain bg-white'
+                                    />
                                   ) : (
-                                    <span className='text-xs text-gray-500'>
-                                      暂无企业简介，完善资料便于合作方了解企业。
-                                    </span>
+                                    <div className='w-full h-48 bg-gradient-to-br from-geothermal-blue/20 via-white to-geothermal-orange/20 flex items-center justify-center text-sm text-gray-500'></div>
                                   )}
-                                </div>
-                                <div className='flex flex-wrap'>
-                                  {technicalTags.length
-                                    ? technicalTags.map((tag, idx) => (
-                                        <div
-                                          className={tagClassName}
-                                          key={`${tag}-tech-${idx}`}
-                                        >
-                                          {tag}
+                                  <div className='p-3 bg-white'>
+                                    <div className='flex items-center justify-between gap-2'>
+                                      <div className='text-base font-bold text-gray-900 flex-1 min-w-0 truncate'>
+                                        {profile.company_name || '未命名企业'}
+                                      </div>
+                                      <button
+                                        type='button'
+                                        onClick={() => {
+                                          setActiveCompany(profile)
+                                          setDialogImageIndex(0)
+                                        }}
+                                        className='w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition'
+                                        aria-label='查看企业详情'
+                                      >
+                                        <ArrowRight className='w-4 h-4 text-gray-600' />
+                                      </button>
+                                    </div>
+                                    {profile.address && (
+                                      <div className='flex items-center text-xs text-gray-500 mt-1 gap-1 line-clamp-1'>
+                                        <MapPin className='w-3.5 h-3.5 text-geothermal-orange' />
+                                        <div>{profile.address}</div>
+                                      </div>
+                                    )}
+                                    <div className='flex flex-nowrap overflow-x-auto text-sm text-gray-700 mt-5 gap-2 pb-1'>
+                                      {businessScopeTags.length ? (
+                                        businessScopeTags.map((tag, idx) => (
+                                          <div
+                                            className={`${tagClassName} shrink-0`}
+                                            key={`${tag}-scope-${idx}`}
+                                          >
+                                            {tag}
+                                          </div>
+                                        ))
+                                      ) : (
+                                        <div className='text-xs text-gray-500'>
+                                          暂无企业简介，完善资料便于合作方了解企业。
                                         </div>
-                                      ))
-                                    : null}
+                                      )}
+                                      {technicalTags.length
+                                        ? technicalTags.map((tag, idx) => (
+                                            <div
+                                              className={`${tagClassName} shrink-0`}
+                                              key={`${tag}-tech-${idx}`}
+                                            >
+                                              {tag}
+                                            </div>
+                                          ))
+                                        : null}
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
+                            )
+                          }
+                        )}
+                      </div>
+                      <nav
+                        className='flex items-center justify-end gap-3 mt-6'
+                        aria-label='Pagination'
+                      >
+                        <span className='text-sm text-gray-500'>
+                          共 {filteredProfiles.length} 条
+                        </span>
+                        <ul className='flex items-center space-x-2'>
+                          <li>
+                            <button
+                              type='button'
+                              onClick={() =>
+                                setCurrentPage((p) => Math.max(1, p - 1))
+                              }
+                              className='h-9 w-9 rounded-md border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed'
+                              disabled={currentPageSafe === 1}
+                              aria-label='上一页'
+                            >
+                              ‹
+                            </button>
+                          </li>
+                          {getPageItems(currentPageSafe, totalPages).map(
+                            (item, idx) =>
+                              item === '...' ? (
+                                <li
+                                  key={`ellipsis-${idx}`}
+                                  className='h-9 w-9 flex items-center justify-center text-gray-400 select-none'
+                                >
+                                  ...
+                                </li>
+                              ) : (
+                                <li key={`page-${item}`}>
+                                  <button
+                                    type='button'
+                                    onClick={() => setCurrentPage(item)}
+                                    className={`h-9 w-9 rounded-md border ${
+                                      item === currentPageSafe
+                                        ? 'border-geothermal-orange bg-geothermal-orange text-white'
+                                        : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50'
+                                    }`}
+                                    aria-label={`跳转到第${item}页`}
+                                  >
+                                    {item}
+                                  </button>
+                                </li>
+                              )
+                          )}
+                          <li>
+                            <button
+                              type='button'
+                              onClick={() =>
+                                setCurrentPage((p) =>
+                                  Math.min(totalPages, p + 1)
+                                )
+                              }
+                              className='h-9 w-9 rounded-md border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed'
+                              disabled={currentPageSafe === totalPages}
+                              aria-label='下一页'
+                            >
+                              ›
+                            </button>
+                          </li>
+                        </ul>
+                      </nav>
+                    </>
+                  ) : (
+                    <p className='text-sm text-gray-500'>
+                      未找到符合条件的企业。
+                    </p>
+                  )
                 ) : (
                   <p className='text-sm text-gray-500'>
                     暂无企业资料，请邀请企业注册后查看。
@@ -471,9 +966,9 @@ export function CooperationForm() {
                         className='object-contain'
                       />
                     </div>
-                    <span className='text-sm text-gray-500 text-center font-medium mt-auto'>
+                    <div className='text-sm text-gray-500 text-center font-medium mt-auto'>
                       西安交通大学
-                    </span>
+                    </div>
                   </div>
 
                   <div className='flex flex-col items-center h-full'>
@@ -486,9 +981,9 @@ export function CooperationForm() {
                         className='object-cover rounded-lg'
                       />
                     </div>
-                    <span className='text-sm text-gray-500 text-center font-medium mt-auto'>
+                    <div className='text-sm text-gray-500 text-center font-medium mt-auto'>
                       哈尔滨工业大学
-                    </span>
+                    </div>
                   </div>
 
                   <div className='flex flex-col items-center h-full'>
@@ -501,9 +996,9 @@ export function CooperationForm() {
                         className='object-cover rounded-lg'
                       />
                     </div>
-                    <span className='text-sm text-gray-500 text-center font-medium mt-auto'>
+                    <div className='text-sm text-gray-500 text-center font-medium mt-auto'>
                       北京工业大学
-                    </span>
+                    </div>
                   </div>
 
                   <div className='flex flex-col items-center h-full'>
@@ -516,9 +1011,9 @@ export function CooperationForm() {
                         className='object-contain'
                       />
                     </div>
-                    <span className='text-sm text-gray-500 text-center font-medium mt-auto'>
+                    <div className='text-sm text-gray-500 text-center font-medium mt-auto'>
                       长安大学
-                    </span>
+                    </div>
                   </div>
 
                   <div className='flex flex-col items-center h-full'>
@@ -531,9 +1026,9 @@ export function CooperationForm() {
                         className='object-contain'
                       />
                     </div>
-                    <span className='text-sm text-gray-500 text-center font-medium mt-auto'>
+                    <div className='text-sm text-gray-500 text-center font-medium mt-auto'>
                       西安建筑科技大学
-                    </span>
+                    </div>
                   </div>
 
                   <div className='flex flex-col items-center h-full'>
@@ -546,9 +1041,9 @@ export function CooperationForm() {
                         className='object-contain'
                       />
                     </div>
-                    <span className='text-sm text-gray-500 text-center font-medium mt-auto'>
+                    <div className='text-sm text-gray-500 text-center font-medium mt-auto'>
                       西安石油大学
-                    </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -574,9 +1069,9 @@ export function CooperationForm() {
                         className='object-contain'
                       />
                     </div>
-                    <span className='text-sm text-gray-500 text-center font-medium mt-auto'>
+                    <div className='text-sm text-gray-500 text-center font-medium mt-auto'>
                       华电集团
-                    </span>
+                    </div>
                   </div>
 
                   <div className='flex flex-col items-center h-full'>
@@ -589,9 +1084,9 @@ export function CooperationForm() {
                         className='object-contain'
                       />
                     </div>
-                    <span className='text-sm text-gray-500 text-center font-medium mt-auto'>
+                    <div className='text-sm text-gray-500 text-center font-medium mt-auto'>
                       国家能源集团
-                    </span>
+                    </div>
                   </div>
 
                   <div className='flex flex-col items-center h-full'>
@@ -604,9 +1099,9 @@ export function CooperationForm() {
                         className='object-contain'
                       />
                     </div>
-                    <span className='text-sm text-gray-500 text-center font-medium mt-auto'>
+                    <div className='text-sm text-gray-500 text-center font-medium mt-auto'>
                       大唐集团
-                    </span>
+                    </div>
                   </div>
                 </div>
 
@@ -621,9 +1116,9 @@ export function CooperationForm() {
                         className='object-cover'
                       />
                     </div>
-                    <span className='text-sm text-gray-500 text-center font-medium mt-auto'>
+                    <div className='text-sm text-gray-500 text-center font-medium mt-auto'>
                       华能集团
-                    </span>
+                    </div>
                   </div>
 
                   <div className='flex flex-col items-center h-full'>
@@ -636,9 +1131,9 @@ export function CooperationForm() {
                         className='object-cover'
                       />
                     </div>
-                    <span className='text-sm text-gray-500 text-center font-medium mt-auto'>
+                    <div className='text-sm text-gray-500 text-center font-medium mt-auto'>
                       中煤科工西安研究院
-                    </span>
+                    </div>
                   </div>
                 </div>
 
@@ -653,9 +1148,9 @@ export function CooperationForm() {
                         className='object-cover'
                       />
                     </div>
-                    <span className='text-sm text-gray-500 text-center font-medium mt-auto'>
+                    <div className='text-sm text-gray-500 text-center font-medium mt-auto'>
                       陕西省地质调查院
-                    </span>
+                    </div>
                   </div>
 
                   <div className='flex flex-col items-center h-full'>
@@ -668,9 +1163,9 @@ export function CooperationForm() {
                         className='object-cover'
                       />
                     </div>
-                    <span className='text-sm text-gray-500 text-center font-medium mt-auto'>
+                    <div className='text-sm text-gray-500 text-center font-medium mt-auto'>
                       陕西工程勘察研究院
-                    </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -755,225 +1250,7 @@ export function CooperationForm() {
         </div>
       </div>
 
-      {activeCompany &&
-        (() => {
-          const dialogAssets = (activeCompany.publicity_assets || []).filter(
-            (asset) =>
-              asset.type === 'image' ||
-              asset.type === undefined ||
-              asset.type === null
-          )
-          const safeIndex =
-            dialogAssets.length > 0 ? dialogImageIndex % dialogAssets.length : 0
-          const dialogAsset = dialogAssets[safeIndex]
-
-          return (
-            <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4'>
-              <div className='bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto'>
-                <div className='flex items-start justify-between border-b border-gray-200 p-4'>
-                  <div>
-                    <h3 className='text-xl font-bold text-gray-900'>
-                      {activeCompany.company_name || '未命名企业'}
-                    </h3>
-                    {activeCompany.company_type && (
-                      <p className='text-sm text-gray-500 mt-1'>
-                        {activeCompany.company_type}
-                      </p>
-                    )}
-                  </div>
-                  <button
-                    type='button'
-                    onClick={() => setActiveCompany(null)}
-                    className='text-gray-500 hover:text-gray-700'
-                    aria-label='关闭'
-                  >
-                    ×
-                  </button>
-                </div>
-                <div className='p-4 md:p-6 space-y-6 text-sm text-gray-700'>
-                  <div className='relative'>
-                    {dialogAsset?.url ? (
-                      <img
-                        src={dialogAsset.url}
-                        alt={dialogAsset.name || '企业宣传图'}
-                        className='w-full h-64 object-cover rounded-lg'
-                      />
-                    ) : (
-                      <div className='w-full h-64 bg-gradient-to-br from-geothermal-blue/20 via-white to-geothermal-orange/20 flex items-center justify-center text-sm text-gray-500 rounded-lg'>
-                        暂无宣传图片
-                      </div>
-                    )}
-                    {dialogAssets.length > 1 && (
-                      <div className='absolute inset-0 flex items-center justify-between px-3'>
-                        <button
-                          type='button'
-                          onClick={() =>
-                            setDialogImageIndex(
-                              (prev) =>
-                                (prev - 1 + dialogAssets.length) %
-                                dialogAssets.length
-                            )
-                          }
-                          className='w-9 h-9 rounded-full bg-white/80 text-gray-700 shadow hover:bg-white transition'
-                          aria-label='上一张'
-                        >
-                          {'<'}
-                        </button>
-                        <button
-                          type='button'
-                          onClick={() =>
-                            setDialogImageIndex(
-                              (prev) => (prev + 1) % dialogAssets.length
-                            )
-                          }
-                          className='w-9 h-9 rounded-full bg-white/80 text-gray-700 shadow hover:bg-white transition'
-                          aria-label='下一张'
-                        >
-                          {'>'}
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                  <div className='rounded-xl border border-gray-100 bg-gray-50 p-4'>
-                    <div className='grid grid-cols-1 xl:grid-cols-4 gap-3'>
-                      {[
-                        {
-                          label: '联系人',
-                          value: activeCompany.contact_person || '-',
-                          icon: User
-                        },
-                        {
-                          label: '电话',
-                          value: activeCompany.phone || '-',
-                          icon: Phone
-                        },
-                        {
-                          label: '邮箱',
-                          value: activeCompany.email || '-',
-                          icon: Mail
-                        },
-                        {
-                          label: '地址',
-                          value: activeCompany.address || '-',
-                          icon: MapPin
-                        }
-                      ].map(({ label, value, icon: Icon }) => (
-                        <div
-                          key={label}
-                          className='flex items-start space-x-3 rounded-lg bg-white/60 p-3 shadow-sm border border-white'
-                        >
-                          <div className='w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center text-geothermal-blue'>
-                            <Icon className='w-4 h-4' />
-                          </div>
-                          <div className='flex-1 min-w-0'>
-                            <p className='text-sm uppercase tracking-wide text-gray-600'>
-                              {label}
-                            </p>
-                            <p className='font-medium text-gray-900 truncate'>
-                              {value}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className='mt-6 rounded-xl border border-gray-200 bg-white shadow-sm p-5'>
-                    <div className='grid grid-cols-1 xl:grid-cols-4 gap-6'>
-                      <div className='space-y-3'>
-                        <div className='flex items-center justify-start gap-2'>
-                          <span className='text-sm uppercase tracking-wide text-gray-600'>
-                            业务范围
-                          </span>
-                        </div>
-                        <div className='flex flex-wrap gap-1'>
-                          {(activeCompany.business_scope || '')
-                            .split(/[,，、/;；\n]+/)
-                            .map((item) => item.trim())
-                            .filter(Boolean)
-                            .map((tag, idx) => (
-                              <span
-                                className='inline-flex items-center px-3 py-1 rounded-full text-[11px] font-medium bg-geothermal-blue/10 text-geothermal-blue border border-geothermal-blue/20'
-                                key={`${tag}-scope-${idx}`}
-                              >
-                                {tag}
-                              </span>
-                            ))}
-                          {!(activeCompany.business_scope || '').trim() && (
-                            <span className='text-xs text-gray-500'>
-                              暂无资料
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className='space-y-3'>
-                        <div className='flex items-center justify-start gap-2'>
-                          <span className='text-sm uppercase tracking-wide text-gray-600'>
-                            技术能力
-                          </span>
-                        </div>
-                        <div className='flex flex-wrap gap-1'>
-                          {(activeCompany.technical_capabilities || '')
-                            .split(/[,，、/;；\n]+/)
-                            .map((item) => item.trim())
-                            .filter(Boolean)
-                            .map((tag, idx) => (
-                              <span
-                                className='inline-flex items-center px-3 py-1 rounded-full text-[11px] font-medium bg-geothermal-green/10 text-geothermal-green border border-geothermal-green/20'
-                                key={`${tag}-tech-${idx}`}
-                              >
-                                {tag}
-                              </span>
-                            ))}
-                          {!(
-                            activeCompany.technical_capabilities || ''
-                          ).trim() && (
-                            <div className='leading-relaxed text-gray-900 text-sm font-medium'>
-                              <span className='text-xs text-gray-500'>
-                                暂无资料
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className='space-y-3'>
-                        <div className='flex items-center justify-start gap-2'>
-                          <span className='text-sm uppercase tracking-wide text-gray-600'>
-                            主要产品
-                          </span>
-                        </div>
-                        <div className='leading-relaxed text-gray-900 text-sm font-medium'>
-                          {activeCompany.main_products || (
-                            <span className='text-xs text-gray-500'>
-                              暂无资料
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className='space-y-3'>
-                        <div className='flex items-center justify-start gap-2'>
-                          <span className='text-sm uppercase tracking-wide text-gray-600'>
-                            合作意向
-                          </span>
-                        </div>
-                        <div className='leading-relaxed text-gray-900 text-sm font-medium'>
-                          {activeCompany.expectations || (
-                            <span className='text-xs text-gray-500'>
-                              暂无资料
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )
-        })()}
+      {renderCompanyDialog()}
     </div>
   )
 }
