@@ -42,7 +42,15 @@ const staggerContainer = {
   }
 }
 
-export function AboutUs() {
+type AboutUsProps = {
+  /** Compact mode removes internal padding/max-width so the parent container controls width. */
+  compact?: boolean
+}
+
+export function AboutUs({ compact = false }: AboutUsProps) {
+  const sectionPadding = compact ? '' : 'px-4 sm:px-6 lg:px-8'
+  const sectionContainer = compact ? 'w-full' : 'max-w-7xl mx-auto'
+
   const statisticsData = [
     {
       icon: Calendar,
@@ -114,105 +122,9 @@ export function AboutUs() {
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 to-blue-50'>
-      {/* Header */}
-      <section className='pt-20 pb-16 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-7xl mx-auto text-center'>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className='text-4xl md:text-6xl font-bold text-gray-900 mb-6'
-          >
-            关于基地
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className='text-xl text-gray-600 max-w-3xl mx-auto'
-          >
-            致力于地热能技术创新与产业化发展，构建绿色低碳能源未来
-          </motion.p>
-        </div>
-      </section>
-
-      {/* Pilot Base Introduction */}
-      <section className='pb-20 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-7xl mx-auto'>
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <Card className='overflow-hidden border-0 shadow-2xl'>
-              <div className='grid grid-cols-1 lg:grid-cols-2'>
-                {/* Image Section */}
-                <div className='h-64 lg:h-auto bg-gradient-to-br from-geothermal-blue to-geothermal-green flex items-center justify-center'>
-                  <div className='text-center text-white p-8'>
-                    <Building className='w-24 h-24 mb-4 mx-auto opacity-75' />
-                    <h3 className='text-2xl font-bold mb-2'>
-                      陕西省地热能开发利用技术中试基地
-                    </h3>
-                    <Badge
-                      variant='secondary'
-                      className='text-lg bg-white/20 text-white border-white/30'
-                    >
-                      Technology Pilot Base
-                    </Badge>
-                  </div>
-                </div>
-
-                {/* Content Section */}
-                <CardContent className='p-8 lg:p-12'>
-                  <CardTitle className='text-3xl font-bold mb-6'>
-                    陕西省地热能开发利用技术中试基地
-                  </CardTitle>
-
-                  <CardDescription className='text-lg leading-relaxed mb-8 text-gray-600'>
-                    陕西省地热能开发利用技术中试基地是国内首个集技术研发、产品试制、工艺改进、智慧运维、投资评价和成果展示于一体的地热能全产业链技术集成与推广基地。基地依托先进的技术平台和专业团队，致力于推动地热能技术的创新发展和产业化应用。
-                  </CardDescription>
-
-                  <div className='grid grid-cols-2 gap-6 mb-8'>
-                    {baseInfo.map((item, index) => {
-                      const IconComponent = item.icon
-                      return (
-                        <div
-                          key={index}
-                          className='flex items-center space-x-3'
-                        >
-                          <div className='w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center'>
-                            <IconComponent className='w-5 h-5 text-geothermal-orange' />
-                          </div>
-                          <div>
-                            <div className='font-semibold text-gray-900 text-sm'>
-                              {item.label}
-                            </div>
-                            <Badge variant='outline' className='text-xs'>
-                              {item.value}
-                            </Badge>
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-
-                  <Card className='bg-gradient-to-r from-geothermal-orange/10 to-geothermal-blue/10 border-0'>
-                    <CardContent className='p-6'>
-                      <CardTitle className='text-lg mb-3'>核心使命</CardTitle>
-                      <CardDescription>
-                        构建地热能技术创新生态系统，推动产学研深度融合，加速地热能技术成果转化，为实现碳达峰碳中和目标贡献力量。
-                      </CardDescription>
-                    </CardContent>
-                  </Card>
-                </CardContent>
-              </div>
-            </Card>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Company Introduction */}
-      <section className='pb-20 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-7xl mx-auto'>
+      <section className={`pb-16 ${sectionPadding}`}>
+        <div className={sectionContainer}>
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -284,8 +196,8 @@ export function AboutUs() {
       </section>
 
       {/* Key Statistics */}
-      <section className='pb-20 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-7xl mx-auto'>
+      <section className={`pb-16 ${sectionPadding}`}>
+        <div className={sectionContainer}>
           <motion.div
             variants={staggerContainer}
             initial='initial'
@@ -316,43 +228,9 @@ export function AboutUs() {
         </div>
       </section>
 
-      {/* Core Values */}
-      <section className='pb-20 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-7xl mx-auto'>
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-          >
-            <Card className='border-0 bg-gradient-to-br from-geothermal-blue to-geothermal-green text-white'>
-              <CardContent className='p-12 text-center'>
-                <CardTitle className='text-3xl md:text-4xl font-bold mb-8'>
-                  核心价值观
-                </CardTitle>
-
-                <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
-                  {coreValues.map((value, index) => {
-                    const IconComponent = value.icon
-                    return (
-                      <div key={index} className='space-y-4'>
-                        <div className='w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto'>
-                          <IconComponent className='w-8 h-8 opacity-90' />
-                        </div>
-                        <h3 className='text-xl font-semibold'>{value.title}</h3>
-                        <p className='opacity-90'>{value.description}</p>
-                      </div>
-                    )
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Contact Information */}
-      <section className='pb-20 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-7xl mx-auto'>
+      <section className={sectionPadding}>
+        <div className={sectionContainer}>
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}

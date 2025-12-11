@@ -3,15 +3,22 @@
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { getAssetPath } from '@/lib/utils'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
+import { AboutUs } from '@/components/about-us'
 import { MapPin, Building2, Zap, Users, Target, Award } from 'lucide-react'
 
 export default function OverviewPage() {
   const coreFeatures = [
     '技术研发',
-    '产品试制', 
+    '产品试制',
     '工艺改进',
     '检验检测',
     '标准制定',
@@ -21,10 +28,30 @@ export default function OverviewPage() {
   ]
 
   const achievements = [
-    { value: '100+', label: '技术专利', icon: Award, color: 'text-geothermal-orange' },
-    { value: '50+', label: '合作伙伴', icon: Users, color: 'text-geothermal-blue' },
-    { value: '95%', label: '能效比', icon: Zap, color: 'text-geothermal-green' },
-    { value: '30+', label: '示范项目', icon: Building2, color: 'text-orange-500' }
+    {
+      value: '100+',
+      label: '技术专利',
+      icon: Award,
+      color: 'text-geothermal-orange'
+    },
+    {
+      value: '50+',
+      label: '合作伙伴',
+      icon: Users,
+      color: 'text-geothermal-blue'
+    },
+    {
+      value: '95%',
+      label: '能效比',
+      icon: Zap,
+      color: 'text-geothermal-green'
+    },
+    {
+      value: '30+',
+      label: '示范项目',
+      icon: Building2,
+      color: 'text-orange-500'
+    }
   ]
 
   return (
@@ -160,7 +187,10 @@ export default function OverviewPage() {
                   {coreFeatures.map((func, index) => (
                     <div key={index} className='flex items-center space-x-2'>
                       <div className='w-2 h-2 bg-geothermal-green rounded-full'></div>
-                      <Badge variant='secondary' className='text-gray-700 font-medium'>
+                      <Badge
+                        variant='secondary'
+                        className='text-gray-700 font-medium'
+                      >
                         {func}
                       </Badge>
                     </div>
@@ -224,7 +254,9 @@ export default function OverviewPage() {
                     const IconComponent = achievement.icon
                     return (
                       <div key={index} className='text-center'>
-                        <div className={`text-3xl font-bold mb-2 flex items-center justify-center gap-2 ${achievement.color}`}>
+                        <div
+                          className={`text-3xl font-bold mb-2 flex items-center justify-center gap-2 ${achievement.color}`}
+                        >
                           <IconComponent className='w-6 h-6' />
                           {achievement.value}
                         </div>
@@ -259,6 +291,11 @@ export default function OverviewPage() {
             </CardContent>
           </Card>
         </motion.div>
+
+        {/* About Section */}
+        <div className='mt-16'>
+          <AboutUs compact />
+        </div>
       </div>
     </div>
   )

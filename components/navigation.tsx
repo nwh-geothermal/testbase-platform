@@ -32,11 +32,10 @@ interface NavigationItem {
 const navigationItems: NavigationItem[] = [
   { name: '首页', href: '/' },
   { name: '基地概览', href: '/overview' },
-  { name: '服务清单', href: '/services' },
-  { name: '加入平台', href: '/join' },
   { name: '成果展示', href: '/achievements' },
   { name: '产学研合作', href: '/cooperation' },
-  { name: '关于基地', href: '/about' }
+  { name: '服务清单', href: '/services' },
+  { name: '加入平台', href: '/join' }
 ]
 
 export function Navigation() {
