@@ -90,6 +90,7 @@ export function CooperationForm() {
   const [columnCount, setColumnCount] = useState(1)
   const [companyFilter, setCompanyFilter] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+  const [pdfPreviewIndex, setPdfPreviewIndex] = useState<number | null>(null)
   const PAGE_SIZE = 9
 
   const extractSupplierList = (payload: any) => {
@@ -273,6 +274,11 @@ export function CooperationForm() {
     setCurrentPage((p) => Math.min(p, maxPage))
   }, [filteredProfiles.length, PAGE_SIZE])
 
+  useEffect(() => {
+    setPdfPreviewIndex(null)
+    setDialogImageIndex(0)
+  }, [activeCompany])
+
   const getPageItems = (current: number, total: number) => {
     if (total <= 7) {
       return Array.from({ length: total }, (_, i) => i + 1)
@@ -437,6 +443,7 @@ export function CooperationForm() {
     const dialogAsset = dialogAssets[safeIndex]
 
     return (
+      <>
       <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4'>
         <div className='bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto'>
           <div className='flex items-start justify-between border-b border-gray-200 p-4'>
@@ -452,7 +459,10 @@ export function CooperationForm() {
             </div>
             <button
               type='button'
-              onClick={() => setActiveCompany(null)}
+              onClick={() => {
+                setPdfPreviewIndex(null)
+                setActiveCompany(null)
+              }}
               className='text-gray-500 hover:text-gray-700'
               aria-label='关闭'
             >
@@ -648,8 +658,17 @@ export function CooperationForm() {
                           className='w-full h-full'
                         />
                       </div>
-                      <div className='px-3 py-2 text-xs text-gray-700 truncate'>
-                        {asset.name || asset.url || 'PDF'}
+                      <div className='px-3 py-2 text-xs text-gray-700 truncate flex items-center justify-between gap-2'>
+                        <span className='truncate'>
+                          {asset.name || asset.url || 'PDF'}
+                        </span>
+                        <button
+                          type='button'
+                          onClick={() => setPdfPreviewIndex(idx)}
+                          className='text-geothermal-blue text-xs hover:underline whitespace-nowrap'
+                        >
+                          查看大图
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -690,6 +709,33 @@ export function CooperationForm() {
           </div>
         </div>
       </div>
+      {pdfPreviewIndex !== null && pdfAssets[pdfPreviewIndex] && (
+        <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4'>
+          <div className='bg-white rounded-xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden'>
+            <div className='flex items-center justify-between border-b border-gray-200 p-4'>
+              <h4 className='text-lg font-semibold text-gray-900'>
+                {pdfAssets[pdfPreviewIndex].name || '公司资料'}
+              </h4>
+              <button
+                type='button'
+                onClick={() => setPdfPreviewIndex(null)}
+                className='text-gray-500 hover:text-gray-700'
+                aria-label='关闭PDF预览'
+              >
+                ×
+              </button>
+            </div>
+            <div className='h-[80vh] bg-gray-50'>
+              <iframe
+                src={`${pdfAssets[pdfPreviewIndex].url}#page=1&toolbar=1&navpanes=1`}
+                title={pdfAssets[pdfPreviewIndex].name || 'PDF预览'}
+                className='w-full h-full'
+              />
+            </div>
+          </div>
+        </div>
+      )}
+      </>
     )
   }
 
