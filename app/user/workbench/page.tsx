@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import {
@@ -87,6 +87,7 @@ export default function WorkbenchPage() {
   const [uploading, setUploading] = useState(false)
   const [uploadHint, setUploadHint] = useState('')
   const [deletingAsset, setDeletingAsset] = useState<string | null>(null)
+  const profileFetched = useRef(false)
 
   const profileCompleteness = useMemo(() => {
     const fields = [
@@ -109,6 +110,8 @@ export default function WorkbenchPage() {
       router.push('/login')
       return
     }
+    if (profileFetched.current) return
+    profileFetched.current = true
     fetchProfile()
   }, [loading, user, router])
 
