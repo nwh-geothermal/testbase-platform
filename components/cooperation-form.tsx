@@ -328,14 +328,14 @@ export function CooperationForm() {
           )
           .order('updated_at', { ascending: false })
 
-        const localProfiles = (
+        const localProfiles: CompanyProfile[] = (
           !localError && Array.isArray(localData) ? localData : []
         ).map((item) => ({
           ...item,
           address: formatAddressSpacing(item.address)
         }))
 
-        let mergedProfiles = [...localProfiles]
+        let mergedProfiles: CompanyProfile[] = [...localProfiles]
 
         try {
           const response = await fetch(
