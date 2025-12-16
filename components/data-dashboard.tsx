@@ -123,9 +123,9 @@ export function DataDashboard() {
                 >
                   <metric.icon className={`w-6 h-6 ${metric.color}`} />
                 </div>
-                <span className={`text-sm font-semibold ${metric.color}`}>
+                <div className={`text-sm font-semibold ${metric.color}`}>
                   {metric.change}
-                </span>
+                </div>
               </div>
               <h3 className='text-3xl font-bold text-geothermal-gray mb-1'>
                 {metric.value}

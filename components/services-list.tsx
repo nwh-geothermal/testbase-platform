@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
   Search,
@@ -16,6 +16,18 @@ import {
   Gauge,
   TestTube
 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { useAuth } from '@/lib/auth-hooks'
+import { supabase } from '@/lib/supabase'
+import { toast } from 'sonner'
 
 interface Service {
   id: string
@@ -61,7 +73,7 @@ const services: Service[] = [
   },
   {
     id: 'numerical-simulation',
-    title: '地热能地下高效取换热数值模拟',
+    title: '地下高效取换热数值模拟',
     description: '运用先进的数值模拟技术，优化地热系统的取热和换热效率。',
     features: [
       '地下温度场模拟',
@@ -163,6 +175,136 @@ const categories = [
 ]
 
 export function ServicesList() {
+  const { user } = useAuth()
+  const [loadingService, setLoadingService] = useState<string | null>(null)
+  const [serviceInquiries, setServiceInquiries] = useState<
+    Record<string, string>
+  >({})
+  const [loadingServiceInquiries, setLoadingServiceInquiries] = useState(false)
+
+  // Fetch user's service inquiries with status when component mounts or user changes
+  useEffect(() => {
+    const fetchServiceInquiries = async () => {
+      if (!user) {
+        setServiceInquiries({})
+        return
+      }
+
+      setLoadingServiceInquiries(true)
+      try {
+        const { data: inquiries, error } = await supabase
+          .from('service_inquiry')
+          .select('service_id, status')
+          .eq('user_id', user.id)
+
+        if (error) {
+          console.error('Error fetching service inquiries:', error)
+        } else {
+          // Create a record mapping service_id to status
+          const inquiryMap: Record<string, string> = {}
+          inquiries?.forEach((inquiry) => {
+            inquiryMap[inquiry.service_id] = inquiry.status
+          })
+          setServiceInquiries(inquiryMap)
+        }
+      } catch (error) {
+        console.error('Error fetching service inquiries:', error)
+      } finally {
+        setLoadingServiceInquiries(false)
+      }
+    }
+
+    fetchServiceInquiries()
+  }, [user])
+
+  const handleServiceApplication = async (service: Service) => {
+    if (!user) {
+      toast.error('请先登录后再申请服务')
+      return
+    }
+
+    // Check if service has already been applied for
+    if (serviceInquiries[service.id]) {
+      toast.info('您已经申请过此服务，请勿重复申请')
+      return
+    }
+
+    setLoadingService(service.id)
+    try {
+      // First, fetch the user's company information
+      const { data: companyData, error: companyError } = await supabase
+        .from('company')
+        .select('*')
+        .eq('user_id', user.id)
+        .single()
+
+      if (companyError) {
+        console.error('Error fetching company data:', companyError)
+        toast.error('无法获取企业信息，请确保您已完成企业注册')
+        setLoadingService(null)
+        return
+      }
+
+      if (!companyData) {
+        toast.error('未找到企业信息，请先完成企业注册')
+        setLoadingService(null)
+        return
+      }
+
+      // Prepare inquiry data with company information
+      const inquiryData = {
+        service_id: service.id,
+        user_id: user.id,
+        company_id: companyData.id, // Include company_id
+        company_name: companyData.company_name,
+        contact_person: companyData.contact_person,
+        contact_email: user.email || companyData.email,
+        contact_phone: companyData.phone,
+        project_description: `申请服务：${service.title}\n\n企业类型：${
+          companyData.company_type
+        }\n业务范围：${companyData.business_scope}\n主要产品：${
+          companyData.main_products || '暂无'
+        }\n技术能力：${companyData.technical_capabilities || '暂无'}`,
+        budget_range: '待商议',
+        timeline: '待确认',
+        special_requirements: `合作意向：${
+          companyData.cooperation_interests?.join(', ') || '暂无'
+        }\n期望：${companyData.expectations || '暂无'}`,
+        status: 'pending',
+        priority: 'normal'
+      }
+
+      // Submit service inquiry via API
+      const response = await fetch('/api/service-inquiry', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          service_id: service.id,
+          user_id: user.id,
+          inquiry_data: inquiryData
+        })
+      })
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error('Error submitting service inquiry:', errorText)
+        toast.error('申请提交失败，请稍后重试')
+      } else {
+        toast.success(
+          '申请提交成功！我们会尽快与您联系。您可以稍后在服务清单中查看申请状态。'
+        )
+        // Add the service to inquiry map with pending status
+        setServiceInquiries((prev) => ({ ...prev, [service.id]: 'pending' }))
+      }
+    } catch (error) {
+      console.error('Error submitting service application:', error)
+      toast.error('申请提交失败，请稍后重试')
+    } finally {
+      setLoadingService(null)
+    }
+  }
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 to-blue-50'>
       {/* Header */}
@@ -186,7 +328,6 @@ export function ServicesList() {
         </div>
       </section>
 
-      {/* Services Overview */}
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20'>
         {/* Category Overview */}
         <motion.div
@@ -195,27 +336,31 @@ export function ServicesList() {
           transition={{ delay: 0.2 }}
           className='mb-16'
         >
-          <div className='bg-white rounded-2xl shadow-xl p-8'>
-            <h2 className='text-3xl font-bold text-gray-900 mb-8 text-center'>
-              服务体系
-            </h2>
-            <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
-              {categories.map((category, index) => (
-                <div
-                  key={category}
-                  className='text-center p-4 bg-gradient-to-br from-geothermal-blue/10 to-geothermal-green/10 rounded-lg border border-gray-200'
-                >
-                  <div className='text-lg font-semibold text-gray-800 mb-1'>
-                    {category}
-                  </div>
-                  <div className='text-sm text-gray-600'>
-                    {services.filter((s) => s.category === category).length}{' '}
-                    项服务
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <Card>
+            <CardHeader>
+              <CardTitle className='text-3xl text-center'>服务体系</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
+                {categories.map((category) => (
+                  <Card
+                    key={category}
+                    className='text-center bg-gradient-to-br from-geothermal-blue/10 to-geothermal-green/10 border-gray-200'
+                  >
+                    <CardContent className='p-4'>
+                      <div className='text-lg font-semibold text-gray-800 mb-1'>
+                        {category}
+                      </div>
+                      <div className='text-sm text-gray-600'>
+                        {services.filter((s) => s.category === category).length}{' '}
+                        项服务
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </motion.div>
 
         {/* Services Grid */}
@@ -226,54 +371,90 @@ export function ServicesList() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.1 * index, duration: 0.6 }}
-              className='bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group h-full'
             >
-              <div className='p-8 h-full flex flex-col'>
-                {/* Service Header */}
-                <div className='flex items-start space-x-4 mb-6'>
-                  <div className='w-16 h-16 bg-gradient-to-br from-white via-emerald-50 to-gray-100 rounded-lg flex items-center justify-center text-emerald-700 shadow-md group-hover:scale-110 transition-transform duration-300 border border-gray-200'>
-                    {service.icon}
-                  </div>
-                  <div className='flex-1'>
-                    <div className='text-sm text-geothermal-orange font-medium mb-1'>
-                      {service.category}
+              <Card className='h-full hover:shadow-xl transition-all duration-300 group'>
+                <CardHeader>
+                  <div className='flex items-start space-x-4'>
+                    <div className='w-16 h-16 bg-gradient-to-br from-white via-emerald-50 to-gray-100 rounded-lg flex items-center justify-center text-emerald-700 shadow-md group-hover:scale-110 transition-transform duration-300 border border-gray-200'>
+                      {service.icon}
                     </div>
-                    <h3 className='text-xl font-bold text-gray-900 leading-tight'>
-                      {service.title}
-                    </h3>
-                  </div>
-                </div>
-
-                {/* Service Description */}
-                <p className='text-gray-600 mb-6 leading-relaxed'>
-                  {service.description}
-                </p>
-
-                {/* Service Features */}
-                <div className='space-y-3 flex-1'>
-                  <h4 className='text-sm font-semibold text-gray-900 mb-3'>
-                    服务内容：
-                  </h4>
-                  <div className='space-y-2'>
-                    {service.features.map((feature, featureIndex) => (
-                      <div
-                        key={featureIndex}
-                        className='flex items-center space-x-2'
+                    <div className='flex-1'>
+                      <Badge
+                        variant='secondary'
+                        className='mb-2 bg-geothermal-orange/10 text-geothermal-orange hover:bg-geothermal-orange/20'
                       >
-                        <div className='w-2 h-2 bg-geothermal-green rounded-full flex-shrink-0'></div>
-                        <span className='text-sm text-gray-700'>{feature}</span>
-                      </div>
-                    ))}
+                        {service.category}
+                      </Badge>
+                      <CardTitle className='text-xl leading-tight'>
+                        {service.title}
+                      </CardTitle>
+                    </div>
                   </div>
-                </div>
+                </CardHeader>
 
-                {/* Action Button */}
-                <div className='mt-6 pt-6 border-t border-gray-100'>
-                  <button className='w-full py-3 px-4 bg-gradient-to-r from-geothermal-blue to-geothermal-green text-white rounded-lg font-medium hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5'>
-                    了解详情
-                  </button>
-                </div>
-              </div>
+                <CardContent className='flex-1 flex flex-col'>
+                  <CardDescription className='text-gray-600 mb-6 leading-relaxed'>
+                    {service.description}
+                  </CardDescription>
+
+                  <div className='space-y-3 flex-1'>
+                    <h4 className='text-sm font-semibold text-gray-900'>
+                      服务内容：
+                    </h4>
+                    <div className='space-y-2'>
+                      {service.features.map((feature, featureIndex) => (
+                        <div
+                          key={featureIndex}
+                          className='flex items-center space-x-2'
+                        >
+                          <div className='w-2 h-2 bg-geothermal-green rounded-full flex-shrink-0'></div>
+                          <div className='text-sm text-gray-700'>{feature}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className='mt-6 pt-6 border-t'>
+                    {(() => {
+                      const inquiryStatus = serviceInquiries[service.id]
+                      const isLoading = loadingService === service.id
+                      const hasInquiry = !!inquiryStatus
+                      const isDisabled =
+                        hasInquiry || isLoading || loadingServiceInquiries
+
+                      // Determine button text and style based on status
+                      let buttonText = '申请'
+                      let buttonClass =
+                        'bg-gradient-to-r from-geothermal-blue to-geothermal-green hover:shadow-lg'
+
+                      if (isLoading) {
+                        buttonText = '提交中...'
+                      } else if (
+                        inquiryStatus === 'reviewed' ||
+                        inquiryStatus === 'responded'
+                      ) {
+                        buttonText = '已获批'
+                        buttonClass =
+                          'bg-geothermal-green hover:bg-geothermal-green cursor-not-allowed'
+                      } else if (hasInquiry) {
+                        buttonText = '已申请'
+                        buttonClass =
+                          'bg-gray-400 hover:bg-gray-400 cursor-not-allowed'
+                      }
+
+                      return (
+                        <Button
+                          onClick={() => handleServiceApplication(service)}
+                          disabled={isDisabled}
+                          className={`w-full transition-all duration-200 transform hover:-translate-y-0.5 disabled:opacity-50 ${buttonClass}`}
+                        >
+                          {buttonText}
+                        </Button>
+                      )
+                    })()}
+                  </div>
+                </CardContent>
+              </Card>
             </motion.div>
           ))}
         </div>
@@ -283,63 +464,32 @@ export function ServicesList() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className='mt-16 bg-gradient-to-r from-geothermal-blue/10 to-geothermal-green/10 rounded-2xl p-12 text-center'
-        >
-          <h2 className='text-3xl font-bold text-gray-900 mb-6'>
-            专业技术咨询
-          </h2>
-          <p className='text-lg text-gray-700 max-w-3xl mx-auto mb-8 leading-relaxed'>
-            我们的专家团队随时为您提供专业的技术咨询和定制化解决方案。
-            无论您处于项目的哪个阶段，我们都能为您提供最适合的技术支持。
-          </p>
-          <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-            <button className='px-8 py-4 bg-geothermal-orange text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5'>
-              在线咨询
-            </button>
-            <button className='px-8 py-4 border-2 border-geothermal-blue text-geothermal-blue rounded-lg font-semibold hover:bg-geothermal-blue hover:text-white transition-all duration-200'>
-              预约考察
-            </button>
-          </div>
-        </motion.div>
-
-        {/* Service Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.0 }}
           className='mt-16'
         >
-          <div className='bg-white rounded-2xl shadow-xl p-8'>
-            <h2 className='text-2xl font-bold text-gray-900 mb-8 text-center'>
-              服务统计
-            </h2>
-            <div className='grid grid-cols-2 md:grid-cols-4 gap-8'>
-              <div className='text-center'>
-                <div className='text-4xl font-bold text-geothermal-orange mb-2'>
-                  200+
-                </div>
-                <div className='text-gray-600'>完成项目</div>
+          <Card className='bg-gradient-to-r from-geothermal-blue/10 to-geothermal-green/10 border-none'>
+            <CardContent className='p-12 text-center'>
+              <CardTitle className='text-3xl mb-6'>专业技术咨询</CardTitle>
+              <CardDescription className='text-lg max-w-3xl mx-auto mb-8 leading-relaxed text-gray-700'>
+                我们的专家团队随时为您提供专业的技术咨询和定制化解决方案。
+                无论您处于项目的哪个阶段，我们都能为您提供最适合的技术支持。
+              </CardDescription>
+              <div className='flex flex-col sm:flex-row gap-4 justify-center'>
+                <Button
+                  size='lg'
+                  className='bg-geothermal-orange hover:bg-geothermal-orange/90 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5'
+                >
+                  在线咨询
+                </Button>
+                <Button
+                  variant='outline'
+                  size='lg'
+                  className='border-2 border-geothermal-blue text-geothermal-blue hover:bg-geothermal-blue hover:text-white transition-all duration-200'
+                >
+                  预约考察
+                </Button>
               </div>
-              <div className='text-center'>
-                <div className='text-4xl font-bold text-geothermal-blue mb-2'>
-                  95%
-                </div>
-                <div className='text-gray-600'>客户满意度</div>
-              </div>
-              <div className='text-center'>
-                <div className='text-4xl font-bold text-geothermal-green mb-2'>
-                  50+
-                </div>
-                <div className='text-gray-600'>专业技术人员</div>
-              </div>
-              <div className='text-center'>
-                <div className='text-4xl font-bold text-purple-600 mb-2'>
-                  24/7
-                </div>
-                <div className='text-gray-600'>技术支持</div>
-              </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </motion.div>
       </div>
     </div>

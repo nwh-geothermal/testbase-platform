@@ -163,7 +163,7 @@ export function Achievements() {
                 {achievement.items.map((item, idx) => (
                   <div key={idx} className='flex items-center space-x-2'>
                     <div className='w-1.5 h-1.5 bg-geothermal-orange rounded-full' />
-                    <span className='text-sm text-gray-600'>{item}</span>
+                    <div className='text-sm text-gray-600'>{item}</div>
                   </div>
                 ))}
               </div>
@@ -194,14 +194,14 @@ export function Achievements() {
                 className='bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300'
               >
                 <div className='aspect-video bg-gradient-to-br from-geothermal-blue to-geothermal-green flex items-center justify-center'>
-                  <span className='text-white text-lg font-semibold'>
+                  <div className='text-white text-lg font-semibold'>
                     项目展示图
-                  </span>
+                  </div>
                 </div>
 
                 <div className='p-6'>
                   <div className='flex items-center justify-between mb-3'>
-                    <span
+                    <div
                       className={`px-3 py-1 rounded-full text-sm font-medium ${
                         project.status === '运行中'
                           ? 'bg-green-100 text-green-800'
@@ -211,7 +211,7 @@ export function Achievements() {
                       }`}
                     >
                       {project.status}
-                    </span>
+                    </div>
                   </div>
 
                   <h4 className='text-xl font-bold text-geothermal-gray mb-3'>
