@@ -94,9 +94,9 @@ export function TechnologyChain() {
                     {stage.achievements.map((achievement, idx) => (
                       <div key={idx} className='flex items-center space-x-2'>
                         <div className='w-2 h-2 bg-geothermal-orange rounded-full' />
-                        <span className='text-sm text-gray-600'>
+                        <div className='text-sm text-gray-600'>
                           {achievement}
-                        </span>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -151,9 +151,9 @@ export function TechnologyChain() {
             </div>
             <div className='bg-white/10 rounded-2xl p-6 backdrop-blur-sm'>
               <div className='aspect-video bg-white/20 rounded-xl flex items-center justify-center'>
-                <span className='text-2xl font-bold opacity-60'>
+                <div className='text-2xl font-bold opacity-60'>
                   数字孪生系统演示
-                </span>
+                </div>
               </div>
             </div>
           </div>

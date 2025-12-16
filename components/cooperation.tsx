@@ -144,7 +144,7 @@ export function Cooperation() {
                     className='flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200'
                   >
                     <div className='w-2 h-2 bg-geothermal-orange rounded-full' />
-                    <span className='text-gray-700'>{institution}</span>
+                    <div className='text-gray-700'>{institution}</div>
                   </div>
                 ))}
               </div>
@@ -191,7 +191,7 @@ export function Cooperation() {
                   {mode.features.map((feature, idx) => (
                     <div key={idx} className='flex items-center space-x-2'>
                       <div className='w-1.5 h-1.5 bg-geothermal-orange rounded-full' />
-                      <span className='text-sm text-gray-600'>{feature}</span>
+                      <div className='text-sm text-gray-600'>{feature}</div>
                     </div>
                   ))}
                 </div>
@@ -259,15 +259,15 @@ export function Cooperation() {
               <div className='space-y-3'>
                 <div className='flex items-center space-x-3'>
                   <MapPin className='w-5 h-5' />
-                  <span>陕西省西安市雁塔区丈八东路18号</span>
+                  <div>陕西省西安市雁塔区丈八东路18号</div>
                 </div>
                 <div className='flex items-center space-x-3'>
                   <Phone className='w-5 h-5' />
-                  <span>+86-29-8828-0434</span>
+                  <div>+86-29-8828-0434</div>
                 </div>
                 <div className='flex items-center space-x-3'>
                   <Mail className='w-5 h-5' />
-                  <span>geothermal@nwh.cn</span>
+                  <div>geothermal@nwh.cn</div>
                 </div>
               </div>
             </div>
