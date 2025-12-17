@@ -66,7 +66,7 @@ const normalizeProvinceCityName = (value?: string) => {
   if (!value || typeof value !== 'string') return ''
   const cleaned = value.trim()
   if (!cleaned) return ''
-  const municipalities = ['北京', '上海', '重庆']
+  const municipalities = ['北京', '上海', '天津', '重庆']
   const hasMunicipality = municipalities.some((name) => cleaned.includes(name))
   if (hasMunicipality && cleaned.includes('.')) {
     return cleaned.split('.')[0].trim()
