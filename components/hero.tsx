@@ -42,6 +42,7 @@ export function Hero() {
             集技术研发、产品试制、工艺改进、智慧运维、投资评价和成果展示于一体的
             <br />
             <strong>国内首个地热能全产业链技术集成与推广基地</strong>
+            <div className='mt-4 text-white/80'>陕西省地热协会成员单位</div>
           </motion.div>
 
           <motion.div
