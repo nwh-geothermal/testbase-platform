@@ -80,7 +80,7 @@ export default function OverviewPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className='text-4xl md:text-6xl font-bold text-white mb-6'
+            className='text-4xl md:text-5xl font-bold text-white mb-6'
           >
             基地概览
           </motion.h1>
@@ -88,7 +88,7 @@ export default function OverviewPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className='text-xl md:text-2xl text-white/90 max-w-3xl mx-auto'
+            className='text-xl text-white/90 max-w-3xl mx-auto'
           >
             陕西省地热能开发利用技术中试基地全景展示
           </motion.p>
@@ -148,17 +148,17 @@ export default function OverviewPage() {
             <CardContent>
               {/* Map Container */}
               <div className='relative w-full h-[400px] rounded-xl overflow-hidden border border-gray-200'>
-                {/* Interactive Map - Amap (高德地图) embed */}
+                {/* Interactive Map - OpenStreetMap embed */}
                 <div className='w-full h-full relative'>
-                  {/* Amap iframe with proper embed URL */}
                   <iframe
                     width='100%'
                     height='100%'
                     style={{ border: 0 }}
-                    src='https://uri.amap.com/marker?position=108.922414,34.134466&name=陕西省地热能开发利用技术中试基地&src=mypage'
-                    title='高德地图 - 陕西省地热能开发利用技术中试基地'
+                    src='https://www.openstreetmap.org/export/embed.html?bbox=108.912414%2C34.124466%2C108.932414%2C34.144466&layer=mapnik&marker=34.134466%2C108.922414'
+                    title='OpenStreetMap - 陕西省地热能开发利用技术中试基地'
                     allowFullScreen
                     loading='lazy'
+                    tabIndex={-1}
                   ></iframe>
                 </div>
               </div>
