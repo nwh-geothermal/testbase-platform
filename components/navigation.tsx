@@ -14,6 +14,7 @@ import {
   NavigationMenuTrigger,
   NavigationMenuLink
 } from '@/components/ui/navigation-menu'
+import { usePathname } from 'next/navigation'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -41,6 +42,12 @@ const navigationItems: NavigationItem[] = [
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const { user, loading, signOut } = useAuthContext()
+  const pathname = usePathname()
+
+  const isActive = (href: string) => {
+    if (href === '/') return pathname === '/'
+    return pathname === href || pathname.startsWith(`${href}/`)
+  }
 
   // Check if user is admin (can be extended to check database or user metadata)
   // For testing purposes, also allow specific email to be admin
@@ -94,7 +101,13 @@ export function Navigation() {
                   <NavigationMenuItem key={item.name}>
                     {item.submenu ? (
                       <>
-                        <NavigationMenuTrigger className='text-gray-700 hover:text-geothermal-orange transition-colors duration-200 bg-transparent'>
+                        <NavigationMenuTrigger
+                          className={`transition-colors duration-200 bg-transparent ${
+                            isActive(item.href)
+                              ? 'text-geothermal-orange font-semibold'
+                              : 'text-gray-700 hover:text-geothermal-orange'
+                          }`}
+                        >
                           {item.name}
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
@@ -116,7 +129,11 @@ export function Navigation() {
                       <NavigationMenuLink asChild>
                         <Link
                           href={item.href}
-                          className='text-gray-700 hover:text-geothermal-orange transition-colors duration-200'
+                          className={`transition-colors duration-200 ${
+                            isActive(item.href)
+                              ? 'text-geothermal-orange font-semibold border-b-2 border-geothermal-orange pb-1'
+                              : 'text-gray-700 hover:text-geothermal-orange'
+                          }`}
                         >
                           {item.name}
                         </Link>
@@ -203,7 +220,11 @@ export function Navigation() {
                     <div key={item.name} className='space-y-1'>
                       <Link
                         href={item.href}
-                        className='block px-4 py-3 text-base font-medium text-gray-700 hover:text-geothermal-orange hover:bg-gray-50 rounded-md transition-colors'
+                        className={`block px-4 py-3 text-base font-medium rounded-md transition-colors ${
+                          isActive(item.href)
+                            ? 'text-geothermal-orange bg-geothermal-orange/10'
+                            : 'text-gray-700 hover:text-geothermal-orange hover:bg-gray-50'
+                        }`}
                         onClick={() => setIsOpen(false)}
                       >
                         {item.name}
@@ -214,7 +235,11 @@ export function Navigation() {
                             <Link
                               key={subItem.name}
                               href={subItem.href}
-                              className='block px-4 py-2 text-sm text-gray-600 hover:text-geothermal-orange hover:bg-gray-50 rounded-md transition-colors'
+                              className={`block px-4 py-2 text-sm rounded-md transition-colors ${
+                                isActive(subItem.href)
+                                  ? 'text-geothermal-orange bg-geothermal-orange/10'
+                                  : 'text-gray-600 hover:text-geothermal-orange hover:bg-gray-50'
+                              }`}
                               onClick={() => setIsOpen(false)}
                             >
                               {subItem.name}
