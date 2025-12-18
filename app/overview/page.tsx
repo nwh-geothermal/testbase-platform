@@ -13,7 +13,16 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { AboutUs } from '@/components/about-us'
-import { MapPin, Building2, Zap, Users, Target, Award } from 'lucide-react'
+import {
+  MapPin,
+  Building2,
+  Zap,
+  Users,
+  Target,
+  Award,
+  GraduationCap,
+  Handshake
+} from 'lucide-react'
 
 export default function OverviewPage() {
   const coreFeatures = [
@@ -52,6 +61,13 @@ export default function OverviewPage() {
       icon: Building2,
       color: 'text-orange-500'
     }
+  ]
+
+  const talentStats = [
+    { label: '博士研究生', value: '12', detail: '地热工程、地质资源方向' },
+    { label: '硕士研究生', value: '38', detail: '热能工程、资源勘查等' },
+    { label: '本科生', value: '65', detail: '能源科学、机电工程等' },
+    { label: '企业导师', value: '20', detail: '一线研发与运维专家' }
   ]
 
   return (
@@ -270,6 +286,76 @@ export default function OverviewPage() {
               </CardContent>
             </Card>
           </div>
+        </motion.div>
+
+        {/* Talent Development Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
+          className='mt-16'
+        >
+          <Card className='border-0 shadow-2xl'>
+            <CardContent className='p-10 space-y-8'>
+              <div className='flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6'>
+                <div className='flex items-center gap-3'>
+                  <div className='w-12 h-12 rounded-2xl bg-geothermal-orange/10 flex items-center justify-center'>
+                    <GraduationCap className='w-6 h-6 text-geothermal-orange' />
+                  </div>
+                  <div>
+                    <CardTitle className='text-2xl'>人才培养</CardTitle>
+                    <CardDescription className='text-base'>
+                      校企联合培养，建设地热能专业复合型人才梯队
+                    </CardDescription>
+                  </div>
+                </div>
+                <div className='flex flex-wrap gap-2'>
+                  <Badge
+                    variant='secondary'
+                    className='bg-geothermal-orange/10 text-geothermal-orange'
+                  >
+                    校企联合培养模式
+                  </Badge>
+                </div>
+              </div>
+
+              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
+                {talentStats.map((item) => (
+                  <div
+                    key={item.label}
+                    className='p-6 rounded-xl bg-slate-50 border border-gray-100 shadow-sm flex flex-col gap-2'
+                  >
+                    <div className='text-sm text-gray-500'>{item.label}</div>
+                    <div className='text-3xl font-bold text-geothermal-blue'>
+                      {item.value}
+                    </div>
+                    <div className='text-sm text-gray-600'>{item.detail}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+                <div className='p-6 rounded-xl bg-white border border-gray-100 shadow-sm'>
+                  <div className='flex items-center gap-2 mb-3'>
+                    <Handshake className='w-5 h-5 text-geothermal-green' />
+                    <div className='font-semibold text-gray-900'>联合培养</div>
+                  </div>
+                  <p className='text-gray-600 leading-relaxed text-sm'>
+                    基地与高校共建课程、共享实验平台，联合制定培养方案，让学生在真实的地热能项目中完成实操训练，毕业即可上岗。
+                  </p>
+                </div>
+                <div className='p-6 rounded-xl bg-white border border-gray-100 shadow-sm'>
+                  <div className='flex items-center gap-2 mb-3'>
+                    <Building2 className='w-5 h-5 text-geothermal-blue' />
+                    <div className='font-semibold text-gray-900'>实践基地</div>
+                  </div>
+                  <p className='text-gray-600 leading-relaxed text-sm'>
+                    中国地质大学、西安石油大学设立校外实践基地，学生在导师与企业双导师指导下，参与地热钻探、设备调试、数据分析等全链条实践。
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </motion.div>
 
         {/* Vision Section */}
