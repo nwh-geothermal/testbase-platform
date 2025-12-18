@@ -14,7 +14,7 @@ export function Footer() {
               </h3>
             </div>
             <p className='text-gray-300 mb-4 leading-relaxed'>
-              在水电与抽水蓄能、新能源与电力、水利与生态环境、城乡建设与基础设施等领域，融合规划咨询、勘测设计、工程承包与投资运营于一体，提供覆盖全过程的一体化智慧服务。
+              在水电与抽水蓄能、新能源与电力、水利与生态环境、城乡建设与基础设施等领域，融合规划咨询、勘测设计、工程承包与投资运营于一体，提供覆盖全过程的一体化智慧服务
             </p>
             <div className='flex space-x-4'>
               <a
@@ -35,40 +35,17 @@ export function Footer() {
           {/* 快速链接 */}
           <div>
             <h4 className='text-lg font-semibold mb-4'>快速链接</h4>
-            <ul className='space-y-2'>
-              <li>
-                <Link
-                  href='#technology'
-                  className='text-gray-300 hover:text-geothermal-orange transition-colors'
-                >
-                  技术体系
-                </Link>
-              </li>
-              {/* <li>
-                <Link
-                  href='#operations'
-                  className='text-gray-300 hover:text-geothermal-orange transition-colors'
-                >
-                  智慧运维
-                </Link>
-              </li> */}
-              <li>
-                <Link
-                  href='#achievements'
-                  className='text-gray-300 hover:text-geothermal-orange transition-colors'
-                >
-                  成果展示
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href='#cooperation'
-                  className='text-gray-300 hover:text-geothermal-orange transition-colors'
-                >
-                  产学研合作
-                </Link>
-              </li>
-            </ul>
+
+            <div className='mt-3 text-base'>
+              <a
+                href='http://www.sxsdrxh.com/'
+                target='_blank'
+                rel='noreferrer'
+                className='text-gray-300 hover:text-geothermal-orange transition-colors'
+              >
+                陕西省地热协会
+              </a>
+            </div>
           </div>
 
           {/* 联系信息 */}
@@ -93,20 +70,6 @@ export function Footer() {
           <p className='text-gray-400 text-sm'>
             © 2025 中国电建集团西北勘测设计研究院有限公司. 保留所有权利.
           </p>
-          <div className='flex space-x-6 mt-4 md:mt-0'>
-            <Link
-              href='#privacy'
-              className='text-gray-400 hover:text-geothermal-orange text-sm transition-colors'
-            >
-              隐私政策
-            </Link>
-            <Link
-              href='#terms'
-              className='text-gray-400 hover:text-geothermal-orange text-sm transition-colors'
-            >
-              使用条款
-            </Link>
-          </div>
         </div>
       </div>
     </footer>
