@@ -35,6 +35,7 @@ const navigationItems: NavigationItem[] = [
   { name: '基地概览', href: '/overview' },
   { name: '成果展示', href: '/achievements' },
   { name: '产学研合作', href: '/cooperation' },
+  { name: '数据共享', href: '/datapool' },
   { name: '服务清单', href: '/services' },
   { name: '加入平台', href: '/join' }
 ]
