@@ -280,7 +280,7 @@ export function AboutUs({ compact = false }: AboutUsProps) {
                         </div>
                         <div className='flex items-center space-x-3'>
                           <Globe className='w-5 h-5 text-geothermal-green' />
-                          <Badge variant='outline'>www.nwh.com.cn</Badge>
+                          <Badge variant='outline'>nwh.cn</Badge>
                         </div>
                       </div>
                     </CardContent>
