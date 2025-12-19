@@ -5,12 +5,14 @@ import { ChevronRight, Play, Zap, Globe, Target } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { NewsFloat } from '@/components/news-float'
 
 export function Hero() {
   return (
     <section className='relative min-h-screen flex items-center justify-center overflow-hidden'>
       {/* 背景渐变 */}
       <div className='absolute inset-0 opacity-90 bg-[radial-gradient(circle_at_20%_25%,rgba(255,255,255,0.35),transparent_32%),radial-gradient(circle_at_80%_10%,rgba(255,182,116,0.35),transparent_28%),linear-gradient(135deg,#f8fafc,#e0f2fe_45%,#fde68a)]' />
+      <NewsFloat />
       <div className='relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
