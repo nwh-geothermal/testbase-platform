@@ -47,18 +47,26 @@ const dataSets = [
 export default function DataPoolPage() {
   return (
     <div className='min-h-screen bg-gradient-to-br from-slate-50 to-blue-50'>
-      <div className='relative py-20 bg-gradient-to-r from-geothermal-blue to-geothermal-green text-white overflow-hidden'>
-        <div className='absolute inset-0 bg-black/25' />
+      <div className='relative py-20 overflow-hidden'>
+        <div
+          className='absolute inset-0 opacity-90'
+          style={{
+            background:
+              'radial-gradient(circle at 20% 25%, rgba(255, 255, 255, 0.35), transparent 32%), radial-gradient(circle at 80% 10%, rgba(255, 182, 116, 0.35), transparent 28%), linear-gradient(135deg, #f8fafc, #e0f2fe 45%, #fde68a)'
+          }}
+        ></div>
         <div className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center'>
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ delay: 0.1 }}
             className='flex flex-col items-center gap-3'
           >
             <div>
-              <h1 className='text-4xl md:text-5xl font-bold mb-4'>数据共享</h1>
-              <p className='text-white/85 text-base md:text-xl'>
+              <h1 className='text-4xl md:text-5xl font-bold mb-4 text-gray-900'>
+                数据共享
+              </h1>
+              <p className='text-gray-600 text-base md:text-xl'>
                 汇聚地热行业数据，支持在线下载
               </p>
             </div>
@@ -66,7 +74,7 @@ export default function DataPoolPage() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.15 }}
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
             className='flex flex-wrap gap-3 justify-center'
           ></motion.div>
         </div>
@@ -76,7 +84,7 @@ export default function DataPoolPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.5, ease: 'easeInOut' }}
           viewport={{ once: true, amount: 0.2 }}
         >
           <Card className='shadow-2xl border-none min-h-[700px] flex flex-col'>

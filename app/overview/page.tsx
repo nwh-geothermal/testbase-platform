@@ -73,22 +73,27 @@ export default function OverviewPage() {
   return (
     <div className='min-h-screen bg-gradient-to-br from-slate-50 to-blue-50'>
       {/* Hero Section */}
-      <div className='relative py-20 bg-gradient-to-r from-geothermal-blue to-geothermal-green'>
-        <div className='absolute inset-0 bg-black/20'></div>
-        <div className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+      <div className='relative py-20 overflow-hidden'>
+        <div
+          className='absolute inset-0 opacity-90'
+          style={{
+            background:
+              'radial-gradient(circle at 20% 25%, rgba(255, 255, 255, 0.35), transparent 32%), radial-gradient(circle at 80% 10%, rgba(255, 182, 116, 0.35), transparent 28%), linear-gradient(135deg, #f8fafc, #e0f2fe 45%, #fde68a)'
+          }}
+        ></div>
+        <div className='relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className='text-4xl md:text-5xl font-bold text-white mb-6'
+            className='text-4xl md:text-5xl font-bold text-gray-900 mb-6'
           >
             基地概览
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className='text-xl text-white/90 max-w-3xl mx-auto'
+            transition={{ delay: 0.1 }}
+            className='text-xl text-gray-600 max-w-3xl mx-auto'
           >
             陕西省地热能开发利用技术中试基地全景展示
           </motion.p>
