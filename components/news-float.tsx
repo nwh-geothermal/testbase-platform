@@ -6,23 +6,32 @@ import { useEffect, useState } from 'react'
 
 const newsItems = [
   {
-    title: '陕西地热产业动态：推进勘探与示范项目',
-    link: '/achievements'
+    title: '中国电建西北院获批省级产业技术中试基地建设',
+    link: 'https://mp.weixin.qq.com/s/HKcR-r8RtmOsPydXQd5EUQ'
   },
   {
-    title: '基地实践基地：联动高校开展产学研实训',
-    link: '/cooperation'
+    title: '中国电建两项绿色技术入选国家发改委绿色低碳转型产业指导目录',
+    link: 'https://www.powerchina.cn/col/col7440/art/2025/art_23f6279f41c24108970ab375a7a547de.html'
   },
   {
-    title: '服务清单更新：新增测井数据、运行数据套餐',
-    link: '/services'
+    title: '西北院再获国资委“科改行动”考评“标杆”等级',
+    link: 'https://mp.weixin.qq.com/s/Mr932dq2lnPIzqbuS79PtQ'
+  },
+  {
+    title: '城建五载织经纬 奋楫笃行筑未来丨七五征程 · 同心筑梦',
+    link: 'https://mp.weixin.qq.com/s/ca9lGgKzsiHn5LXQ4UUrdA'
   }
 ]
 
-export function NewsFloat() {
+type NewsFloatProps = {
+  inline?: boolean
+}
+
+export function NewsFloat({ inline = false }: NewsFloatProps) {
   const [show, setShow] = useState(true)
 
   useEffect(() => {
+    if (inline) return
     const update = () => {
       // 仅在首屏显示，滚动超过 0.9 屏后隐藏
       setShow(window.scrollY < window.innerHeight * 0.9)
@@ -34,13 +43,19 @@ export function NewsFloat() {
       window.removeEventListener('scroll', update)
       window.removeEventListener('resize', update)
     }
-  }, [])
+  }, [inline])
 
-  if (!show) return null
+  if (!inline && !show) return null
+
+  const containerClasses = inline ? 'max-w-4xl mx-auto' : 'hidden'
+
+  const cardClasses = inline
+    ? 'w-full rounded-2xl bg-white/85 backdrop-blur shadow-xl border border-white/60 overflow-hidden'
+    : 'w-80 rounded-2xl bg-white/85 backdrop-blur shadow-xl border border-white/60 overflow-hidden'
 
   return (
-    <aside className='hidden lg:block absolute left-4 top-1/3 z-20'>
-      <div className='w-80 rounded-2xl bg-white/85 backdrop-blur shadow-xl border border-white/60 overflow-hidden'>
+    <aside className={containerClasses}>
+      <div className={cardClasses}>
         <div className='flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-geothermal-blue/90 to-geothermal-green/90 text-white'>
           <Megaphone className='w-4 h-4' />
           <div className='text-sm font-semibold'>资讯</div>

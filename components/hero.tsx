@@ -65,42 +65,13 @@ export function Hero() {
             </Button>
           </motion.div>
 
-          {/* 关键数据展示 */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className='grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto'
+            className='mt-8'
           >
-            <Card className='bg-white/70 backdrop-blur-sm border-none'>
-              <CardContent className='p-6 text-center'>
-                <div className='w-12 h-12 bg-geothermal-orange rounded-xl flex items-center justify-center mx-auto mb-4'>
-                  <Zap className='w-6 h-6 text-black' />
-                </div>
-                <h3 className='text-2xl font-bold text-black mb-2'>10+</h3>
-                <p className='text-black/80'>核心技术专利</p>
-              </CardContent>
-            </Card>
-
-            <Card className='bg-white/70 backdrop-blur-sm border-none'>
-              <CardContent className='p-6 text-center'>
-                <div className='w-12 h-12 bg-geothermal-green rounded-xl flex items-center justify-center mx-auto mb-4'>
-                  <Globe className='w-6 h-6 text-black' />
-                </div>
-                <h3 className='text-2xl font-bold text-black mb-2'>20+</h3>
-                <p className='text-black/80'>合作院校企业</p>
-              </CardContent>
-            </Card>
-
-            <Card className='bg-white/70 backdrop-blur-sm border-none'>
-              <CardContent className='p-6 text-center'>
-                <div className='w-12 h-12 bg-geothermal-blue rounded-xl flex items-center justify-center mx-auto mb-4'>
-                  <Target className='w-6 h-6 text-black' />
-                </div>
-                <h3 className='text-2xl font-bold text-black mb-2'>95%</h3>
-                <p className='text-black/80'>能效转换率</p>
-              </CardContent>
-            </Card>
+            <NewsFloat inline />
           </motion.div>
         </motion.div>
       </div>
