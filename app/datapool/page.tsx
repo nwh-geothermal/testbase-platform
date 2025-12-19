@@ -59,7 +59,7 @@ export default function DataPoolPage() {
             <div>
               <h1 className='text-4xl md:text-5xl font-bold mb-4'>数据共享</h1>
               <p className='text-white/85 text-base md:text-xl'>
-                汇聚地热行业数据，支持分级开放与在线采购
+                汇聚地热行业数据，支持在线下载
               </p>
             </div>
           </motion.div>

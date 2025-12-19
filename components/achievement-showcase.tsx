@@ -194,7 +194,7 @@ export function AchievementShowcase() {
             transition={{ delay: 0.1 }}
             className='text-xl text-gray-600 max-w-3xl mx-auto'
           >
-            展示地热能开发利用技术中试基地在技术创新、产学研合作、标准制定等方面取得的重要成果
+            展示技术创新、标准制定等方面取得的重要成果
           </motion.p>
         </div>
       </section>
