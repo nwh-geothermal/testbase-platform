@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import {
   Card,
@@ -94,7 +95,7 @@ export function AboutUs({ compact = false }: AboutUsProps) {
 
   const baseInfo = [
     { icon: MapPin, label: '地理位置', value: '陕西省西安市' },
-    { icon: Calendar, label: '成立时间', value: '2023年' },
+    { icon: Calendar, label: '成立时间', value: '2024年' },
     { icon: Users, label: '专业团队', value: '50+ 专家学者' },
     { icon: Award, label: '技术专利', value: '100+ 项' }
   ]
@@ -176,18 +177,13 @@ export function AboutUs({ compact = false }: AboutUsProps) {
                 </CardContent>
 
                 {/* Image Section */}
-                <div className='h-64 lg:h-auto bg-gradient-to-br from-geothermal-orange to-geothermal-blue flex items-center justify-center order-1 lg:order-2'>
-                  <div className='text-center text-white p-8'>
-                    <Shield className='w-24 h-24 mb-4 mx-auto opacity-75' />
-                    <h3 className='text-xl font-bold mb-2'>中国电建西北院</h3>
-                    <Badge
-                      variant='secondary'
-                      className='bg-white/20 text-white border-white/30 mb-2'
-                    >
-                      PowerChina Northwest
-                    </Badge>
-                    <p className='text-sm opacity-75'>成立于1950年</p>
-                  </div>
+                <div className='relative h-64 lg:h-auto order-1 lg:order-2'>
+                  <Image
+                    src='/building1.jpg'
+                    alt='中国电建西北院'
+                    fill
+                    className='object-cover object-[0%_10%]'
+                  />
                 </div>
               </div>
             </Card>

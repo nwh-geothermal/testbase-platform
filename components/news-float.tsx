@@ -25,9 +25,13 @@ const newsItems = [
 
 type NewsFloatProps = {
   inline?: boolean
+  containerClassName?: string
 }
 
-export function NewsFloat({ inline = false }: NewsFloatProps) {
+export function NewsFloat({
+  inline = false,
+  containerClassName
+}: NewsFloatProps) {
   const [show, setShow] = useState(true)
 
   useEffect(() => {
@@ -47,7 +51,9 @@ export function NewsFloat({ inline = false }: NewsFloatProps) {
 
   if (!inline && !show) return null
 
-  const containerClasses = inline ? 'max-w-4xl mx-auto' : 'hidden'
+  const containerClasses = inline
+    ? containerClassName ?? 'max-w-[clamp(18rem,90vw,56rem)] mx-auto'
+    : 'hidden'
 
   const cardClasses = inline
     ? 'w-full rounded-2xl bg-white/85 backdrop-blur shadow-xl border border-white/60 overflow-hidden'
@@ -56,19 +62,19 @@ export function NewsFloat({ inline = false }: NewsFloatProps) {
   return (
     <aside className={containerClasses}>
       <div className={cardClasses}>
-        <div className='flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-geothermal-blue/90 to-geothermal-green/90 text-white'>
-          <Megaphone className='w-4 h-4' />
-          <div className='text-sm font-semibold'>资讯</div>
+        <div className='flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2.5 bg-gradient-to-r from-geothermal-blue/90 to-geothermal-green/90 text-white'>
+          <Megaphone className='w-3.5 h-3.5 sm:w-4 sm:h-4' />
+          <div className='text-xs sm:text-sm font-semibold'>资讯</div>
         </div>
-        <div className='divide-y divide-gray-200/70 bg-white/80'>
+        <div className='max-h-48 overflow-y-auto divide-y divide-gray-200/70 bg-white/80'>
           {newsItems.map((item) => (
             <Link
               key={item.title}
               href={item.link}
-              className='group flex items-start gap-3 px-4 py-3 hover:bg-geothermal-blue/5 transition-colors'
+              className='group flex items-start gap-3 px-3 py-1.5 sm:px-4 sm:py-2 hover:bg-geothermal-blue/5 transition-colors'
             >
-              <ExternalLink className='w-4 h-4 mt-0.5 text-geothermal-blue/70 group-hover:text-geothermal-blue' />
-              <p className='text-sm text-gray-800 leading-snug group-hover:text-geothermal-blue'>
+              <ExternalLink className='w-3.5 h-3.5 sm:w-4 sm:h-4 mt-0.5 text-geothermal-blue/70 group-hover:text-geothermal-blue' />
+              <p className='text-xs sm:text-sm text-gray-800 leading-snug group-hover:text-geothermal-blue'>
                 {item.title}
               </p>
             </Link>

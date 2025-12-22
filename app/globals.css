@@ -81,7 +81,7 @@
 }
 
 .section-padding {
-  @apply py-16 px-4 sm:px-6 lg:px-8;
+  padding: clamp(2.5rem, 5vh, 5.5rem) clamp(1rem, 2.5vw, 2rem);
 }
 
 /* Line clamp utilities */
@@ -102,6 +102,9 @@
 @layer base {
   * {
     @apply border-border;
+  }
+  html {
+    font-size: clamp(13.5px, 0.55vw + 6.5px, 16px);
   }
   body {
     @apply bg-background text-foreground;

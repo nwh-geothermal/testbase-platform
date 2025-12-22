@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import {
   Award,
   FileText,
@@ -71,23 +72,23 @@ const projectShowcase = [
     status: '运行中',
     efficiency: '95%',
     savings: '30%',
-    image: '/api/placeholder/400/250'
+    image: '/proj1.jpg'
   },
   {
     title: '西安高新区中央创新区6号能源站项目',
-    description: '商业建筑群智慧能源解决方案',
+    description: '住宅及商业建筑群智慧能源解决方案',
     status: '运行中',
     efficiency: '93%',
     savings: '35%',
-    image: '/api/placeholder/400/250'
+    image: '/proj2.jpg'
   },
   {
     title: '西安市儿童医院天然气能源管理项目',
-    description: '2.5MW地热发电站，年发电量1800万度',
+    description: '以三联供为基础的供冷、热、电、蒸汽、生活热水的综合性能源站',
     status: '运行中',
     efficiency: '90%',
     savings: '40%',
-    image: '/api/placeholder/400/250'
+    image: '/proj3.jpg'
   }
 ]
 
@@ -98,17 +99,17 @@ const awards = [
     description: '地热能多能协同数字孪生技术'
   },
   {
-    year: '2023',
+    year: '2024',
     title: '陕西省科技进步一等奖',
     description: '地热能高效开发利用关键技术'
   },
   {
-    year: '2022',
+    year: '2024',
     title: '中国地热能产业创新奖',
     description: '地热能智慧运维系统'
   },
   {
-    year: '2021',
+    year: '2023',
     title: '清洁能源技术突破奖',
     description: '地热能新材料技术应用'
   }
@@ -193,10 +194,13 @@ export function Achievements() {
                 viewport={{ once: true }}
                 className='bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300'
               >
-                <div className='aspect-video bg-gradient-to-br from-geothermal-blue to-geothermal-green flex items-center justify-center'>
-                  <div className='text-white text-lg font-semibold'>
-                    项目展示图
-                  </div>
+                <div className='relative aspect-video overflow-hidden'>
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className='object-cover'
+                  />
                 </div>
 
                 <div className='p-6'>

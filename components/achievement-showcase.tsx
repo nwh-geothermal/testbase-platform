@@ -58,7 +58,7 @@ const achievements: Achievement[] = [
     description:
       '建成了集实时监测、智能分析、预警预报于一体的智能化地热监测系统，实现了地热资源的精准管理和优化配置，大幅提升了运维效率。',
     image: '/api/placeholder/800/600',
-    date: '2023年12月',
+    date: '2024年12月',
     highlights: [
       '24小时实时监测',
       '智能预警系统',
@@ -73,7 +73,7 @@ const achievements: Achievement[] = [
     description:
       '与国内外20余家高等院校和科研院所建立了深度合作关系，形成了产学研一体化的协同创新体系，推动了地热能技术的产业化发展。',
     image: '/api/placeholder/800/600',
-    date: '2023年11月',
+    date: '2024年11月',
     highlights: [
       '合作院校20+家',
       '联合研发项目15个',
@@ -88,7 +88,7 @@ const achievements: Achievement[] = [
     description:
       '主导制定了地热能开发利用行业标准5项，参与国家标准制定3项，为行业规范化发展提供了重要支撑，推动了地热能产业的健康发展。',
     image: '/api/placeholder/800/600',
-    date: '2023年10月',
+    date: '2024年10月',
     highlights: [
       '行业标准5项',
       '国家标准3项',
@@ -103,7 +103,7 @@ const achievements: Achievement[] = [
     description:
       '与德国、冰岛等地热能发达国家开展深度合作，引进先进技术和管理经验，提升了我国地热能技术的国际竞争力和影响力。',
     image: '/api/placeholder/800/600',
-    date: '2023年9月',
+    date: '2024年9月',
     highlights: [
       '国际合作项目8个',
       '技术引进5项',
@@ -118,7 +118,7 @@ const achievements: Achievement[] = [
     description:
       '成功实施了多个绿色低碳示范项目，累计减少碳排放10万吨，为实现碳达峰碳中和目标贡献了重要力量，获得了政府和社会的高度认可。',
     image: '/api/placeholder/800/600',
-    date: '2023年8月',
+    date: '2024年8月',
     highlights: [
       '示范项目12个',
       '减少碳排放10万吨',
