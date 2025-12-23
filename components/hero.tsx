@@ -4,15 +4,16 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronRight, Play, Link2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { getAssetPath } from '@/lib/utils'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { NewsFloat } from '@/components/news-float'
 
 export function Hero() {
   const carouselImages = [
-    { src: '/overview.jpg', alt: 'Demo 2.5-D' },
-    { src: '/meeting1.jpg', alt: 'Meeting with experts' },
-    { src: '/lab1.jpg', alt: 'Testbase lab' }
+    { src: getAssetPath('/overview.jpg'), alt: 'Demo 2.5-D' },
+    { src: getAssetPath('/meeting1.jpg'), alt: 'Meeting with experts' },
+    { src: getAssetPath('/lab1.jpg'), alt: 'Testbase lab' }
   ]
   const [currentSlide, setCurrentSlide] = useState(0)
 

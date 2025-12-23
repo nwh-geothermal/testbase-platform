@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { getAssetPath } from '@/lib/utils'
 import {
   Award,
   FileText,
@@ -72,7 +73,7 @@ const projectShowcase = [
     status: '运行中',
     efficiency: '95%',
     savings: '30%',
-    image: '/proj1.jpg'
+    image: getAssetPath('/proj1.jpg')
   },
   {
     title: '西安高新区中央创新区6号能源站项目',
@@ -80,7 +81,7 @@ const projectShowcase = [
     status: '运行中',
     efficiency: '93%',
     savings: '35%',
-    image: '/proj2.jpg'
+    image: getAssetPath('/proj2.jpg')
   },
   {
     title: '西安市儿童医院天然气能源管理项目',
@@ -88,7 +89,7 @@ const projectShowcase = [
     status: '运行中',
     efficiency: '90%',
     savings: '40%',
-    image: '/proj3.jpg'
+    image: getAssetPath('/proj3.jpg')
   }
 ]
 

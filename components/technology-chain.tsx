@@ -1,7 +1,9 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import { ArrowRight, FlaskConical, Cpu, Wrench, Rocket } from 'lucide-react'
+import { getAssetPath } from '@/lib/utils'
 
 const technologyStages = [
   {
@@ -150,10 +152,13 @@ export function TechnologyChain() {
               </div>
             </div>
             <div className='bg-white/10 rounded-2xl p-6 backdrop-blur-sm'>
-              <div className='aspect-video bg-white/20 rounded-xl flex items-center justify-center'>
-                <div className='text-2xl font-bold opacity-60'>
-                  数字孪生系统演示
-                </div>
+              <div className='relative aspect-video overflow-hidden rounded-xl bg-white/20'>
+                <Image
+                  src={getAssetPath('/twin1.png')}
+                  alt='数字孪生系统演示'
+                  fill
+                  className='object-cover'
+                />
               </div>
             </div>
           </div>
