@@ -3,6 +3,7 @@
 import React from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { getAssetPath } from '@/lib/utils'
 import {
   Card,
   CardContent,
@@ -179,7 +180,7 @@ export function AboutUs({ compact = false }: AboutUsProps) {
                 {/* Image Section */}
                 <div className='relative h-64 lg:h-auto order-1 lg:order-2'>
                   <Image
-                    src='/building1.jpg'
+                    src={getAssetPath('/building1.jpg')}
                     alt='中国电建西北院'
                     fill
                     className='object-cover object-[0%_10%]'

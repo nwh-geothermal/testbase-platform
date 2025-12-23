@@ -1,7 +1,9 @@
 'use client'
 
 import React, { useState } from 'react'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
+import { getAssetPath } from '@/lib/utils'
 import {
   Card,
   CardContent,
@@ -42,7 +44,7 @@ const achievements: Achievement[] = [
     category: '技术创新',
     description:
       '成功研发出地热能高效开发关键技术，实现了地热能利用效率提升35%，为行业发展奠定了重要基础。该技术已获得国家发明专利，并在多个示范项目中得到成功应用。',
-    image: '/api/placeholder/800/600',
+    image: getAssetPath('/sim1.jpg'),
     date: '2024年1月',
     highlights: [
       '获得国家发明专利',
@@ -54,10 +56,10 @@ const achievements: Achievement[] = [
   {
     id: '2',
     title: '智能化地热监测系统建设',
-    category: '智慧运维',
+    category: '智能监测',
     description:
       '建成了集实时监测、智能分析、预警预报于一体的智能化地热监测系统，实现了地热资源的精准管理和优化配置，大幅提升了运维效率。',
-    image: '/api/placeholder/800/600',
+    image: getAssetPath('/model1.png'),
     date: '2024年12月',
     highlights: [
       '24小时实时监测',
@@ -69,10 +71,10 @@ const achievements: Achievement[] = [
   {
     id: '3',
     title: '产学研合作平台建设',
-    category: '合作创新',
+    category: '合作转化',
     description:
       '与国内外20余家高等院校和科研院所建立了深度合作关系，形成了产学研一体化的协同创新体系，推动了地热能技术的产业化发展。',
-    image: '/api/placeholder/800/600',
+    image: getAssetPath('/meeting2.jpg'),
     date: '2024年11月',
     highlights: [
       '合作院校20+家',
@@ -83,41 +85,26 @@ const achievements: Achievement[] = [
   },
   {
     id: '4',
-    title: '地热能标准化体系建设',
-    category: '标准制定',
+    title: '地热高效利用新材料研发',
+    category: '材料研发',
     description:
-      '主导制定了地热能开发利用行业标准5项，参与国家标准制定3项，为行业规范化发展提供了重要支撑，推动了地热能产业的健康发展。',
-    image: '/api/placeholder/800/600',
+      '围绕地热开发关键部件与耐高温材料开展研发，依托开放式实验平台与现场试验井，完成复合隔热中心管等新材料设计验证；配套多类仪器设备与数值模拟，形成从实验室测试到工程示范的全链条材料研发能力。',
+    image: getAssetPath('/tube1.jpg'),
     date: '2024年10月',
     highlights: [
-      '行业标准5项',
-      '国家标准3项',
-      '标准应用覆盖率85%',
-      '行业影响力显著'
+      '复合隔热中心管',
+      '实验平台支撑',
+      '现场试验验证',
+      '多类仪器设备'
     ]
   },
   {
     id: '5',
-    title: '国际合作项目成果',
-    category: '国际合作',
-    description:
-      '与德国、冰岛等地热能发达国家开展深度合作，引进先进技术和管理经验，提升了我国地热能技术的国际竞争力和影响力。',
-    image: '/api/placeholder/800/600',
-    date: '2024年9月',
-    highlights: [
-      '国际合作项目8个',
-      '技术引进5项',
-      '专家交流50+人次',
-      '国际标准参与制定2项'
-    ]
-  },
-  {
-    id: '6',
     title: '绿色低碳示范项目',
     category: '示范应用',
     description:
       '成功实施了多个绿色低碳示范项目，累计减少碳排放10万吨，为实现碳达峰碳中和目标贡献了重要力量，获得了政府和社会的高度认可。',
-    image: '/api/placeholder/800/600',
+    image: getAssetPath('/engine1.jpg'),
     date: '2024年8月',
     highlights: [
       '示范项目12个',
@@ -128,28 +115,19 @@ const achievements: Achievement[] = [
   }
 ]
 
-const categories = [
-  '全部',
-  '技术创新',
-  '智慧运维',
-  '合作创新',
-  '标准制定',
-  '国际合作',
-  '示范应用'
-]
+const categories = ['技术创新', '智能监测', '合作转化', '材料研发', '示范应用']
 
 const categoryIcons = {
   技术创新: Lightbulb,
-  智慧运维: TrendingUp,
-  合作创新: Users,
-  标准制定: Award,
-  国际合作: Globe,
+  智能监测: TrendingUp,
+  合作转化: Users,
+  材料研发: Award,
   示范应用: Building
 }
 
 export function AchievementShowcase() {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [selectedCategory, setSelectedCategory] = useState('全部')
+  const [selectedCategory, setSelectedCategory] = useState(categories[0])
 
   const filteredAchievements =
     selectedCategory === '全部'
@@ -158,13 +136,36 @@ export function AchievementShowcase() {
           (achievement) => achievement.category === selectedCategory
         )
 
+  const moveCategory = (direction: 'next' | 'prev') => {
+    setSelectedCategory((prevCategory) => {
+      const currentIdx = categories.indexOf(prevCategory)
+      const safeIdx = currentIdx === -1 ? 0 : currentIdx
+      const nextIdx =
+        direction === 'next'
+          ? (safeIdx + 1) % categories.length
+          : (safeIdx - 1 + categories.length) % categories.length
+      return categories[nextIdx]
+    })
+    setCurrentIndex(0)
+  }
+
   const nextSlide = () => {
+    if (filteredAchievements.length <= 1) {
+      moveCategory('next')
+      return
+    }
+
     setCurrentIndex((prevIndex) =>
       prevIndex === filteredAchievements.length - 1 ? 0 : prevIndex + 1
     )
   }
 
   const prevSlide = () => {
+    if (filteredAchievements.length <= 1) {
+      moveCategory('prev')
+      return
+    }
+
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? filteredAchievements.length - 1 : prevIndex - 1
     )
@@ -242,28 +243,40 @@ export function AchievementShowcase() {
                   >
                     {/* Image Section */}
                     <div className='md:w-1/2 h-64 md:h-full relative overflow-hidden'>
-                      <div className='w-full h-full bg-gradient-to-br from-geothermal-blue to-geothermal-green flex items-center justify-center'>
-                        <div className='text-center text-white'>
-                          {categoryIcons[
-                            currentAchievement.category as keyof typeof categoryIcons
-                          ] &&
-                            React.createElement(
-                              categoryIcons[
-                                currentAchievement.category as keyof typeof categoryIcons
-                              ],
-                              {
-                                className: 'w-24 h-24 mb-4 mx-auto opacity-50'
-                              }
-                            )}
-                          <p className='text-lg opacity-75'>成果展示图片</p>
-                          <Badge
-                            variant='secondary'
-                            className='mt-2 bg-white/20 text-white border-white/30'
-                          >
-                            {currentAchievement.category}
-                          </Badge>
+                      {currentAchievement.image ? (
+                        <Image
+                          src={currentAchievement.image}
+                          alt={currentAchievement.title}
+                          fill
+                          sizes='(max-width: 768px) 100vw, 50vw'
+                          priority={currentIndex === 0}
+                          loading={currentIndex === 0 ? 'eager' : 'lazy'}
+                          className='object-cover'
+                        />
+                      ) : (
+                        <div className='w-full h-full bg-gradient-to-br from-geothermal-blue to-geothermal-green flex items-center justify-center'>
+                          <div className='text-center text-white'>
+                            {categoryIcons[
+                              currentAchievement.category as keyof typeof categoryIcons
+                            ] &&
+                              React.createElement(
+                                categoryIcons[
+                                  currentAchievement.category as keyof typeof categoryIcons
+                                ],
+                                {
+                                  className: 'w-24 h-24 mb-4 mx-auto opacity-50'
+                                }
+                              )}
+                            <p className='text-lg opacity-75'>成果展示图片</p>
+                            <Badge
+                              variant='secondary'
+                              className='mt-2 bg-white/20 text-white border-white/30'
+                            >
+                              {currentAchievement.category}
+                            </Badge>
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
 
                     {/* Content Section */}
@@ -357,96 +370,6 @@ export function AchievementShowcase() {
               </div>
             </Card>
           )}
-        </div>
-      </section>
-
-      {/* Achievement Grid */}
-      <section className='pb-20 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-7xl mx-auto'>
-          <Card className='border-0 bg-transparent shadow-none'>
-            <CardHeader className='text-center pb-12'>
-              <CardTitle className='text-3xl font-bold text-gray-900'>
-                全部成果一览
-              </CardTitle>
-              <CardDescription className='text-lg'>
-                点击任意成果卡片查看详细信息
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
-                {filteredAchievements.map((achievement, index) => (
-                  <motion.div
-                    key={achievement.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.6 }}
-                  >
-                    <Card
-                      className={`overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 border-0 shadow-lg ${
-                        index === currentIndex
-                          ? 'ring-2 ring-geothermal-orange'
-                          : ''
-                      }`}
-                      onClick={() => goToSlide(index)}
-                    >
-                      <div className='h-48 bg-gradient-to-br from-geothermal-blue to-geothermal-green flex items-center justify-center'>
-                        <div className='text-center text-white'>
-                          {categoryIcons[
-                            achievement.category as keyof typeof categoryIcons
-                          ] &&
-                            React.createElement(
-                              categoryIcons[
-                                achievement.category as keyof typeof categoryIcons
-                              ],
-                              {
-                                className: 'w-16 h-16 opacity-75 mb-2'
-                              }
-                            )}
-                          <Badge
-                            variant='secondary'
-                            className='bg-white/20 text-white border-white/30'
-                          >
-                            {achievement.category}
-                          </Badge>
-                        </div>
-                      </div>
-
-                      <CardContent className='p-6'>
-                        <div className='flex items-center justify-between mb-3'>
-                          <Badge variant='outline' className='text-xs'>
-                            {achievement.category}
-                          </Badge>
-                          <div className='flex items-center gap-1 text-gray-500 text-xs'>
-                            <Calendar className='w-3 h-3' />
-                            {achievement.date}
-                          </div>
-                        </div>
-
-                        <CardTitle className='text-lg mb-3 line-clamp-2'>
-                          {achievement.title}
-                        </CardTitle>
-
-                        <CardDescription className='text-sm line-clamp-3 mb-4'>
-                          {achievement.description}
-                        </CardDescription>
-
-                        <Separator className='mb-4' />
-
-                        <div className='flex items-center justify-between'>
-                          <Badge variant='outline' className='text-xs'>
-                            {achievement.highlights.length} 个亮点
-                          </Badge>
-                          <div className='text-geothermal-orange text-sm font-medium hover:text-geothermal-orange/80'>
-                            查看详情 →
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </section>
     </div>

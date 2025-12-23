@@ -36,7 +36,7 @@ const features = [
   },
   {
     icon: Monitor,
-    title: '智慧运维',
+    title: '智能监测',
     description: '基于物联网和AI的智能监控系统，实现设备预测性维护',
     color: 'text-purple-600',
     bgColor: 'bg-purple-600/10'

@@ -49,11 +49,13 @@ export function Hero() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className='text-lg md:text-xl xl:text-2xl text-black/70 mb-[clamp(1.25rem,2.5vw,2.25rem)] lg:mb-[clamp(1.75rem,3.5vh,2.75rem)] max-w-2xl leading-relaxed lg:max-w-none'
+                className='text-base md:text-lg xl:text-xl text-black/70 mb-[clamp(1.25rem,2.5vw,2.25rem)] lg:mb-[clamp(1.75rem,3.5vh,2.75rem)] max-w-2xl leading-relaxed lg:max-w-none'
               >
                 集技术研发、产品试制、工艺改进、投资评价于一体的
                 <br />
-                <strong>地热能全产业链技术集成与推广基地</strong>
+                <strong className='block font-semibold'>
+                  地热能全产业链技术集成与推广基地
+                </strong>
                 <div className='mt-4 font-semibold text-black/90'>
                   <Link
                     href='http://www.sxsdrxh.com/'
