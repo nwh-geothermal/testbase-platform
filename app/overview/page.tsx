@@ -13,6 +13,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { AboutUs } from '@/components/about-us'
+import { LeafletMap } from '@/components/leaflet-map'
 import {
   MapPin,
   Building2,
@@ -98,6 +99,8 @@ export default function OverviewPage() {
       color: 'bg-orange-500'
     }
   ]
+
+  const mapMarker: [number, number] = [34.135451, 108.917928]
 
   const talentStats = [
     { label: '博士研究生', value: '12', detail: '地热工程、地质资源方向' },
@@ -189,19 +192,12 @@ export default function OverviewPage() {
             <CardContent>
               {/* Map Container */}
               <div className='relative w-full h-[400px] rounded-xl overflow-hidden border border-gray-200'>
-                {/* Interactive Map - OpenStreetMap embed */}
-                <div className='w-full h-full relative'>
-                  <iframe
-                    width='100%'
-                    height='100%'
-                    style={{ border: 0 }}
-                    src='https://www.openstreetmap.org/export/embed.html?bbox=108.912414%2C34.124466%2C108.932414%2C34.144466&layer=mapnik&marker=34.134466%2C108.922414'
-                    title='OpenStreetMap - 陕西省地热能开发利用技术中试基地'
-                    allowFullScreen
-                    loading='lazy'
-                    tabIndex={-1}
-                  ></iframe>
-                </div>
+                <LeafletMap
+                  center={mapMarker}
+                  marker={mapMarker}
+                  markerLabel='陕西省地热能开发利用技术中试基地'
+                  className='h-full w-full'
+                />
               </div>
             </CardContent>
           </Card>
