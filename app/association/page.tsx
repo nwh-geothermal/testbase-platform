@@ -90,27 +90,18 @@ export default function AssociationPage() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className='mt-8 flex flex-wrap items-center justify-center gap-3'
-          >
-            <Badge className='bg-white/70 text-geothermal-blue border border-geothermal-blue/20'>
-              产业协作平台
-            </Badge>
-            <Badge className='bg-white/70 text-geothermal-orange border border-geothermal-orange/20'>
-              政策与标准推进
-            </Badge>
-            <Badge className='bg-white/70 text-geothermal-green border border-geothermal-green/20'>
-              会员服务生态
-            </Badge>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             className='mt-10 flex flex-col sm:flex-row gap-4 justify-center'
           >
-            <Button asChild className='bg-geothermal-blue hover:bg-geothermal-blue/90'>
-              <Link href='http://www.sxsdrxh.com/' target='_blank' rel='noreferrer'>
+            <Button
+              asChild
+              className='bg-geothermal-blue hover:bg-geothermal-blue/90'
+            >
+              <Link
+                href='http://www.sxsdrxh.com/'
+                target='_blank'
+                rel='noreferrer'
+              >
                 访问官方网站
               </Link>
             </Button>
@@ -169,8 +160,12 @@ export default function AssociationPage() {
           viewport={{ once: true }}
         >
           <div className='text-center mb-10'>
-            <h2 className='text-3xl md:text-4xl font-bold text-gray-900'>核心职能</h2>
-            <p className='text-gray-600 mt-3'>围绕技术、资源与产业生态，提供系统性行业服务。</p>
+            <h2 className='text-3xl md:text-4xl font-bold text-gray-900'>
+              核心职能
+            </h2>
+            <p className='text-gray-600 mt-3'>
+              围绕技术、资源与产业生态，提供系统性行业服务。
+            </p>
           </div>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
             {functions.map((item) => (
@@ -182,7 +177,9 @@ export default function AssociationPage() {
                   <div className='text-lg font-semibold text-gray-900'>
                     {item.title}
                   </div>
-                  <p className='text-sm text-gray-600 leading-relaxed'>{item.desc}</p>
+                  <p className='text-sm text-gray-600 leading-relaxed'>
+                    {item.desc}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -202,7 +199,9 @@ export default function AssociationPage() {
             <CardContent className='space-y-4'>
               {services.map((service) => (
                 <div key={service.label} className='space-y-2'>
-                  <div className='font-semibold text-gray-900'>{service.label}</div>
+                  <div className='font-semibold text-gray-900'>
+                    {service.label}
+                  </div>
                   <p className='text-sm text-gray-600 leading-relaxed'>
                     {service.detail}
                   </p>
@@ -219,7 +218,9 @@ export default function AssociationPage() {
               {initiatives.map((item) => (
                 <div key={item} className='flex items-start gap-3'>
                   <div className='w-2 h-2 mt-2 rounded-full bg-geothermal-orange' />
-                  <p className='text-sm text-gray-700 leading-relaxed'>{item}</p>
+                  <p className='text-sm text-gray-700 leading-relaxed'>
+                    {item}
+                  </p>
                 </div>
               ))}
             </CardContent>
@@ -231,9 +232,8 @@ export default function AssociationPage() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className='grid grid-cols-1 lg:grid-cols-3 gap-6'
         >
-          <Card className='border-0 shadow-lg lg:col-span-2'>
+          <Card className='border-0 shadow-lg'>
             <CardHeader>
               <CardTitle className='text-2xl'>联系我们</CardTitle>
             </CardHeader>
@@ -242,24 +242,6 @@ export default function AssociationPage() {
               <div>地址：陕西省西安市（以官网信息为准）</div>
               <div>邮箱：geothermal-base@nwh.cn</div>
               <div>官网：www.sxsdrxh.com</div>
-            </CardContent>
-          </Card>
-          <Card className='border-0 shadow-lg bg-white'>
-            <CardHeader>
-              <CardTitle className='text-2xl'>快速入口</CardTitle>
-            </CardHeader>
-            <CardContent className='flex flex-col gap-3'>
-              <Button variant='outline' asChild>
-                <Link href='http://www.sxsdrxh.com/' target='_blank' rel='noreferrer'>
-                  官方网站
-                </Link>
-              </Button>
-              <Button variant='outline' asChild>
-                <Link href='/cooperation'>产学研合作</Link>
-              </Button>
-              <Button variant='outline' asChild>
-                <Link href='/services'>服务清单</Link>
-              </Button>
             </CardContent>
           </Card>
         </motion.div>
