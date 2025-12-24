@@ -34,7 +34,7 @@ interface Achievement {
   description: string
   image: string
   date: string
-  highlights: string[]
+  highlights: Array<string | { title: string; detail: string }>
 }
 
 const achievements: Achievement[] = [
@@ -112,17 +112,40 @@ const achievements: Achievement[] = [
       '节约能源成本30%',
       '获得政府表彰'
     ]
+  },
+  {
+    id: '6',
+    title: '多能协同数字孪生技术',
+    category: '数字孪生',
+    description:
+      '构建地热能开发利用全流程数字孪生模型，实现物理世界与数字世界的实时交互，通过数据驱动的智能决策，优化系统运行效率。',
+    image: getAssetPath('/twin1.png'),
+    date: '2024年6月',
+    highlights: [
+      { title: '实时监控', detail: '24/7全天候系统状态监控' },
+      { title: '预测维护', detail: 'AI驱动的设备健康预测' },
+      { title: '优化调度', detail: '智能能源调度与分配' },
+      { title: '决策支持', detail: '数据驱动的运营决策' }
+    ]
   }
 ]
 
-const categories = ['技术创新', '智能监测', '合作转化', '材料研发', '示范应用']
+const categories = [
+  '技术创新',
+  '智能监测',
+  '合作转化',
+  '材料研发',
+  '示范应用',
+  '数字孪生'
+]
 
 const categoryIcons = {
   技术创新: Lightbulb,
   智能监测: TrendingUp,
   合作转化: Users,
   材料研发: Award,
-  示范应用: Building
+  示范应用: Building,
+  数字孪生: Globe
 }
 
 export function AchievementShowcase() {
@@ -312,20 +335,32 @@ export function AchievementShowcase() {
                         </h4>
                         <div className='space-y-3'>
                           {currentAchievement.highlights.map(
-                            (highlight, index) => (
-                              <motion.div
-                                key={index}
-                                initial={{ opacity: 0, x: 20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                                className='flex items-center space-x-3'
-                              >
-                                <div className='w-2 h-2 bg-geothermal-orange rounded-full'></div>
-                                <Badge variant='outline' className='text-sm'>
-                                  {highlight}
-                                </Badge>
-                              </motion.div>
-                            )
+                            (highlight, index) => {
+                              const highlightData =
+                                typeof highlight === 'string'
+                                  ? { title: highlight, detail: '' }
+                                  : highlight
+
+                              return (
+                                <motion.div
+                                  key={index}
+                                  initial={{ opacity: 0, x: 20 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ delay: index * 0.1 }}
+                                  className='flex items-center space-x-3'
+                                >
+                                  <div className='w-2 h-2 bg-geothermal-orange rounded-full'></div>
+                                  <Badge variant='outline' className='text-sm'>
+                                    {highlightData.title}
+                                  </Badge>
+                                  {highlightData.detail ? (
+                                    <span className='text-sm text-gray-600'>
+                                      {highlightData.detail}
+                                    </span>
+                                  ) : null}
+                                </motion.div>
+                              )
+                            }
                           )}
                         </div>
                       </div>
