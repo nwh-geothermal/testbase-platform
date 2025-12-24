@@ -1,9 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import Image from 'next/image'
 import { ArrowRight, FlaskConical, Cpu, Wrench, Rocket } from 'lucide-react'
-import { getAssetPath } from '@/lib/utils'
 
 const technologyStages = [
   {
@@ -117,52 +115,6 @@ export function TechnologyChain() {
           </div>
         </div>
 
-        {/* 数字孪生技术展示 */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          viewport={{ once: true }}
-          className='mt-20 bg-gradient-to-r from-geothermal-blue to-geothermal-green rounded-3xl p-8 text-white'
-        >
-          <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 items-center'>
-            <div>
-              <h3 className='text-3xl font-bold mb-6'>多能协同数字孪生技术</h3>
-              <p className='text-lg mb-6 leading-relaxed opacity-90'>
-                构建地热能开发利用全流程数字孪生模型，实现物理世界与数字世界的实时交互，
-                通过数据驱动的智能决策，优化系统运行效率。
-              </p>
-              <div className='grid grid-cols-2 gap-4'>
-                <div className='bg-white/20 rounded-xl p-4'>
-                  <h4 className='font-semibold mb-2'>实时监控</h4>
-                  <p className='text-sm opacity-80'>24/7全天候系统状态监控</p>
-                </div>
-                <div className='bg-white/20 rounded-xl p-4'>
-                  <h4 className='font-semibold mb-2'>预测维护</h4>
-                  <p className='text-sm opacity-80'>AI驱动的设备健康预测</p>
-                </div>
-                <div className='bg-white/20 rounded-xl p-4'>
-                  <h4 className='font-semibold mb-2'>优化调度</h4>
-                  <p className='text-sm opacity-80'>智能能源调度与分配</p>
-                </div>
-                <div className='bg-white/20 rounded-xl p-4'>
-                  <h4 className='font-semibold mb-2'>决策支持</h4>
-                  <p className='text-sm opacity-80'>数据驱动的运营决策</p>
-                </div>
-              </div>
-            </div>
-            <div className='bg-white/10 rounded-2xl p-6 backdrop-blur-sm'>
-              <div className='relative aspect-video overflow-hidden rounded-xl bg-white/20'>
-                <Image
-                  src={getAssetPath('/twin1.png')}
-                  alt='数字孪生系统演示'
-                  fill
-                  className='object-cover'
-                />
-              </div>
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   )
