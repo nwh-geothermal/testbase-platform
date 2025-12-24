@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronRight, Play, Link2 } from 'lucide-react'
+import { ChevronRight, Play } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getAssetPath } from '@/lib/utils'
@@ -56,18 +56,6 @@ export function Hero() {
                 <strong className='block font-semibold'>
                   地热能全产业链技术集成与推广基地
                 </strong>
-                <div className='mt-4 font-semibold text-black/90'>
-                  <Link
-                    href='http://www.sxsdrxh.com/'
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='inline-flex items-center gap-1 underline underline-offset-4 decoration-geothermal-orange/70 hover:text-geothermal-orange'
-                  >
-                    <Link2 className='w-4 h-4' />
-                    陕西省地热协会
-                  </Link>
-                  <span className='ml-1'>成员</span>
-                </div>
               </motion.div>
 
               <motion.div

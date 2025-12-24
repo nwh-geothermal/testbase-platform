@@ -34,10 +34,11 @@ const navigationItems: NavigationItem[] = [
   { name: '首页', href: '/' },
   { name: '基地概览', href: '/overview' },
   { name: '成果展示', href: '/achievements' },
-  { name: '产学研合作', href: '/cooperation' },
-  { name: '数据共享', href: '/datapool' },
   { name: '服务清单', href: '/services' },
-  { name: '加入平台', href: '/join' }
+  { name: '数据共享', href: '/datapool' },
+  { name: '加入平台', href: '/join' },
+  { name: '产学研合作', href: '/cooperation' },
+  { name: '地热协会', href: '/association' }
 ]
 
 export function Navigation() {
@@ -81,23 +82,40 @@ export function Navigation() {
 
   return (
     <nav className='bg-white/95 backdrop-blur-sm shadow-lg sticky top-0 z-50'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        <div className='flex justify-between h-16'>
-          <div className='flex items-center'>
-            <Link href='/' className='flex items-center space-x-2'>
+      <div className='max-w-7xl mx-auto px-1 sm:px-3 lg:px-4'>
+        <div className='flex h-16 items-center justify-center gap-6 flex-nowrap'>
+          <div className='flex items-center flex-nowrap'>
+            <Link
+              href='/'
+              className='flex items-center space-x-2 whitespace-nowrap'
+            >
               <div className='w-8 h-8 bg-geothermal-gradient rounded-lg flex items-center justify-center'>
                 <div className='text-white font-bold text-lg'>G</div>
               </div>
-              <div className='text-xl font-bold text-geothermal-gray'>
+              <div className='text-xl font-bold text-geothermal-gray whitespace-nowrap'>
                 陕西省地热能开发利用技术中试基地
               </div>
             </Link>
+            <span className='ml-3 hidden min-w-[180px] items-center justify-between gap-2 rounded-full border border-geothermal-orange/20 bg-geothermal-orange/5 px-4 py-1 text-xs font-semibold text-geothermal-blue lg:inline-flex whitespace-nowrap flex-nowrap'>
+              <span className='text-black/70'>依托单位</span>
+              <span className='h-3 w-px bg-geothermal-orange/70' />
+              <Link
+                href='http://www.sxsdrxh.com/'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='transition-colors hover:text-geothermal-orange'
+              >
+                陕西省地热协会
+              </Link>
+            </span>
           </div>
 
+          <div className='flex-1' />
+
           {/* Desktop Navigation */}
-          <div className='hidden md:flex items-center space-x-8'>
+          <div className='hidden md:flex items-center space-x-8 flex-nowrap md:ml-10 lg:ml-16'>
             <NavigationMenu>
-              <NavigationMenuList className='space-x-6'>
+              <NavigationMenuList className='space-x-6 flex-nowrap whitespace-nowrap'>
                 {allNavigationItems.map((item) => (
                   <NavigationMenuItem key={item.name}>
                     {item.submenu ? (
