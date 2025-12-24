@@ -8,27 +8,6 @@ import { Database, ShoppingCart, ShieldCheck, Globe2 } from 'lucide-react'
 
 const dataSets = [
   {
-    title: '测井数据',
-    desc: '地温梯度、岩性、含水层参数等原始/解释数据集',
-    level: '收费',
-    price: '¥9,800 起/套',
-    highlights: ['深度分段', '高分辨率曲线', '随井编号追溯']
-  },
-  {
-    title: '地热资源评价报告',
-    desc: '不同盆地/断陷带的资源潜力、热储参数与勘探建议',
-    level: '收费',
-    price: '¥6,500 起/份',
-    highlights: ['可视化图件', '可研建议', '更新频率：季度']
-  },
-  {
-    title: '生产运行数据',
-    desc: '地热井回灌/产出流量、井口温度、能效比等运行指标',
-    level: '收费',
-    price: '¥4,200 起/月',
-    highlights: ['实时监测', '异常预警', 'API 调用']
-  },
-  {
     title: '行业标准与规范',
     desc: '国家/行业/地方标准全文与条款速查',
     level: '免费',
@@ -41,6 +20,27 @@ const dataSets = [
     level: '免费',
     price: '免费公开',
     highlights: ['方案结构', '设备选型', '性能指标']
+  },
+  {
+    title: '地热资源评价报告',
+    desc: '不同盆地/断陷带的资源潜力、热储参数与勘探建议',
+    level: '收费',
+    price: '¥6,500 起/份',
+    highlights: ['可视化图件', '可研建议', '更新频率：季度']
+  },
+  {
+    title: '测井数据',
+    desc: '地温梯度、岩性、含水层参数等原始/解释数据集',
+    level: '收费',
+    price: '¥9,800 起/套',
+    highlights: ['深度分段', '高分辨率曲线', '随井编号追溯']
+  },
+  {
+    title: '生产运行数据',
+    desc: '地热井回灌/产出流量、井口温度、能效比等运行指标',
+    level: '收费',
+    price: '¥4,200 起/月',
+    highlights: ['实时监测', '异常预警', 'API 调用']
   }
 ]
 
