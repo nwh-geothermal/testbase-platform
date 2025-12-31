@@ -1,5 +1,9 @@
 import { JoinForm } from '@/components/join-form'
 
 export default function JoinPage() {
-  return <JoinForm />
+  return (
+    <div className='min-h-screen bg-gray-50'>
+      <JoinForm />
+    </div>
+  )
 }

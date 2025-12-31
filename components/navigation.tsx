@@ -82,7 +82,7 @@ export function Navigation() {
 
   return (
     <nav className='bg-white/95 backdrop-blur-sm shadow-lg sticky top-0 z-50'>
-      <div className='max-w-7xl mx-auto px-1 sm:px-3 lg:px-4'>
+      <div className='max-w-[90rem] mx-auto px-1 sm:px-3 lg:px-4'>
         <div className='flex h-16 items-center justify-center gap-6 flex-nowrap'>
           <div className='flex items-center flex-nowrap'>
             <Link
@@ -96,7 +96,7 @@ export function Navigation() {
                 陕西省地热能开发利用技术中试基地
               </div>
             </Link>
-            <span className='ml-3 hidden min-w-[180px] items-center justify-between gap-2 rounded-full border border-geothermal-orange/20 bg-geothermal-orange/5 px-4 py-1 text-xs font-semibold text-geothermal-blue lg:inline-flex whitespace-nowrap flex-nowrap'>
+            <span className='ml-3 hidden min-w-[130px] items-center justify-center gap-1.5 rounded-full border border-geothermal-orange/20 bg-geothermal-orange/5 px-3 py-1 text-xs font-semibold text-geothermal-blue lg:inline-flex whitespace-nowrap flex-nowrap'>
               <span className='text-black/70'>依托单位</span>
               <span className='h-3 w-px bg-geothermal-orange/70' />
               <Link

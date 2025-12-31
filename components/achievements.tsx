@@ -22,7 +22,7 @@ const achievements = [
       '地热能高效换热技术专利',
       '数字孪生系统控制专利',
       '智能运维算法专利',
-      '新材料应用技术专利'
+      '一种地热储量的动态计算方法'
     ],
     color: 'text-yellow-600',
     bgColor: 'bg-yellow-100'
@@ -46,7 +46,7 @@ const achievements = [
     title: '人才培养',
     count: '100+',
     description: '培养地热能领域专业人才',
-    items: ['博士研究生 5 人', '硕士研究生 30 余人', '工程技术人员 150 余人'],
+    items: ['博士研究生 5 人', '硕士研究生 20 余人', '工程技术人员 80 余人'],
     color: 'text-green-600',
     bgColor: 'bg-green-100'
   },
@@ -101,8 +101,8 @@ const awards = [
   },
   {
     year: '2024',
-    title: '陕西省科技进步一等奖',
-    description: '地热能高效开发利用关键技术'
+    title: '陕西省科技进步二等奖',
+    description: '中深层地热能高效开发利用关键技术与规模化应用推广'
   },
   {
     year: '2024',
@@ -119,7 +119,7 @@ const awards = [
 export function Achievements() {
   return (
     <section id='achievements' className='section-padding bg-white'>
-      <div className='max-w-7xl mx-auto'>
+      <div className='max-w-[90rem] mx-auto'>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -128,7 +128,7 @@ export function Achievements() {
           className='text-center mb-16'
         >
           <h2 className='text-4xl md:text-5xl font-bold text-geothermal-gray mb-6'>
-            科研成果展示
+            科研成果
           </h2>
           <p className='text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed'>
             通过持续创新和技术攻关，在地热能开发利用领域取得了一系列重要突破，
@@ -181,9 +181,12 @@ export function Achievements() {
           viewport={{ once: true }}
           className='mb-16'
         >
-          <h3 className='text-3xl font-bold text-geothermal-gray mb-8 text-center'>
-            示范项目展示
+          <h3 className='text-4xl md:text-5xl font-bold text-geothermal-gray mb-6 text-center'>
+            示范项目
           </h3>
+          <p className='text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8 text-center'>
+            通过项目建设与运营，验证关键技术路线与系统方案，形成可复制推广的应用案例
+          </p>
 
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
             {projectShowcase.map((project, index) => (

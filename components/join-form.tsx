@@ -293,12 +293,19 @@ export function JoinForm() {
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 to-blue-50'>
       {/* Header */}
-      <section className='pt-20 pb-16 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-7xl mx-auto text-center'>
+      <div className='relative py-20 overflow-hidden mb-12'>
+        <div
+          className='absolute inset-0 opacity-90'
+          style={{
+            background:
+              'radial-gradient(circle at 20% 25%, rgba(255, 255, 255, 0.35), transparent 32%), radial-gradient(circle at 80% 10%, rgba(255, 182, 116, 0.35), transparent 28%), linear-gradient(135deg, #f8fafc, #e0f2fe 45%, #fde68a)'
+          }}
+        ></div>
+        <div className='relative z-10 max-w-[90rem] mx-auto px-3 sm:px-4 lg:px-6 text-center'>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className='text-4xl md:text-6xl font-bold text-gray-900 mb-6'
+            className='text-4xl md:text-5xl font-bold text-gray-900 mb-6'
           >
             加入平台
           </motion.h1>
@@ -311,9 +318,9 @@ export function JoinForm() {
             欢迎优秀企业加入陕西省地热能开发利用技术中试基地平台，共同推动地热能产业发展
           </motion.p>
         </div>
-      </section>
+      </div>
 
-      <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20'>
+      <div className='max-w-6xl mx-auto px-3 sm:px-4 lg:px-6 pb-20'>
         {/* Registration Form */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

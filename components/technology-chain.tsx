@@ -37,7 +37,7 @@ const technologyStages = [
 export function TechnologyChain() {
   return (
     <section className='section-padding bg-white'>
-      <div className='max-w-7xl mx-auto'>
+      <div className='max-w-[90rem] mx-auto'>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

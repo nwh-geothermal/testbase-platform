@@ -55,7 +55,7 @@ export default function DataPoolPage() {
               'radial-gradient(circle at 20% 25%, rgba(255, 255, 255, 0.35), transparent 32%), radial-gradient(circle at 80% 10%, rgba(255, 182, 116, 0.35), transparent 28%), linear-gradient(135deg, #f8fafc, #e0f2fe 45%, #fde68a)'
           }}
         ></div>
-        <div className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center'>
+        <div className='relative max-w-[90rem] mx-auto px-3 sm:px-4 lg:px-6 flex flex-col items-center text-center'>
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}

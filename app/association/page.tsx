@@ -63,7 +63,7 @@ const initiatives = [
 export default function AssociationPage() {
   return (
     <div className='min-h-screen bg-gradient-to-br from-slate-50 to-amber-50'>
-      <div className='relative py-20 overflow-hidden'>
+      <div className='relative py-20 overflow-hidden mb-12'>
         <div
           className='absolute inset-0 opacity-90'
           style={{
@@ -71,7 +71,7 @@ export default function AssociationPage() {
               'radial-gradient(circle at 15% 25%, rgba(255, 255, 255, 0.35), transparent 32%), radial-gradient(circle at 80% 10%, rgba(255, 182, 116, 0.35), transparent 28%), linear-gradient(135deg, #f8fafc, #fff7ed 45%, #fde68a)'
           }}
         ></div>
-        <div className='relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+        <div className='relative z-10 max-w-6xl mx-auto px-3 sm:px-4 lg:px-6 text-center'>
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -112,7 +112,7 @@ export default function AssociationPage() {
         </div>
       </div>
 
-      <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16'>
+      <div className='max-w-6xl mx-auto px-3 sm:px-4 lg:px-6 py-16 space-y-16'>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

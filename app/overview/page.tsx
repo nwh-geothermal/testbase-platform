@@ -73,7 +73,7 @@ export default function OverviewPage() {
     {
       icon: FlaskConical,
       title: '基础研究',
-      description: '地热能理论研究，关键问题探索',
+      description: '地热能关键理论问题探索',
       achievements: ['热传导机理研究', '地质结构分析', '能量转换理论'],
       color: 'bg-blue-500'
     },
@@ -87,7 +87,7 @@ export default function OverviewPage() {
     {
       icon: Wrench,
       title: '技术熟化',
-      description: '技术工程化验证，系统集成优化',
+      description: '技术工程化验证',
       achievements: ['工艺流程优化', '设备性能测试', '系统集成验证'],
       color: 'bg-green-500'
     },
@@ -120,7 +120,7 @@ export default function OverviewPage() {
               'radial-gradient(circle at 20% 25%, rgba(255, 255, 255, 0.35), transparent 32%), radial-gradient(circle at 80% 10%, rgba(255, 182, 116, 0.35), transparent 28%), linear-gradient(135deg, #f8fafc, #e0f2fe 45%, #fde68a)'
           }}
         ></div>
-        <div className='relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+        <div className='relative z-10 max-w-[90rem] mx-auto px-3 sm:px-4 lg:px-6 text-center'>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -140,7 +140,7 @@ export default function OverviewPage() {
       </div>
 
       {/* Main Content */}
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
+      <div className='max-w-[90rem] mx-auto px-3 sm:px-4 lg:px-6 py-16'>
         {/* Base Image Display */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}

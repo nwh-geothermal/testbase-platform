@@ -4,7 +4,7 @@ import { Mail, Phone, Printer, MapPin, Globe } from 'lucide-react'
 export function Footer() {
   return (
     <footer className='bg-geothermal-gray text-white'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
+      <div className='max-w-[90rem] mx-auto px-3 sm:px-4 lg:px-6 py-12'>
         <div className='grid grid-cols-1 md:grid-cols-4 gap-8'>
           {/* 基地介绍 */}
           <div className='col-span-1 md:col-span-2'>

@@ -50,8 +50,8 @@ type AboutUsProps = {
 }
 
 export function AboutUs({ compact = false }: AboutUsProps) {
-  const sectionPadding = compact ? '' : 'px-4 sm:px-6 lg:px-8'
-  const sectionContainer = compact ? 'w-full' : 'max-w-7xl mx-auto'
+  const sectionPadding = compact ? '' : 'px-3 sm:px-4 lg:px-6'
+  const sectionContainer = compact ? 'w-full' : 'max-w-[90rem] mx-auto'
 
   const statisticsData = [
     {
@@ -62,7 +62,7 @@ export function AboutUs({ compact = false }: AboutUsProps) {
     },
     {
       icon: Users,
-      value: '3000+',
+      value: '6000+',
       label: '专业人才',
       color: 'bg-geothermal-blue'
     },
@@ -74,8 +74,8 @@ export function AboutUs({ compact = false }: AboutUsProps) {
     },
     {
       icon: Star,
-      value: 'AAA',
-      label: '信用等级',
+      value: '4',
+      label: '综合甲级资质',
       color: 'bg-gradient-to-r from-geothermal-orange to-geothermal-blue'
     }
   ]
