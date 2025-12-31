@@ -20,6 +20,7 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion'
+import { ImageStrip } from '@/components/image-strip'
 import {
   Calendar,
   FileText,
@@ -250,8 +251,8 @@ export default function ServiceDashboard() {
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 to-blue-50'>
-      <div className='pt-20 pb-16 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-7xl mx-auto'>
+      <div className='pt-20 pb-16 px-3 sm:px-4 lg:px-6'>
+        <div className='max-w-[90rem] mx-auto'>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -262,6 +263,11 @@ export default function ServiceDashboard() {
               跟踪您的服务申请状态和试验进度
             </p>
           </motion.div>
+
+          <ImageStrip
+            images={['/proj2.jpg', '/engine1.jpg', '/lab3.jpg']}
+            className='pb-8'
+          />
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}

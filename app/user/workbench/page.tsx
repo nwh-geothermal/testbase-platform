@@ -35,6 +35,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { ImageStrip } from '@/components/image-strip'
 
 type MediaAsset = {
   name: string
@@ -320,7 +321,7 @@ export default function WorkbenchPage() {
     <div className='min-h-screen bg-gradient-to-br from-amber-50 via-white to-blue-50'>
       <div className='relative overflow-hidden'>
         <div className='absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,159,64,0.15),transparent_25%),radial-gradient(circle_at_80%_0%,rgba(56,189,248,0.18),transparent_30%)]' />
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12 relative'>
+        <div className='max-w-[90rem] mx-auto px-3 sm:px-4 lg:px-6 pt-20 pb-12 relative'>
           <div className='grid md:grid-cols-2 gap-4 mb-8'>
             <Card className='shadow-sm border-none bg-white/80 backdrop-blur col-span-1'>
               <CardHeader className='pb-2'>
@@ -366,6 +367,11 @@ export default function WorkbenchPage() {
               </CardContent>
             </Card>
           </div>
+
+          <ImageStrip
+            images={['/meeting1.jpg', '/lab1.jpg', '/engine1.jpg']}
+            className='pb-10'
+          />
 
           <div className='grid lg:grid-cols-3 gap-6 pb-16'>
             <div className='lg:col-span-2 space-y-6'>
