@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import {
   Search,
@@ -36,6 +37,7 @@ interface Service {
   features: string[]
   icon: React.ReactNode
   category: string
+  image: string
 }
 
 const services: Service[] = [
@@ -53,7 +55,8 @@ const services: Service[] = [
       '风险评估报告'
     ],
     icon: <Search className='w-8 h-8' />,
-    category: '勘探评估'
+    category: '勘探评估',
+    image: '/proj1.jpg'
   },
   {
     id: 'drilling-process',
@@ -69,7 +72,8 @@ const services: Service[] = [
       '井身质量检测'
     ],
     icon: <Hammer className='w-8 h-8' />,
-    category: '钻井技术'
+    category: '钻井技术',
+    image: '/engine1.jpg'
   },
   {
     id: 'numerical-simulation',
@@ -84,7 +88,8 @@ const services: Service[] = [
       '参数敏感性分析'
     ],
     icon: <BarChart3 className='w-8 h-8' />,
-    category: '数值模拟'
+    category: '数值模拟',
+    image: '/sim1.jpg'
   },
   {
     id: 'multi-energy-system',
@@ -99,7 +104,8 @@ const services: Service[] = [
       '经济性分析'
     ],
     icon: <Zap className='w-8 h-8' />,
-    category: '系统集成'
+    category: '系统集成',
+    image: '/lab1.jpg'
   },
   {
     id: 'intelligent-control',
@@ -114,7 +120,8 @@ const services: Service[] = [
       '维护计划制定'
     ],
     icon: <Cpu className='w-8 h-8' />,
-    category: '智能运维'
+    category: '智能运维',
+    image: '/lab2.jpg'
   },
   {
     id: 'rock-soil-testing',
@@ -129,7 +136,8 @@ const services: Service[] = [
       '物性参数报告'
     ],
     icon: <TestTube className='w-8 h-8' />,
-    category: '实验测试'
+    category: '实验测试',
+    image: '/lab3.jpg'
   },
   {
     id: 'thermal-mapping',
@@ -144,7 +152,8 @@ const services: Service[] = [
       '规划建议报告'
     ],
     icon: <MapPin className='w-8 h-8' />,
-    category: '资源评价'
+    category: '资源评价',
+    image: '/proj2.jpg'
   },
   {
     id: 'system-performance',
@@ -159,7 +168,8 @@ const services: Service[] = [
       '年度性能报告'
     ],
     icon: <Gauge className='w-8 h-8' />,
-    category: '性能监测'
+    category: '性能监测',
+    image: '/proj3.jpg'
   }
 ]
 
@@ -308,8 +318,15 @@ export function ServicesList() {
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 to-blue-50'>
       {/* Header */}
-      <section className='pt-20 pb-16 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-7xl mx-auto text-center'>
+      <div className='relative py-20 overflow-hidden mb-12'>
+        <div
+          className='absolute inset-0 opacity-90'
+          style={{
+            background:
+              'radial-gradient(circle at 20% 25%, rgba(255, 255, 255, 0.35), transparent 32%), radial-gradient(circle at 80% 10%, rgba(255, 182, 116, 0.35), transparent 28%), linear-gradient(135deg, #f8fafc, #e0f2fe 45%, #fde68a)'
+          }}
+        ></div>
+        <div className='relative z-10 max-w-[90rem] mx-auto px-3 sm:px-4 lg:px-6 text-center'>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -326,43 +343,9 @@ export function ServicesList() {
             专业的地热能技术服务，覆盖从勘探评估到运维管理的全产业链
           </motion.p>
         </div>
-      </section>
+      </div>
 
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20'>
-        {/* Category Overview */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className='mb-16'
-        >
-          <Card>
-            <CardHeader>
-              <CardTitle className='text-3xl text-center'>服务体系</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
-                {categories.map((category) => (
-                  <Card
-                    key={category}
-                    className='text-center bg-gradient-to-br from-geothermal-blue/10 to-geothermal-green/10 border-gray-200'
-                  >
-                    <CardContent className='p-4'>
-                      <div className='text-lg font-semibold text-gray-800 mb-1'>
-                        {category}
-                      </div>
-                      <div className='text-sm text-gray-600'>
-                        {services.filter((s) => s.category === category).length}{' '}
-                        项服务
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-
+      <div className='max-w-[90rem] mx-auto px-3 sm:px-4 lg:px-6 pb-20'>
         {/* Services Grid */}
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
           {services.map((service, index) => (
@@ -393,24 +376,40 @@ export function ServicesList() {
                 </CardHeader>
 
                 <CardContent className='flex-1 flex flex-col'>
-                  <CardDescription className='text-gray-600 mb-6 leading-relaxed'>
-                    {service.description}
-                  </CardDescription>
+                  <div className='grid gap-6 lg:grid-cols-[minmax(0,1fr)_200px]'>
+                    <div>
+                      <CardDescription className='text-gray-600 mb-6 leading-relaxed'>
+                        {service.description}
+                      </CardDescription>
 
-                  <div className='space-y-3 flex-1'>
-                    <h4 className='text-sm font-semibold text-gray-900'>
-                      服务内容：
-                    </h4>
-                    <div className='space-y-2'>
-                      {service.features.map((feature, featureIndex) => (
-                        <div
-                          key={featureIndex}
-                          className='flex items-center space-x-2'
-                        >
-                          <div className='w-2 h-2 bg-geothermal-green rounded-full flex-shrink-0'></div>
-                          <div className='text-sm text-gray-700'>{feature}</div>
+                      <div className='space-y-3'>
+                        <h4 className='text-sm font-semibold text-gray-900'>
+                          服务内容：
+                        </h4>
+                        <div className='space-y-2'>
+                          {service.features.map((feature, featureIndex) => (
+                            <div
+                              key={featureIndex}
+                              className='flex items-center space-x-2'
+                            >
+                              <div className='w-2 h-2 bg-geothermal-green rounded-full flex-shrink-0'></div>
+                              <div className='text-sm text-gray-700'>
+                                {feature}
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                      ))}
+                      </div>
+                    </div>
+
+                    <div className='relative h-40 w-full overflow-hidden rounded-xl lg:h-full lg:min-h-[220px]'>
+                      <Image
+                        src={service.image}
+                        alt={service.title}
+                        fill
+                        className='object-cover transition-transform duration-500 group-hover:scale-105'
+                      />
+                      <div className='absolute inset-0 bg-white/10' />
                     </div>
                   </div>
 
