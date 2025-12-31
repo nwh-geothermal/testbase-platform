@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   ArrowRight,
@@ -80,6 +80,88 @@ const formatAddressSpacing = (value?: string) => {
   return value.replace(/省(?!\s)/g, '省 ')
 }
 
+const COMPANY_CATEGORY_RULES = [
+  {
+    label: '科研与教育',
+    keywords: ['研究院', '研究所', '学院', '大学', '高校', '实验室']
+  },
+  {
+    label: '工程与勘察',
+    keywords: ['工程', '勘察', '设计', '施工', '建设', '勘测', '监理', '检测']
+  },
+  {
+    label: '装备与材料',
+    keywords: [
+      '装备',
+      '设备',
+      '制造',
+      '仪器',
+      '仪表',
+      '材料',
+      '管材',
+      '机电',
+      '钻井'
+    ]
+  },
+  {
+    label: '数字化与软件',
+    keywords: [
+      '软件',
+      '信息',
+      '数据',
+      '数字',
+      '系统',
+      '云',
+      '智能',
+      '仿真',
+      '孪生',
+      '网络'
+    ]
+  },
+  {
+    label: '能源与环境',
+    keywords: ['能源', '地热', '热能', '电力', '清洁', '环保', '油气', '煤']
+  },
+  {
+    label: '服务与咨询',
+    keywords: ['咨询', '服务', '运营', '管理', '培训', '投资', '文化']
+  }
+]
+
+const COMPANY_NATURE_RULES = [
+  { label: '央企', keywords: ['央企', '国家能源', '中国', '中石', '中煤', '中电'] },
+  { label: '省属国企', keywords: ['省属', '省级', '省国资'] },
+  { label: '国企', keywords: ['国有', '国企', '国资'] },
+  { label: '科研院校', keywords: ['研究院', '研究所', '学院', '大学', '高校'] },
+  { label: '民营', keywords: ['民营', '有限公司', '有限责任', '股份'] }
+]
+
+const getCompanyCategory = (profile: CompanyProfile) => {
+  const text = [
+    profile.company_type,
+    profile.company_name,
+    profile.business_scope,
+    profile.main_products,
+    profile.technical_capabilities
+  ]
+    .filter(Boolean)
+    .join(' ')
+  const match = COMPANY_CATEGORY_RULES.find((rule) =>
+    rule.keywords.some((keyword) => text.includes(keyword))
+  )
+  return match?.label || '其他'
+}
+
+const getCompanyNature = (profile: CompanyProfile) => {
+  const text = [profile.company_type, profile.company_name]
+    .filter(Boolean)
+    .join(' ')
+  const match = COMPANY_NATURE_RULES.find((rule) =>
+    rule.keywords.some((keyword) => text.includes(keyword))
+  )
+  return match?.label || '其他'
+}
+
 export function CooperationForm() {
   const [companyProfiles, setCompanyProfiles] = useState<CompanyProfile[]>([])
   const [loadingCompany, setLoadingCompany] = useState(false)
@@ -89,6 +171,8 @@ export function CooperationForm() {
   const [dialogImageIndex, setDialogImageIndex] = useState(0)
   const [columnCount, setColumnCount] = useState(1)
   const [companyFilter, setCompanyFilter] = useState('')
+  const [companyCategoryFilter, setCompanyCategoryFilter] = useState('全部')
+  const [companyNatureFilter, setCompanyNatureFilter] = useState('全部')
   const [currentPage, setCurrentPage] = useState(1)
   const [pdfPreviewIndex, setPdfPreviewIndex] = useState<number | null>(null)
   const PAGE_SIZE = 9
@@ -243,9 +327,29 @@ export function CooperationForm() {
 
   useEffect(() => {
     setCurrentPage(1)
-  }, [companyFilter, companyProfiles.length])
+  }, [companyFilter, companyCategoryFilter, companyNatureFilter, companyProfiles.length])
+
+  const categoryOptions = useMemo(() => {
+    const set = new Set<string>()
+    companyProfiles.forEach((profile) => set.add(getCompanyCategory(profile)))
+    return ['全部', ...Array.from(set).sort()]
+  }, [companyProfiles])
+
+  const natureOptions = useMemo(() => {
+    const set = new Set<string>()
+    companyProfiles.forEach((profile) => set.add(getCompanyNature(profile)))
+    return ['全部', ...Array.from(set).sort()]
+  }, [companyProfiles])
 
   const filteredProfiles = companyProfiles.filter((profile) => {
+    const category = getCompanyCategory(profile)
+    const nature = getCompanyNature(profile)
+    if (companyCategoryFilter !== '全部' && category !== companyCategoryFilter) {
+      return false
+    }
+    if (companyNatureFilter !== '全部' && nature !== companyNatureFilter) {
+      return false
+    }
     if (!companyFilter.trim()) return true
     const query = companyFilter.trim().toLowerCase()
     const haystack = [
@@ -745,8 +849,15 @@ export function CooperationForm() {
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 to-blue-50'>
       {/* Header */}
-      <section className='pt-20 pb-16 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-7xl mx-auto text-center px-4 sm:px-6 lg:px-8'>
+      <div className='relative py-20 overflow-hidden mb-12'>
+        <div
+          className='absolute inset-0 opacity-90'
+          style={{
+            background:
+              'radial-gradient(circle at 20% 25%, rgba(255, 255, 255, 0.35), transparent 32%), radial-gradient(circle at 80% 10%, rgba(255, 182, 116, 0.35), transparent 28%), linear-gradient(135deg, #f8fafc, #e0f2fe 45%, #fde68a)'
+          }}
+        ></div>
+        <div className='relative z-10 max-w-[90rem] mx-auto px-3 sm:px-4 lg:px-6 text-center'>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -763,9 +874,9 @@ export function CooperationForm() {
             携手共建地热能技术创新生态，推动产业化发展与技术转化
           </motion.p>
         </div>
-      </section>
+      </div>
 
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20'>
+      <div className='max-w-[90rem] mx-auto px-3 sm:px-4 lg:px-6 pb-20'>
         <div className='grid grid-cols-1 gap-12'>
           {/* Left Column - Information */}
           <motion.div
@@ -806,6 +917,42 @@ export function CooperationForm() {
                         </button>
                       )}
                     </div>
+                  </div>
+                </div>
+                <div className='mb-6 space-y-3'>
+                  <div className='flex flex-wrap items-center gap-2 text-base text-gray-600'>
+                    <span className='font-semibold text-gray-800'>企业分类</span>
+                    {categoryOptions.map((option) => (
+                      <button
+                        key={option}
+                        type='button'
+                        onClick={() => setCompanyCategoryFilter(option)}
+                        className={`rounded-full px-3 py-1 text-sm font-medium transition ${
+                          companyCategoryFilter === option
+                            ? 'bg-geothermal-orange text-white shadow-sm'
+                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        }`}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                  <div className='flex flex-wrap items-center gap-2 text-base text-gray-600'>
+                    <span className='font-semibold text-gray-800'>企业性质</span>
+                    {natureOptions.map((option) => (
+                      <button
+                        key={option}
+                        type='button'
+                        onClick={() => setCompanyNatureFilter(option)}
+                        className={`rounded-full px-3 py-1 text-sm font-medium transition ${
+                          companyNatureFilter === option
+                            ? 'bg-geothermal-blue text-white shadow-sm'
+                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        }`}
+                      >
+                        {option}
+                      </button>
+                    ))}
                   </div>
                 </div>
                 {loadingCompany ? (
