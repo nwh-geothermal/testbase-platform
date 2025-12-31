@@ -4,13 +4,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { getAssetPath } from '@/lib/utils'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -19,7 +13,6 @@ import {
   ChevronRight,
   Award,
   TrendingUp,
-  Users,
   Lightbulb,
   Building,
   Globe,
@@ -40,55 +33,35 @@ interface Achievement {
 const achievements: Achievement[] = [
   {
     id: '1',
-    title: '地热能高效开发关键技术突破',
+    title: '三维热储模型',
     category: '技术创新',
     description:
-      '成功研发出地热能高效开发关键技术，实现了地热能利用效率提升35%，为行业发展奠定了重要基础。该技术已获得国家发明专利，并在多个示范项目中得到成功应用。',
-    image: getAssetPath('/sim1.jpg'),
+      '集成深部地震反射、广域电磁及地温测井等多源异构数据，研发震、电交叉约束与协同反演技术，构建六千米级深度与米级空间分辨率的三维热储模型，为钻井设计提供技术支撑。',
+    image: getAssetPath('/sim6.png'),
     date: '2024年1月',
     highlights: [
-      '获得国家发明专利',
-      '效率提升35%',
-      '5个示范项目应用',
+      '获得发明专利',
+      '效率提升15%',
+      '3个示范项目应用',
       '技术达到国际先进水平'
     ]
   },
   {
     id: '2',
-    title: '智能化地热监测系统建设',
-    category: '智能监测',
+    title: '自洁式原生污水冷热双供集成能源机组',
+    category: '设备制造',
     description:
-      '建成了集实时监测、智能分析、预警预报于一体的智能化地热监测系统，实现了地热资源的精准管理和优化配置，大幅提升了运维效率。',
-    image: getAssetPath('/model1.png'),
+      '该机组的研制成功填补了国内自洁式原生污水余热利用装备技术空白。具备深度自洁、高度集成、高效节能、智能调控等特点，适用于高污染•高热量场景，可实现“热回收-智能调控•碳管理"全过程管控。',
+    image: getAssetPath('/prod1.jpg'),
     date: '2024年12月',
-    highlights: [
-      '24小时实时监测',
-      '智能预警系统',
-      '运维效率提升50%',
-      '覆盖10个监测点'
-    ]
-  },
-  {
-    id: '3',
-    title: '产学研合作平台建设',
-    category: '合作转化',
-    description:
-      '与国内外20余家高等院校和科研院所建立了深度合作关系，形成了产学研一体化的协同创新体系，推动了地热能技术的产业化发展。',
-    image: getAssetPath('/meeting2.jpg'),
-    date: '2024年11月',
-    highlights: [
-      '合作院校20+家',
-      '联合研发项目15个',
-      '培养专业人才200+人',
-      '技术转化率90%'
-    ]
+    highlights: ['深度自洁', '高效节能', '智能调控', '全流程管控']
   },
   {
     id: '4',
-    title: '地热高效利用新材料研发',
+    title: '高分子复合隔热中心管',
     category: '材料研发',
     description:
-      '围绕地热开发关键部件与耐高温材料开展研发，依托开放式实验平台与现场试验井，完成复合隔热中心管等新材料设计验证；配套多类仪器设备与数值模拟，形成从实验室测试到工程示范的全链条材料研发能力。',
+      '自研一种适用于中深层地热井下换热系统的新型高分子复合隔热中心管。该中心管以PERT-II材料为基材，隔热凝胶、玻璃纤维为中间体材料，使其具备管材“两高两低”特性，即耐高温（105°C+）、高强度、低成本、低导热',
     image: getAssetPath('/tube1.jpg'),
     date: '2024年10月',
     highlights: [
@@ -96,6 +69,21 @@ const achievements: Achievement[] = [
       '实验平台支撑',
       '现场试验验证',
       '多类仪器设备'
+    ]
+  },
+  {
+    id: '4-2',
+    title: '高导热率固井材料',
+    category: '材料研发',
+    description:
+      '高导热率固井材料以石墨烯、纳米AI203、纳米SiO2导热填料体系为核心，具备高导热（导热率为2.0W/（m•°C）特性。该材料适用地热井下高压高温环境，能够为地热储层封固提供“零渗漏、长寿命“保障。',
+    image: getAssetPath('/expt1.jpg'),
+    date: '2024年9月',
+    highlights: [
+      '导热率≈2.0W/(m·°C)',
+      '高温高压适用',
+      '稠化时间110min',
+      '零渗漏、长寿命'
     ]
   },
   {
@@ -115,10 +103,10 @@ const achievements: Achievement[] = [
   },
   {
     id: '6',
-    title: '多能协同数字孪生技术',
-    category: '数字孪生',
+    title: '地热多能互补智慧管控平台',
+    category: '数字平台',
     description:
-      '构建地热能开发利用全流程数字孪生模型，实现物理世界与数字世界的实时交互，通过数据驱动的智能决策，优化系统运行效率。',
+      '具备实时监测、智能调控、分析决策等能力，实现能源高效调度，故障预判与快速诊断，精细化能耗管理，实现地热系统智能管控，降低运行成本。',
     image: getAssetPath('/twin1.png'),
     date: '2024年6月',
     highlights: [
@@ -127,25 +115,32 @@ const achievements: Achievement[] = [
       { title: '优化调度', detail: '智能能源调度与分配' },
       { title: '决策支持', detail: '数据驱动的运营决策' }
     ]
+  },
+  {
+    id: '6-2',
+    title: '地热能耦合协同功能规划设计平台',
+    category: '数字平台',
+    description:
+      '实现区域“地热能+”系统规划，“一园一策”的精细化设计，多维量化供能系统科学评估。',
+    image: getAssetPath('/platform3.png'),
+    date: '2024年5月',
+    highlights: [
+      '数据治理标准化',
+      '多源数据融合',
+      '共享服务能力',
+      '全生命周期支撑'
+    ]
   }
 ]
 
-const categories = [
-  '技术创新',
-  '智能监测',
-  '合作转化',
-  '材料研发',
-  '示范应用',
-  '数字孪生'
-]
+const categories = ['材料研发', '技术创新', '设备制造', '数字平台', '示范应用']
 
 const categoryIcons = {
   技术创新: Lightbulb,
-  智能监测: TrendingUp,
-  合作转化: Users,
+  设备制造: TrendingUp,
   材料研发: Award,
   示范应用: Building,
-  数字孪生: Globe
+  数字平台: Globe
 }
 
 export function AchievementShowcase() {
@@ -159,22 +154,8 @@ export function AchievementShowcase() {
           (achievement) => achievement.category === selectedCategory
         )
 
-  const moveCategory = (direction: 'next' | 'prev') => {
-    setSelectedCategory((prevCategory) => {
-      const currentIdx = categories.indexOf(prevCategory)
-      const safeIdx = currentIdx === -1 ? 0 : currentIdx
-      const nextIdx =
-        direction === 'next'
-          ? (safeIdx + 1) % categories.length
-          : (safeIdx - 1 + categories.length) % categories.length
-      return categories[nextIdx]
-    })
-    setCurrentIndex(0)
-  }
-
   const nextSlide = () => {
     if (filteredAchievements.length <= 1) {
-      moveCategory('next')
       return
     }
 
@@ -185,7 +166,6 @@ export function AchievementShowcase() {
 
   const prevSlide = () => {
     if (filteredAchievements.length <= 1) {
-      moveCategory('prev')
       return
     }
 
@@ -199,12 +179,21 @@ export function AchievementShowcase() {
   }
 
   const currentAchievement = filteredAchievements[currentIndex]
+  const isCoupledPlatform =
+    currentAchievement?.title === '地热能耦合协同功能规划设计平台'
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-gray-50 to-blue-50'>
+    <div className='bg-gradient-to-br from-gray-50 to-blue-50'>
       {/* Header */}
-      <section className='pt-20 pb-16 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-7xl mx-auto text-center'>
+      <div className='relative py-20 overflow-hidden mb-12'>
+        <div
+          className='absolute inset-0 opacity-90'
+          style={{
+            background:
+              'radial-gradient(circle at 20% 25%, rgba(255, 255, 255, 0.35), transparent 32%), radial-gradient(circle at 80% 10%, rgba(255, 182, 116, 0.35), transparent 28%), linear-gradient(135deg, #f8fafc, #e0f2fe 45%, #fde68a)'
+          }}
+        ></div>
+        <div className='relative z-10 max-w-[90rem] mx-auto px-3 sm:px-4 lg:px-6 text-center'>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -218,14 +207,14 @@ export function AchievementShowcase() {
             transition={{ delay: 0.1 }}
             className='text-xl text-gray-600 max-w-3xl mx-auto'
           >
-            展示技术创新、标准制定等方面取得的重要成果
+            展示材料、技术、设备、平台建设等方面的重要成果
           </motion.p>
         </div>
-      </section>
+      </div>
 
       {/* Category Filter */}
-      <section className='pb-8 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-7xl mx-auto'>
+      <section className='pb-8 px-3 sm:px-4 lg:px-6'>
+        <div className='max-w-[90rem] mx-auto'>
           <div className='flex flex-wrap justify-center gap-3'>
             {categories.map((category) => (
               <Button
@@ -250,8 +239,8 @@ export function AchievementShowcase() {
       </section>
 
       {/* Main Carousel */}
-      <section className='pb-16 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-7xl mx-auto'>
+      <section className='pb-16 px-3 sm:px-4 lg:px-6'>
+        <div className='max-w-[90rem] mx-auto'>
           {filteredAchievements.length > 0 && (
             <Card className='overflow-hidden border-0 shadow-2xl'>
               <div className='relative h-[600px] md:h-[500px]'>
@@ -274,7 +263,9 @@ export function AchievementShowcase() {
                           sizes='(max-width: 768px) 100vw, 50vw'
                           priority={currentIndex === 0}
                           loading={currentIndex === 0 ? 'eager' : 'lazy'}
-                          className='object-cover'
+                          className={`object-cover ${
+                            isCoupledPlatform ? 'object-[0%_center]' : ''
+                          }`}
                         />
                       ) : (
                         <div className='w-full h-full bg-gradient-to-br from-geothermal-blue to-geothermal-green flex items-center justify-center'>
