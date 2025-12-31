@@ -88,6 +88,42 @@ export function Hero() {
                 </Button>
               </motion.div>
 
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.55 }}
+                className='mb-[clamp(1.5rem,3vw,2.5rem)] lg:mb-[clamp(1.5rem,3vh,2.25rem)]'
+              >
+                <div className='mt-4 grid gap-3 sm:grid-cols-3'>
+                  {[
+                    {
+                      title: '全链条技术集成',
+                      desc: '研发-试制-改进一体推进'
+                    },
+                    {
+                      title: '中试验证平台',
+                      desc: '真实工况验证与评估'
+                    },
+                    {
+                      title: '开放共享生态',
+                      desc: '协同创新与成果转化'
+                    }
+                  ].map((item) => (
+                    <div
+                      key={item.title}
+                      className='rounded-2xl border border-white/70 bg-white/80 px-4 py-3 text-left shadow-sm backdrop-blur'
+                    >
+                      <div className='text-sm font-semibold text-gray-900'>
+                        {item.title}
+                      </div>
+                      <div className='mt-1 text-xs text-gray-600'>
+                        {item.desc}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
               <div className='text-sm text-black/70 lg:text-base lg:text-black/80'>
                 承办单位 -{' '}
                 <Link
