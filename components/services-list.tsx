@@ -28,6 +28,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { useAuth } from '@/lib/auth-hooks'
 import { supabase } from '@/lib/supabase'
+import { getAssetPath } from '@/lib/utils'
 import { toast } from 'sonner'
 
 interface Service {
@@ -56,7 +57,7 @@ const services: Service[] = [
     ],
     icon: <Search className='w-8 h-8' />,
     category: '勘探评估',
-    image: '/proj1.jpg'
+    image: getAssetPath('/proj1.jpg')
   },
   {
     id: 'drilling-process',
@@ -73,7 +74,7 @@ const services: Service[] = [
     ],
     icon: <Hammer className='w-8 h-8' />,
     category: '钻井技术',
-    image: '/engine1.jpg'
+    image: getAssetPath('/engine1.jpg')
   },
   {
     id: 'numerical-simulation',
@@ -89,7 +90,7 @@ const services: Service[] = [
     ],
     icon: <BarChart3 className='w-8 h-8' />,
     category: '数值模拟',
-    image: '/sim1.jpg'
+    image: getAssetPath('/sim1.jpg')
   },
   {
     id: 'multi-energy-system',
@@ -105,7 +106,7 @@ const services: Service[] = [
     ],
     icon: <Zap className='w-8 h-8' />,
     category: '系统集成',
-    image: '/lab1.jpg'
+    image: getAssetPath('/lab1.jpg')
   },
   {
     id: 'intelligent-control',
@@ -121,7 +122,7 @@ const services: Service[] = [
     ],
     icon: <Cpu className='w-8 h-8' />,
     category: '智能运维',
-    image: '/lab2.jpg'
+    image: getAssetPath('/lab2.jpg')
   },
   {
     id: 'rock-soil-testing',
@@ -137,7 +138,7 @@ const services: Service[] = [
     ],
     icon: <TestTube className='w-8 h-8' />,
     category: '实验测试',
-    image: '/lab3.jpg'
+    image: getAssetPath('/lab3.jpg')
   },
   {
     id: 'thermal-mapping',
@@ -153,7 +154,7 @@ const services: Service[] = [
     ],
     icon: <MapPin className='w-8 h-8' />,
     category: '资源评价',
-    image: '/proj2.jpg'
+    image: getAssetPath('/proj2.jpg')
   },
   {
     id: 'system-performance',
@@ -169,7 +170,7 @@ const services: Service[] = [
     ],
     icon: <Gauge className='w-8 h-8' />,
     category: '性能监测',
-    image: '/proj3.jpg'
+    image: getAssetPath('/proj3.jpg')
   }
 ]
 

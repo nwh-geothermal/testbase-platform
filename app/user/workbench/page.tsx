@@ -22,6 +22,7 @@ import {
 } from 'lucide-react'
 import { useAuthContext } from '@/components/auth-provider'
 import { supabase } from '@/lib/supabase'
+import { getAssetPath } from '@/lib/utils'
 import { toast } from 'sonner'
 import {
   Card,
@@ -369,7 +370,11 @@ export default function WorkbenchPage() {
           </div>
 
           <ImageStrip
-            images={['/meeting1.jpg', '/lab1.jpg', '/engine1.jpg']}
+            images={[
+              getAssetPath('/meeting1.jpg'),
+              getAssetPath('/lab1.jpg'),
+              getAssetPath('/engine1.jpg')
+            ]}
             className='pb-10'
           />
 

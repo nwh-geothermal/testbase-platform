@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useAuthContext } from '@/components/auth-provider'
 import { supabase } from '@/lib/supabase'
+import { getAssetPath } from '@/lib/utils'
 import { toast } from 'sonner'
 import {
   Card,
@@ -265,7 +266,11 @@ export default function ServiceDashboard() {
           </motion.div>
 
           <ImageStrip
-            images={['/proj2.jpg', '/engine1.jpg', '/lab3.jpg']}
+            images={[
+              getAssetPath('/proj2.jpg'),
+              getAssetPath('/engine1.jpg'),
+              getAssetPath('/lab3.jpg')
+            ]}
             className='pb-8'
           />
 

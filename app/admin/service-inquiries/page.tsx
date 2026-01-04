@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useAuthContext } from '@/components/auth-provider'
 import { supabase } from '@/lib/supabase'
+import { getAssetPath } from '@/lib/utils'
 import { toast } from 'sonner'
 import {
   Card,
@@ -238,7 +239,11 @@ export default function ServiceInquiriesAdmin() {
           </motion.div>
 
           <ImageStrip
-            images={['/building1.jpg', '/meeting2.jpg', '/lab2.jpg']}
+            images={[
+              getAssetPath('/building1.jpg'),
+              getAssetPath('/meeting2.jpg'),
+              getAssetPath('/lab2.jpg')
+            ]}
             className='pb-8'
           />
 
