@@ -16,7 +16,7 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import { alimamaShuHeiTi } from '@/app/fonts'
+import { alimamaShuHeiTi, miSansRegular } from '@/app/fonts'
 
 interface NavigationItem {
   name: string
@@ -76,19 +76,23 @@ export function Navigation() {
 
   const desktopLinkClass = (href: string) =>
     cn(
-      "relative flex h-[21px] items-center whitespace-nowrap py-0 text-[16px] font-normal leading-[21px] text-white transition-colors duration-200 hover:text-white after:absolute after:bottom-[-6px] after:left-0 after:h-[2px] after:w-full after:rounded-full after:bg-white/85 after:opacity-0 after:transition-opacity after:duration-200 hover:after:opacity-100 [font-family:'MiSans','PingFang_SC','Microsoft_YaHei',sans-serif]",
+      miSansRegular.className,
+      'relative flex h-[21px] items-center whitespace-nowrap py-0 text-[16px] font-normal leading-[21px] text-white transition-colors duration-200 hover:text-white after:absolute after:bottom-[-6px] after:left-0 after:h-[2px] after:w-full after:rounded-full after:bg-white/85 after:opacity-0 after:transition-opacity after:duration-200 hover:after:opacity-100',
       isActive(href) &&
         'text-white after:opacity-100'
     )
 
-  return (
-    <nav className='sticky top-0 z-50 overflow-hidden border-b border-white/10 bg-[linear-gradient(90deg,rgba(34,84,111,0.96)_0%,rgba(74,126,151,0.9)_38%,rgba(60,110,120,0.9)_100%)] shadow-[0_12px_36px_rgba(7,26,41,0.22)] backdrop-blur-md'>
-      <div className='pointer-events-none absolute inset-0'>
-        <div className='absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(255,255,255,0.18),transparent_24%),radial-gradient(circle_at_52%_0%,rgba(255,255,255,0.14),transparent_30%),linear-gradient(118deg,transparent_0%,transparent_18%,rgba(255,255,255,0.12)_18%,rgba(255,255,255,0.06)_31%,transparent_31%,transparent_50%,rgba(255,255,255,0.08)_50%,rgba(255,255,255,0.03)_63%,transparent_63%)]' />
-        <div className='absolute -bottom-8 left-[22%] h-24 w-80 -translate-x-1/2 rounded-full bg-white/10 blur-3xl' />
-        <div className='absolute -right-16 top-[-3.5rem] h-32 w-72 rounded-full bg-[#8fc3da]/20 blur-3xl' />
-      </div>
+  const isHomePage = pathname === '/'
 
+  return (
+    <nav
+      className={cn(
+        'z-50 overflow-hidden',
+        isHomePage
+          ? 'absolute inset-x-0 top-0 bg-transparent'
+          : 'sticky top-0 bg-transparent'
+      )}
+    >
       <div className='nav-shell relative'>
         <div className='flex h-16 items-center gap-4 md:h-[78px] md:gap-6'>
           <div className='flex min-w-0 items-center gap-3 md:flex-none lg:gap-6'>
@@ -110,7 +114,10 @@ export function Navigation() {
                 href='http://www.sxsdrxh.com/'
                 target='_blank'
                 rel='noopener noreferrer'
-                className="[font-family:'MiSans','PingFang_SC','Microsoft_YaHei',sans-serif] text-[14px] font-normal text-white transition-opacity duration-200 hover:opacity-80"
+                className={cn(
+                  miSansRegular.className,
+                  'text-[14px] font-normal text-white transition-opacity duration-200 hover:opacity-80'
+                )}
               >
                 陕西省地热协会
               </Link>
@@ -216,11 +223,14 @@ export function Navigation() {
                     <div key={item.name} className='space-y-1'>
                       <Link
                         href={item.href}
-                        className={`block px-4 py-3 text-base font-medium rounded-md transition-colors ${
-                          isActive(item.href)
-                            ? 'text-geothermal-orange bg-geothermal-orange/10'
-                            : 'text-gray-700 hover:text-geothermal-orange hover:bg-gray-50'
-                        }`}
+                        className={cn(
+                          miSansRegular.className,
+                          `block rounded-md px-4 py-3 text-base font-normal transition-colors ${
+                            isActive(item.href)
+                              ? 'bg-geothermal-orange/10 text-geothermal-orange'
+                              : 'text-gray-700 hover:bg-gray-50 hover:text-geothermal-orange'
+                          }`
+                        )}
                         onClick={() => setIsOpen(false)}
                       >
                         {item.name}
@@ -231,11 +241,14 @@ export function Navigation() {
                             <Link
                               key={subItem.name}
                               href={subItem.href}
-                              className={`block px-4 py-2 text-sm rounded-md transition-colors ${
-                                isActive(subItem.href)
-                                  ? 'text-geothermal-orange bg-geothermal-orange/10'
-                                  : 'text-gray-600 hover:text-geothermal-orange hover:bg-gray-50'
-                              }`}
+                              className={cn(
+                                miSansRegular.className,
+                                `block rounded-md px-4 py-2 text-sm font-normal transition-colors ${
+                                  isActive(subItem.href)
+                                    ? 'bg-geothermal-orange/10 text-geothermal-orange'
+                                    : 'text-gray-600 hover:bg-gray-50 hover:text-geothermal-orange'
+                                }`
+                              )}
                               onClick={() => setIsOpen(false)}
                             >
                               {subItem.name}
