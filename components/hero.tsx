@@ -5,7 +5,7 @@ import { ChevronRight, Play } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getAssetPath } from '@/lib/utils'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { NewsFloat } from '@/components/news-float'
 
@@ -17,14 +17,6 @@ export function Hero() {
   ]
   const [currentSlide, setCurrentSlide] = useState(0)
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % carouselImages.length)
-    }, 5000)
-
-    return () => clearInterval(intervalId)
-  }, [carouselImages.length])
-
   const mediaWidthClass =
     'w-full max-w-[clamp(14rem,70vw,20rem)] sm:max-w-[clamp(18rem,70vw,26rem)] md:max-w-[clamp(22rem,64vw,32rem)] lg:max-w-[clamp(22rem,36vw,32rem)] xl:max-w-[clamp(26rem,34vw,36rem)] 2xl:max-w-none mx-auto lg:mx-0 xl:ml-auto'
 
@@ -32,7 +24,7 @@ export function Hero() {
     <section className='relative min-h-[100svh] flex items-center justify-center overflow-hidden py-4 sm:py-6 lg:py-10'>
       {/* 背景渐变 */}
       <div className='absolute inset-0 opacity-90 bg-[radial-gradient(circle_at_20%_25%,rgba(255,255,255,0.35),transparent_32%),radial-gradient(circle_at_80%_10%,rgba(255,182,116,0.35),transparent_28%),linear-gradient(135deg,#f8fafc,#e0f2fe_45%,#fde68a)]' />
-      <div className='relative z-10 w-full max-w-[clamp(24rem,95vw,110rem)] mx-auto px-4 sm:px-6 lg:px-28'>
+      <div className='page-shell relative z-10'>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

@@ -138,8 +138,8 @@ const memberCompanies = [
 
 export function Cooperation() {
   return (
-    <section id='cooperation' className='section-padding bg-gray-50'>
-      <div className='max-w-[90rem] mx-auto'>
+    <section id='cooperation' className='page-section bg-gray-50'>
+      <div className='page-shell'>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

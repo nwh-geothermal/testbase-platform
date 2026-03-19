@@ -118,8 +118,8 @@ const awards = [
 
 export function Achievements() {
   return (
-    <section id='achievements' className='section-padding bg-white'>
-      <div className='max-w-[90rem] mx-auto'>
+    <section id='achievements' className='page-section bg-white'>
+      <div className='page-shell'>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -6,14 +6,6 @@ import { Menu, LogOut, LogIn, ClipboardList, Blocks } from 'lucide-react'
 import { useAuthContext } from './auth-provider'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuLink
-} from '@/components/ui/navigation-menu'
 import { usePathname } from 'next/navigation'
 import {
   DropdownMenu,
@@ -23,6 +15,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Separator } from '@/components/ui/separator'
+import { cn } from '@/lib/utils'
+import { alimamaShuHeiTi } from '@/app/fonts'
 
 interface NavigationItem {
   name: string
@@ -80,30 +74,43 @@ export function Navigation() {
     await signOut()
   }
 
+  const desktopLinkClass = (href: string) =>
+    cn(
+      "relative flex h-[21px] items-center whitespace-nowrap py-0 text-[16px] font-normal leading-[21px] text-white transition-colors duration-200 hover:text-white after:absolute after:bottom-[-6px] after:left-0 after:h-[2px] after:w-full after:rounded-full after:bg-white/85 after:opacity-0 after:transition-opacity after:duration-200 hover:after:opacity-100 [font-family:'MiSans','PingFang_SC','Microsoft_YaHei',sans-serif]",
+      isActive(href) &&
+        'text-white after:opacity-100'
+    )
+
   return (
-    <nav className='bg-white/95 backdrop-blur-sm shadow-lg sticky top-0 z-50'>
-      <div className='max-w-[90rem] mx-auto px-1 sm:px-3 lg:px-4'>
-        <div className='flex h-16 items-center justify-center gap-6 flex-nowrap'>
-          <div className='flex items-center flex-nowrap'>
+    <nav className='sticky top-0 z-50 overflow-hidden border-b border-white/10 bg-[linear-gradient(90deg,rgba(34,84,111,0.96)_0%,rgba(74,126,151,0.9)_38%,rgba(60,110,120,0.9)_100%)] shadow-[0_12px_36px_rgba(7,26,41,0.22)] backdrop-blur-md'>
+      <div className='pointer-events-none absolute inset-0'>
+        <div className='absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(255,255,255,0.18),transparent_24%),radial-gradient(circle_at_52%_0%,rgba(255,255,255,0.14),transparent_30%),linear-gradient(118deg,transparent_0%,transparent_18%,rgba(255,255,255,0.12)_18%,rgba(255,255,255,0.06)_31%,transparent_31%,transparent_50%,rgba(255,255,255,0.08)_50%,rgba(255,255,255,0.03)_63%,transparent_63%)]' />
+        <div className='absolute -bottom-8 left-[22%] h-24 w-80 -translate-x-1/2 rounded-full bg-white/10 blur-3xl' />
+        <div className='absolute -right-16 top-[-3.5rem] h-32 w-72 rounded-full bg-[#8fc3da]/20 blur-3xl' />
+      </div>
+
+      <div className='nav-shell relative'>
+        <div className='flex h-16 items-center gap-4 md:h-[78px] md:gap-6'>
+          <div className='flex min-w-0 items-center gap-3 md:flex-none lg:gap-6'>
             <Link
               href='/'
-              className='flex items-center space-x-2 whitespace-nowrap'
+              className='flex min-w-0 items-center whitespace-nowrap md:h-[34px] lg:h-[38px] min-[1920px]:h-[45px]'
             >
-              <div className='w-8 h-8 bg-geothermal-gradient rounded-lg flex items-center justify-center'>
-                <div className='text-white font-bold text-lg'>G</div>
-              </div>
-              <div className='text-xl font-bold text-geothermal-gray whitespace-nowrap'>
-                陕西省地热能开发利用技术中试基地
+              <div
+                className={cn(
+                  alimamaShuHeiTi.className,
+                  'inline-flex h-full items-center text-[15px] font-bold leading-none tracking-[0.015em] text-white sm:text-xl md:whitespace-nowrap md:text-[24px] md:tracking-[0.02em] lg:text-[28px] min-[1920px]:text-[32px] min-[1920px]:tracking-[0.03em]'
+                )}
+              >
+                地热能开发利用技术中试基地
               </div>
             </Link>
-            <span className='ml-3 hidden min-w-[130px] items-center justify-center gap-1.5 rounded-full border border-geothermal-orange/20 bg-geothermal-orange/5 px-3 py-1 text-xs font-semibold text-geothermal-blue lg:inline-flex whitespace-nowrap flex-nowrap'>
-              <span className='text-black/70'>依托单位</span>
-              <span className='h-3 w-px bg-geothermal-orange/70' />
+            <span className="hidden h-[34px] min-w-fit items-center justify-center rounded-[100px] bg-white/20 px-[10px] whitespace-nowrap lg:inline-flex">
               <Link
                 href='http://www.sxsdrxh.com/'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='transition-colors hover:text-geothermal-orange'
+                className="[font-family:'MiSans','PingFang_SC','Microsoft_YaHei',sans-serif] text-[14px] font-normal text-white transition-opacity duration-200 hover:opacity-80"
               >
                 陕西省地热协会
               </Link>
@@ -113,71 +120,33 @@ export function Navigation() {
           <div className='flex-1' />
 
           {/* Desktop Navigation */}
-          <div className='hidden md:flex items-center space-x-8 flex-nowrap md:ml-10 lg:ml-16'>
-            <NavigationMenu>
-              <NavigationMenuList className='space-x-6 flex-nowrap whitespace-nowrap'>
-                {allNavigationItems.map((item) => (
-                  <NavigationMenuItem key={item.name}>
-                    {item.submenu ? (
-                      <>
-                        <NavigationMenuTrigger
-                          className={`transition-colors duration-200 bg-transparent ${
-                            isActive(item.href)
-                              ? 'text-geothermal-orange font-semibold'
-                              : 'text-gray-700 hover:text-geothermal-orange'
-                          }`}
-                        >
-                          {item.name}
-                        </NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                          <div className='w-48 p-2'>
-                            {item.submenu.map((subItem) => (
-                              <NavigationMenuLink key={subItem.name} asChild>
-                                <Link
-                                  href={subItem.href}
-                                  className='block px-4 py-2 text-sm text-gray-700 hover:bg-geothermal-orange hover:text-white transition-colors duration-200 rounded-md'
-                                >
-                                  {subItem.name}
-                                </Link>
-                              </NavigationMenuLink>
-                            ))}
-                          </div>
-                        </NavigationMenuContent>
-                      </>
-                    ) : (
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href={item.href}
-                          className={`transition-colors duration-200 ${
-                            isActive(item.href)
-                              ? 'text-geothermal-orange font-semibold border-b-2 border-geothermal-orange pb-1'
-                              : 'text-gray-700 hover:text-geothermal-orange'
-                          }`}
-                        >
-                          {item.name}
-                        </Link>
-                      </NavigationMenuLink>
-                    )}
-                  </NavigationMenuItem>
-                ))}
-              </NavigationMenuList>
-            </NavigationMenu>
+          <div className='hidden min-w-0 shrink-0 items-center md:flex md:pl-8 lg:pl-12 min-[1920px]:pl-16'>
+            <div className='flex items-center gap-5 lg:gap-7'>
+              {allNavigationItems.map((item) => (
+                <Link key={item.name} href={item.href} className={desktopLinkClass(item.href)}>
+                  {item.name}
+                </Link>
+              ))}
+            </div>
 
             {/* Auth Section */}
             {!loading && (
-              <div className='flex items-center space-x-4'>
-                <Separator orientation='vertical' className='h-6' />
+              <div className='ml-5 flex items-center space-x-3 lg:ml-7'>
+                <Separator
+                  orientation='vertical'
+                  className='h-6 bg-white/20'
+                />
                 {user ? (
                   <div className='flex items-center space-x-2'>
                     <Button
                       variant='ghost'
                       size='icon'
-                      className='h-8 w-8'
+                      className='h-9 w-9 rounded-full text-white hover:bg-white/12 hover:text-white'
                       asChild
                       aria-label='工作台'
                     >
                       <Link href='/user/workbench'>
-                        <Blocks className='h-5 w-5 text-gray-700 hover:text-geothermal-orange transition-colors' />
+                        <Blocks className='h-5 w-5' />
                       </Link>
                     </Button>
                     <DropdownMenu>
@@ -185,10 +154,10 @@ export function Navigation() {
                         <Button
                           variant='ghost'
                           size='icon'
-                          className='h-8 w-8 rounded-full p-0'
+                          className='h-9 w-9 rounded-full border border-white/15 bg-white/10 p-0 text-white hover:bg-white/15'
                         >
                           <Avatar className='h-8 w-8'>
-                            <AvatarFallback>
+                            <AvatarFallback className='bg-white/15 text-sm font-semibold text-white'>
                               {user.user_metadata?.contactPerson?.charAt(0) ||
                                 user.email?.charAt(0) ||
                                 'U'}
@@ -214,7 +183,11 @@ export function Navigation() {
                     </DropdownMenu>
                   </div>
                 ) : (
-                  <Button variant='ghost' asChild>
+                  <Button
+                    variant='ghost'
+                    className='rounded-full px-3 text-sm font-medium text-white hover:bg-white/12 hover:text-white'
+                    asChild
+                  >
                     <Link href='/login' className='flex items-center space-x-2'>
                       <LogIn className='w-4 h-4' />
                       <div>登录</div>
@@ -229,7 +202,11 @@ export function Navigation() {
           <div className='md:hidden flex items-center'>
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button variant='ghost' size='icon'>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  className='text-white hover:bg-white/12 hover:text-white'
+                >
                   <Menu className='w-6 h-6' />
                 </Button>
               </SheetTrigger>
