@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Menu, LogOut, LogIn, ClipboardList, Blocks } from 'lucide-react'
+import { Menu, LogOut, ClipboardList, Blocks } from 'lucide-react'
 import { useAuthContext } from './auth-provider'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
@@ -67,8 +67,8 @@ export function Navigation() {
         { name: '服务申请', href: '/admin/service-inquiries' }
       ]
     : user
-    ? [...visibleNavigationItems]
-    : visibleNavigationItems
+      ? [...visibleNavigationItems]
+      : visibleNavigationItems
 
   const handleSignOut = async () => {
     await signOut()
@@ -78,8 +78,7 @@ export function Navigation() {
     cn(
       miSansRegular.className,
       'relative flex h-[21px] items-center whitespace-nowrap py-0 text-[16px] font-normal leading-[21px] text-white transition-colors duration-200 hover:text-white after:absolute after:bottom-[-6px] after:left-0 after:h-[2px] after:w-full after:rounded-full after:bg-white/85 after:opacity-0 after:transition-opacity after:duration-200 hover:after:opacity-100',
-      isActive(href) &&
-        'text-white after:opacity-100'
+      isActive(href) && 'text-white after:opacity-100'
     )
 
   const isHomePage = pathname === '/'
@@ -87,10 +86,10 @@ export function Navigation() {
   return (
     <nav
       className={cn(
-        'z-50 overflow-hidden',
+        'z-50 overflow-hidden border-b border-white/10 backdrop-blur-md',
         isHomePage
-          ? 'absolute inset-x-0 top-0 bg-transparent'
-          : 'sticky top-0 bg-transparent'
+          ? 'absolute inset-x-0 top-0 shadow-[0_10px_30px_rgba(6,45,42,0.12)]'
+          : 'sticky top-0 shadow-[0_12px_28px_rgba(7,33,31,0.18)]'
       )}
     >
       <div className='nav-shell relative'>
@@ -109,7 +108,7 @@ export function Navigation() {
                 地热能开发利用技术中试基地
               </div>
             </Link>
-            <span className="hidden h-[34px] min-w-fit items-center justify-center rounded-[100px] bg-white/20 px-[10px] whitespace-nowrap lg:inline-flex">
+            <span className='hidden h-[34px] min-w-fit items-center justify-center rounded-[100px] bg-white/20 px-[10px] whitespace-nowrap lg:inline-flex'>
               <Link
                 href='http://www.sxsdrxh.com/'
                 target='_blank'
@@ -130,7 +129,11 @@ export function Navigation() {
           <div className='hidden min-w-0 shrink-0 items-center md:flex md:pl-8 lg:pl-12 min-[1920px]:pl-16'>
             <div className='flex items-center gap-5 lg:gap-7'>
               {allNavigationItems.map((item) => (
-                <Link key={item.name} href={item.href} className={desktopLinkClass(item.href)}>
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={desktopLinkClass(item.href)}
+                >
                   {item.name}
                 </Link>
               ))}
@@ -139,10 +142,7 @@ export function Navigation() {
             {/* Auth Section */}
             {!loading && (
               <div className='ml-5 flex items-center space-x-3 lg:ml-7'>
-                <Separator
-                  orientation='vertical'
-                  className='h-6 bg-white/20'
-                />
+                <Separator orientation='vertical' className='h-6 bg-white/20' />
                 {user ? (
                   <div className='flex items-center space-x-2'>
                     <Button
@@ -195,8 +195,7 @@ export function Navigation() {
                     className='rounded-full px-3 text-sm font-medium text-white hover:bg-white/12 hover:text-white'
                     asChild
                   >
-                    <Link href='/login' className='flex items-center space-x-2'>
-                      <LogIn className='w-4 h-4' />
+                    <Link href='/login' className='flex items-center'>
                       <div>登录</div>
                     </Link>
                   </Button>
@@ -318,7 +317,6 @@ export function Navigation() {
                           onClick={() => setIsOpen(false)}
                         >
                           <Link href='/login'>
-                            <LogIn className='w-5 h-5 mr-2' />
                             <div>登录</div>
                           </Link>
                         </Button>
