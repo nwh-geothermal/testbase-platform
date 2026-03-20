@@ -14,11 +14,7 @@ export function Hero() {
   const carouselImages = [
     { src: getAssetPath('/lab1.jpg'), alt: 'Testbase lab' },
     { src: getAssetPath('/meeting1.jpg'), alt: 'Meeting with experts' },
-    {
-      src: getAssetPath('/overview.jpg'),
-      alt: 'Demo 2.5-D',
-      imageClassName: 'translate-y-9'
-    }
+    { src: getAssetPath('/overview.png'), alt: 'Demo 2.5-D' }
   ]
   const carouselHandleNodeIds = ['1:42', '1:43', '1:44']
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -162,7 +158,6 @@ export function Hero() {
                   <ExternalLink className='h-3.5 w-3.5 shrink-0' />
                 </Link>
               </div>
-
             </div>
           </div>
         </motion.div>
