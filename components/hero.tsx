@@ -11,7 +11,11 @@ import { Button } from '@/components/ui/button'
 import { NewsFloat } from '@/components/news-float'
 
 export function Hero() {
-  const carouselImages = [
+  const carouselImages: Array<{
+    src: string
+    alt: string
+    imageClassName?: string
+  }> = [
     { src: getAssetPath('/lab1.jpg'), alt: 'Testbase lab' },
     { src: getAssetPath('/meeting1.jpg'), alt: 'Meeting with experts' },
     { src: getAssetPath('/overview.png'), alt: 'Demo 2.5-D' }
