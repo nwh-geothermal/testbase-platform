@@ -1,77 +1,145 @@
+import Image from 'next/image'
 import Link from 'next/link'
-import { Mail, Phone, Printer, MapPin, Globe } from 'lucide-react'
+import { alimamaShuHeiTi, miSansRegular } from '@/app/fonts'
+import { getAssetPath } from '@/lib/utils'
+
+const footerLinks = [
+  { label: '陕西省地热协会', href: '/association', nodeId: '13:240' }
+]
+
+const footerContactItems = [
+  {
+    text: '地址：陕西省西安市长安区城南大道18号',
+    iconSrc: getAssetPath('/footer-map-pin.svg'),
+    textNodeId: '13:228',
+    iconNodeId: '13:384'
+  },
+  {
+    text: '电话：+86-18066967290',
+    iconSrc: getAssetPath('/footer-phone.svg'),
+    textNodeId: '13:229',
+    iconNodeId: '13:12'
+  },
+  {
+    text: '邮箱：geothermal@nwh.cn',
+    iconSrc: getAssetPath('/footer-mail.svg'),
+    textNodeId: '13:230',
+    iconNodeId: '13:382'
+  }
+]
 
 export function Footer() {
   return (
-    <footer className='bg-geothermal-gray text-white'>
-      <div className='max-w-[90rem] mx-auto px-3 sm:px-4 lg:px-6 py-12'>
-        <div className='grid grid-cols-1 md:grid-cols-4 gap-8'>
-          {/* 基地介绍 */}
-          <div className='col-span-1 md:col-span-2'>
-            <div className='flex items-center space-x-2 mb-4'>
-              <h3 className='text-xl font-bold'>
-                中国电建集团西北勘测设计研究院有限公司
-              </h3>
-            </div>
-            <p className='text-gray-300 mb-4 leading-relaxed'>
+    <footer
+      data-node-id='13:11'
+      className='bg-geothermal-gray text-white'
+      aria-labelledby='footer-heading'
+    >
+      <section className='page-shell py-14 md:py-16'>
+        <h2
+          id='footer-heading'
+          data-node-id='13:22'
+          className={`${alimamaShuHeiTi.className} text-[1.75rem] leading-normal text-white sm:text-[30px]`}
+        >
+          地热能开发利用技术中试基地
+        </h2>
+
+        <div className='mt-6 grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,440px)_minmax(0,220px)_minmax(0,380px)] lg:justify-between'>
+          <div>
+            <h3
+              className={`${miSansRegular.className} text-[20px] font-semibold leading-normal text-white`}
+            >
+              基地介绍
+            </h3>
+
+            <p
+              data-node-id='13:109'
+              className={`${miSansRegular.className} mt-3.5 text-base leading-7 text-white/60`}
+            >
               在水电与抽水蓄能、新能源与电力、水利与生态环境、城乡建设与基础设施等领域，融合规划咨询、勘测设计、工程承包与投资运营于一体，提供覆盖全过程的一体化智慧服务
             </p>
-            <div className='flex space-x-4'>
-              <a
-                href='http://www.nwh.cn'
-                className='text-gray-300 hover:text-geothermal-orange transition-colors'
-              >
-                <Globe className='w-5 h-5' />
-              </a>
-              <a
-                href='mailto:geothermal-base@nwh.cn'
-                className='text-gray-300 hover:text-geothermal-orange transition-colors'
-              >
-                <Mail className='w-5 h-5' />
-              </a>
-            </div>
           </div>
 
-          {/* 快速链接 */}
-          <div>
-            <h4 className='text-lg font-semibold mb-4'>快速链接</h4>
+          <nav aria-labelledby='footer-links-heading'>
+            <h3
+              id='footer-links-heading'
+              data-node-id='13:231'
+              className={`${miSansRegular.className} text-[20px] font-semibold leading-normal text-white`}
+            >
+              快速链接
+            </h3>
 
-            <div className='mt-3 text-base'>
-              <a
-                href='http://www.sxsdrxh.com/'
-                target='_blank'
-                rel='noreferrer'
-                className='text-gray-300 hover:text-geothermal-orange transition-colors'
-              >
-                陕西省地热协会
-              </a>
+            <div className='mt-3.5'>
+              {footerLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  data-node-id={link.nodeId}
+                  className={`${miSansRegular.className} whitespace-nowrap text-[16px] leading-normal text-white/60 transition-colors hover:text-white`}
+                >
+                  {link.label}
+                </Link>
+              ))}
             </div>
-          </div>
+          </nav>
 
-          {/* 联系信息 */}
-          <div>
-            <h4 className='text-lg font-semibold mb-4'>联系我们</h4>
-            <div className='space-y-3'>
-              <div className='flex items-center space-x-2'>
-                <MapPin className='w-4 h-4 text-geothermal-orange' />
-                <div className='text-gray-300 text-sm'>
-                  陕西省西安市长安区城南大道18号
+          <address
+            className='not-italic'
+            aria-labelledby='footer-contact-heading'
+          >
+            <h3
+              id='footer-contact-heading'
+              data-node-id='13:232'
+              className={`${miSansRegular.className} text-[20px] font-semibold leading-normal text-white`}
+            >
+              联系我们
+            </h3>
+
+            <div className='mt-3.5 space-y-[17px]'>
+              {footerContactItems.map((item) => (
+                <div key={item.text} className='flex items-center gap-2'>
+                  <span
+                    data-node-id={item.iconNodeId}
+                    className='relative h-[18px] w-[18px] shrink-0'
+                  >
+                    <Image
+                      src={item.iconSrc}
+                      alt=''
+                      fill
+                      sizes='18px'
+                      aria-hidden='true'
+                    />
+                  </span>
+                  <span
+                    data-node-id={item.textNodeId}
+                    className={`${miSansRegular.className} text-[14px] leading-normal text-white/60`}
+                  >
+                    {item.text}
+                  </span>
                 </div>
-              </div>
-              <div className='flex items-center space-x-2'>
-                <Phone className='w-4 h-4 text-geothermal-orange' />
-                <div className='text-gray-300 text-sm'>+86-29-89810100</div>
-              </div>
+              ))}
             </div>
-          </div>
+          </address>
         </div>
+      </section>
 
-        <div className='border-t border-gray-600 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center'>
-          <p className='text-gray-400 text-sm'>
-            © 2025 中国电建集团西北勘测设计研究院有限公司. 保留所有权利.
+      <section aria-label='版权信息'>
+        <div
+          data-node-id='13:38'
+          className='h-px w-full bg-white/10'
+          aria-hidden='true'
+        />
+
+        <div className='page-shell py-5'>
+          <p
+            data-node-id='13:39'
+            className={`${miSansRegular.className} text-center text-[14px] font-medium leading-normal text-white/60`}
+          >
+            Copyright © 2025 - 2026 NWH. All Rights Reserved. 中国电建西北院
+            版权所有
           </p>
         </div>
-      </div>
+      </section>
     </footer>
   )
 }
