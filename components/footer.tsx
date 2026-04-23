@@ -4,7 +4,12 @@ import { alimamaShuHeiTi, miSansRegular } from '@/app/fonts'
 import { getAssetPath } from '@/lib/utils'
 
 const footerLinks = [
-  { label: '陕西省地热协会', href: '/association', nodeId: '13:240' }
+  { label: '陕西省地热协会', href: '/association', nodeId: '13:240' },
+  {
+    label: '中国电建西北院',
+    href: 'https://www.nwh.cn',
+    isExternal: true
+  }
 ]
 
 const footerContactItems = [
@@ -69,13 +74,15 @@ export function Footer() {
               快速链接
             </h3>
 
-            <div className='mt-3.5'>
+            <div className='mt-3.5 flex flex-col items-start gap-3'>
               {footerLinks.map((link) => (
                 <Link
                   key={link.label}
                   href={link.href}
                   data-node-id={link.nodeId}
-                  className={`${miSansRegular.className} whitespace-nowrap text-[16px] leading-normal text-white/60 transition-colors hover:text-white`}
+                  target={link.isExternal ? '_blank' : undefined}
+                  rel={link.isExternal ? 'noopener noreferrer' : undefined}
+                  className={`${miSansRegular.className} max-w-[260px] text-[16px] leading-normal text-white/60 transition-colors hover:text-white`}
                 >
                   {link.label}
                 </Link>
