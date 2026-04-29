@@ -88,9 +88,16 @@ export function Navigation() {
       className={cn(
         'z-50 overflow-hidden border-b border-white/10 backdrop-blur-md',
         isHomePage
-          ? 'absolute inset-x-0 top-0 shadow-[0_10px_30px_rgba(6,45,42,0.12)]'
+          ? 'absolute inset-x-0 top-0 bg-transparent shadow-[0_10px_30px_rgba(6,45,42,0.12)]'
           : 'sticky top-0 shadow-[0_12px_28px_rgba(7,33,31,0.18)]'
       )}
+      style={
+        isHomePage
+          ? undefined
+          : {
+              backgroundColor: 'rgba(26, 142, 133, 0.84)'
+            }
+      }
     >
       <div className='nav-shell relative'>
         <div className='flex h-16 items-center gap-4 md:h-[78px] md:gap-6'>
