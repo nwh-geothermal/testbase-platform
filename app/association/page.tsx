@@ -1,9 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import {
@@ -87,28 +85,6 @@ export default function AssociationPage() {
           >
             陕西省地热协会聚焦地热能产业协同发展，推动技术创新、标准建设与行业服务。
           </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className='mt-10 flex flex-col sm:flex-row gap-4 justify-center'
-          >
-            <Button
-              asChild
-              className='bg-geothermal-blue hover:bg-geothermal-blue/90'
-            >
-              <Link
-                href='http://www.sxsdrxh.com/'
-                target='_blank'
-                rel='noreferrer'
-              >
-                访问官方网站
-              </Link>
-            </Button>
-            <Button variant='outline' asChild>
-              <Link href='#contact'>联系协会</Link>
-            </Button>
-          </motion.div>
         </div>
       </div>
 
