@@ -30,9 +30,9 @@ const navigationItems: NavigationItem[] = [
   { name: '成果展示', href: '/achievements' },
   { name: '服务清单', href: '/services' },
   { name: '数据共享', href: '/datapool' },
-  { name: '加入平台', href: '/join' },
   { name: '产学研合作', href: '/cooperation' },
-  { name: '地热协会', href: '/association' }
+  { name: '地热协会', href: '/association' },
+  { name: '加入平台', href: '/join' }
 ]
 
 export function Navigation() {
