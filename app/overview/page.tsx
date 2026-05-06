@@ -10,7 +10,6 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { AboutUs } from '@/components/about-us'
 import { LeafletMap } from '@/components/leaflet-map'
@@ -23,52 +22,12 @@ import {
   Cpu,
   Wrench,
   Rocket,
-  Users,
   Target,
-  Award,
   GraduationCap,
   Handshake
 } from 'lucide-react'
 
 export default function OverviewPage() {
-  const coreFeatures = [
-    '技术研发',
-    '产品试制',
-    '工艺改进',
-    '检验检测',
-    '标准制定',
-    '人才培养',
-    '成果转化',
-    '产业孵化'
-  ]
-
-  const achievements = [
-    {
-      value: '100+',
-      label: '技术专利',
-      icon: Award,
-      color: 'text-geothermal-orange'
-    },
-    {
-      value: '50+',
-      label: '合作伙伴',
-      icon: Users,
-      color: 'text-geothermal-blue'
-    },
-    {
-      value: '95%',
-      label: '能效比',
-      icon: Zap,
-      color: 'text-geothermal-green'
-    },
-    {
-      value: '30+',
-      label: '示范项目',
-      icon: Building2,
-      color: 'text-orange-500'
-    }
-  ]
-
   const technologyStages = [
     {
       icon: FlaskConical,
@@ -263,19 +222,16 @@ export default function OverviewPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className='grid grid-cols-1 lg:grid-cols-2 gap-12'
+          className='mb-16'
         >
-          {/* Left Column - Overview */}
-          <div className='flex flex-col space-y-8'>
-            <Card className='border-0 shadow-lg'>
-              <CardHeader>
-                <CardTitle className='flex items-center gap-3'>
-                  <div className='w-1 h-8 bg-geothermal-orange rounded-full'></div>
+          <Card className='border-0 shadow-lg'>
+            <CardContent className='space-y-10 p-8 lg:p-10'>
+              <section>
+                <CardTitle className='mb-6 flex items-center gap-3 text-2xl'>
+                  <div className='h-8 w-1 rounded-full bg-geothermal-orange'></div>
                   基地简介
                 </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className='space-y-4 text-gray-600 leading-relaxed'>
+                <div className='space-y-4 leading-relaxed text-gray-600'>
                   <p>
                     陕西省地热能开发利用技术中试基地是陕西省重点建设的新能源技术创新平台，致力于地热能技术的研发、试验、示范和产业化应用。基地位于陕西省西安市，占地面积约200亩，总投资超过5亿元人民币。
                   </p>
@@ -283,101 +239,47 @@ export default function OverviewPage() {
                     基地集成了国内外先进的地热能开发利用技术，建设有完整的技术研发体系、中试验证平台和示范应用系统，为地热能产业的技术创新和成果转化提供了重要支撑。
                   </p>
                 </div>
-              </CardContent>
-            </Card>
+              </section>
 
-            <Card className='border-0 shadow-lg flex-1'>
-              <CardHeader>
-                <CardTitle className='text-xl'>核心功能</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className='grid grid-cols-2 gap-4'>
-                  {coreFeatures.map((func, index) => (
-                    <div key={index} className='flex items-center space-x-2'>
-                      <div className='w-2 h-2 bg-geothermal-green rounded-full'></div>
-                      <Badge
-                        variant='secondary'
-                        className='text-gray-700 font-medium'
-                      >
-                        {func}
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+              <Separator />
 
-          {/* Right Column - Technical Details */}
-          <div className='flex flex-col space-y-8'>
-            <Card className='border-0 shadow-lg'>
-              <CardHeader>
-                <CardTitle className='flex items-center gap-3'>
-                  <div className='w-1 h-8 bg-geothermal-blue rounded-full'></div>
+              <section>
+                <CardTitle className='mb-6 flex items-center gap-3 text-2xl'>
+                  <div className='h-8 w-1 rounded-full bg-geothermal-blue'></div>
                   技术特色
                 </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className='space-y-6'>
+                <div className='grid grid-cols-1 gap-6 lg:grid-cols-3'>
                   <div>
-                    <h4 className='font-semibold text-gray-900 mb-2 flex items-center gap-2'>
-                      <Target className='w-4 h-4 text-geothermal-orange' />
+                    <h4 className='mb-2 flex items-center gap-2 font-semibold text-gray-900'>
+                      <Target className='h-4 w-4 text-geothermal-orange' />
                       先进装备配置
                     </h4>
-                    <p className='text-gray-600 text-sm'>
+                    <p className='text-sm text-gray-600'>
                       配备国际先进的地热钻探设备、热泵系统测试平台、地热流体分析仪器等专业设备，具备完整的技术验证能力。
                     </p>
                   </div>
-                  <Separator />
                   <div>
-                    <h4 className='font-semibold text-gray-900 mb-2 flex items-center gap-2'>
-                      <Zap className='w-4 h-4 text-geothermal-green' />
+                    <h4 className='mb-2 flex items-center gap-2 font-semibold text-gray-900'>
+                      <Zap className='h-4 w-4 text-geothermal-green' />
                       创新技术体系
                     </h4>
-                    <p className='text-gray-600 text-sm'>
+                    <p className='text-sm text-gray-600'>
                       形成了涵盖地热资源勘探、开发、利用全产业链的技术体系，在中深层地热开发、热泵技术等领域达到国际先进水平。
                     </p>
                   </div>
-                  <Separator />
                   <div>
-                    <h4 className='font-semibold text-gray-900 mb-2 flex items-center gap-2'>
-                      <Building2 className='w-4 h-4 text-geothermal-blue' />
+                    <h4 className='mb-2 flex items-center gap-2 font-semibold text-gray-900'>
+                      <Building2 className='h-4 w-4 text-geothermal-blue' />
                       智能化管理
                     </h4>
-                    <p className='text-gray-600 text-sm'>
+                    <p className='text-sm text-gray-600'>
                       建立了智能化的基地管理系统，实现设备运行监控、数据采集分析、安全预警等功能的一体化管理。
                     </p>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-
-            <Card className='border-0 shadow-lg'>
-              <CardHeader>
-                <CardTitle className='text-xl'>发展成果</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className='grid grid-cols-2 gap-6'>
-                  {achievements.map((achievement, index) => {
-                    const IconComponent = achievement.icon
-                    return (
-                      <div key={index} className='text-center'>
-                        <div
-                          className={`text-3xl font-bold mb-2 flex items-center justify-center gap-2 ${achievement.color}`}
-                        >
-                          <IconComponent className='w-6 h-6' />
-                          {achievement.value}
-                        </div>
-                        <Badge variant='outline' className='text-sm'>
-                          {achievement.label}
-                        </Badge>
-                      </div>
-                    )
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+              </section>
+            </CardContent>
+          </Card>
         </motion.div>
 
         {/* Talent Development Section */}
@@ -464,7 +366,7 @@ export default function OverviewPage() {
 
         {/* About Section */}
         <div className='mt-16'>
-          <AboutUs compact />
+          <AboutUs compact showContact={false} showStatistics={false} />
         </div>
       </div>
     </div>

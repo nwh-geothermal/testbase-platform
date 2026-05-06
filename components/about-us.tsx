@@ -47,9 +47,15 @@ const staggerContainer = {
 type AboutUsProps = {
   /** Compact mode removes internal padding/max-width so the parent container controls width. */
   compact?: boolean
+  showStatistics?: boolean
+  showContact?: boolean
 }
 
-export function AboutUs({ compact = false }: AboutUsProps) {
+export function AboutUs({
+  compact = false,
+  showStatistics = true,
+  showContact = true
+}: AboutUsProps) {
   const sectionPadding = compact ? '' : 'px-3 sm:px-4 lg:px-6'
   const sectionContainer = compact ? 'w-full' : 'max-w-[90rem] mx-auto'
 
@@ -123,9 +129,11 @@ export function AboutUs({ compact = false }: AboutUsProps) {
   ]
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-gray-50 to-blue-50'>
+    <div
+      className={`${compact ? '' : 'min-h-screen'} bg-gradient-to-br from-gray-50 to-blue-50`}
+    >
       {/* Company Introduction */}
-      <section className={`pb-16 ${sectionPadding}`}>
+      <section className={`${sectionPadding}`}>
         <div className={sectionContainer}>
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -192,102 +200,104 @@ export function AboutUs({ compact = false }: AboutUsProps) {
         </div>
       </section>
 
-      {/* Key Statistics */}
-      <section className={`pb-16 ${sectionPadding}`}>
-        <div className={sectionContainer}>
-          <motion.div
-            variants={staggerContainer}
-            initial='initial'
-            animate='animate'
-            className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'
-          >
-            {statisticsData.map((stat, index) => {
-              const IconComponent = stat.icon
-              return (
-                <motion.div key={index} variants={fadeInUp}>
-                  <Card className='border-0 shadow-xl hover:shadow-2xl transition-shadow duration-300'>
-                    <CardContent className='p-8 text-center'>
-                      <div
-                        className={`w-16 h-16 ${stat.color} rounded-full flex items-center justify-center mx-auto mb-4`}
-                      >
-                        <IconComponent className='w-8 h-8 text-white' />
-                      </div>
-                      <div className='text-3xl font-bold text-gray-900 mb-2'>
-                        {stat.value}
-                      </div>
-                      <Badge variant='outline'>{stat.label}</Badge>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              )
-            })}
-          </motion.div>
-        </div>
-      </section>
+      {showStatistics && (
+        <section className={`pb-16 ${sectionPadding}`}>
+          <div className={sectionContainer}>
+            <motion.div
+              variants={staggerContainer}
+              initial='initial'
+              animate='animate'
+              className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'
+            >
+              {statisticsData.map((stat, index) => {
+                const IconComponent = stat.icon
+                return (
+                  <motion.div key={index} variants={fadeInUp}>
+                    <Card className='border-0 shadow-xl hover:shadow-2xl transition-shadow duration-300'>
+                      <CardContent className='p-8 text-center'>
+                        <div
+                          className={`w-16 h-16 ${stat.color} rounded-full flex items-center justify-center mx-auto mb-4`}
+                        >
+                          <IconComponent className='w-8 h-8 text-white' />
+                        </div>
+                        <div className='text-3xl font-bold text-gray-900 mb-2'>
+                          {stat.value}
+                        </div>
+                        <Badge variant='outline'>{stat.label}</Badge>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                )
+              })}
+            </motion.div>
+          </div>
+        </section>
+      )}
 
-      {/* Contact Information */}
-      <section className={sectionPadding}>
-        <div className={sectionContainer}>
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-          >
-            <Card className='border-0 shadow-xl'>
-              <CardHeader className='text-center'>
-                <CardTitle className='text-3xl font-bold mt-2'>
-                  联系我们
-                </CardTitle>
-              </CardHeader>
-              <CardContent className='p-8 md:p-8'>
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-12'>
-                  <Card className='border border-gray-200'>
-                    <CardHeader>
-                      <CardTitle className='text-xl flex items-center gap-3'>
-                        <Building className='w-6 h-6 text-geothermal-orange' />
-                        陕西省地热能开发利用技术中试基地
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className='space-y-4'>
-                        <div className='flex items-center space-x-3'>
-                          <MapPin className='w-5 h-5 text-geothermal-orange' />
-                          <Badge variant='outline'>陕西省西安市</Badge>
+      {showContact && (
+        <section className={sectionPadding}>
+          <div className={sectionContainer}>
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+            >
+              <Card className='border-0 shadow-xl'>
+                <CardHeader className='text-center'>
+                  <CardTitle className='text-3xl font-bold mt-2'>
+                    联系我们
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className='p-8 md:p-8'>
+                  <div className='grid grid-cols-1 md:grid-cols-2 gap-12'>
+                    <Card className='border border-gray-200'>
+                      <CardHeader>
+                        <CardTitle className='text-xl flex items-center gap-3'>
+                          <Building className='w-6 h-6 text-geothermal-orange' />
+                          陕西省地热能开发利用技术中试基地
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className='space-y-4'>
+                          <div className='flex items-center space-x-3'>
+                            <MapPin className='w-5 h-5 text-geothermal-orange' />
+                            <Badge variant='outline'>陕西省西安市</Badge>
+                          </div>
+                          <div className='flex items-center space-x-3'>
+                            <Target className='w-5 h-5 text-geothermal-blue' />
+                            <Badge variant='outline'>地热能技术中试基地</Badge>
+                          </div>
                         </div>
-                        <div className='flex items-center space-x-3'>
-                          <Target className='w-5 h-5 text-geothermal-blue' />
-                          <Badge variant='outline'>地热能技术中试基地</Badge>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      </CardContent>
+                    </Card>
 
-                  <Card className='border border-gray-200'>
-                    <CardHeader>
-                      <CardTitle className='text-xl flex items-center gap-3'>
-                        <Shield className='w-6 h-6 text-geothermal-blue' />
-                        中国电建西北勘测设计研究院有限公司
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className='space-y-4'>
-                        <div className='flex items-center space-x-3'>
-                          <MapPin className='w-5 h-5 text-geothermal-orange' />
-                          <Badge variant='outline'>陕西省西安市</Badge>
+                    <Card className='border border-gray-200'>
+                      <CardHeader>
+                        <CardTitle className='text-xl flex items-center gap-3'>
+                          <Shield className='w-6 h-6 text-geothermal-blue' />
+                          中国电建西北勘测设计研究院有限公司
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className='space-y-4'>
+                          <div className='flex items-center space-x-3'>
+                            <MapPin className='w-5 h-5 text-geothermal-orange' />
+                            <Badge variant='outline'>陕西省西安市</Badge>
+                          </div>
+                          <div className='flex items-center space-x-3'>
+                            <Globe className='w-5 h-5 text-geothermal-green' />
+                            <Badge variant='outline'>nwh.cn</Badge>
+                          </div>
                         </div>
-                        <div className='flex items-center space-x-3'>
-                          <Globe className='w-5 h-5 text-geothermal-green' />
-                          <Badge variant='outline'>nwh.cn</Badge>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-      </section>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
+        </section>
+      )}
     </div>
   )
 }
