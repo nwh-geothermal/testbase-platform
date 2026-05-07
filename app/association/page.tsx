@@ -61,7 +61,7 @@ const initiatives = [
 export default function AssociationPage() {
   return (
     <div className='min-h-screen bg-gradient-to-br from-slate-50 to-amber-50'>
-      <div className='relative py-20 overflow-hidden mb-12'>
+      <div className='relative py-20 overflow-hidden'>
         <div
           className='absolute inset-0 opacity-90'
           style={{

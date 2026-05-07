@@ -849,7 +849,7 @@ export function CooperationForm() {
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 to-blue-50'>
       {/* Header */}
-      <div className='relative py-20 overflow-hidden mb-12'>
+      <div className='relative py-20 overflow-hidden'>
         <div
           className='absolute inset-0 opacity-90'
           style={{
@@ -876,7 +876,7 @@ export function CooperationForm() {
         </div>
       </div>
 
-      <div className='max-w-[90rem] mx-auto px-3 sm:px-4 lg:px-6 pb-20'>
+      <div className='max-w-[90rem] mx-auto px-3 sm:px-4 lg:px-6 pt-16 pb-16'>
         <div className='grid grid-cols-1 gap-12'>
           {/* Left Column - Information */}
           <motion.div
