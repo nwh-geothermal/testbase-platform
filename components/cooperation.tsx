@@ -157,9 +157,9 @@ const cooperationStats: CooperationStat[] = [
 
 function InstitutionCard({ name }: { name: string }) {
   return (
-    <div className='flex h-20 items-center justify-center rounded-[8px] bg-white px-5 shadow-[0px_5px_15px_0px_rgba(0,0,0,0.05)]'>
+    <div className='flex min-h-20 items-center justify-center rounded-[8px] bg-white px-4 py-5 shadow-[0px_5px_15px_0px_rgba(0,0,0,0.05)] sm:px-5'>
       <p
-        className={`${miSansRegular.className} text-center text-[20px] leading-normal text-[#282828]`}
+        className={`${miSansBold.className} text-center text-[16px] leading-normal text-[#282828] xl:text-[18px]`}
       >
         {name}
       </p>
@@ -320,7 +320,7 @@ export function Cooperation() {
   return (
     <>
       <section id='cooperation' className='overflow-hidden'>
-        <div className='grid min-h-[720px] w-full grid-cols-1 lg:grid-cols-[760px_minmax(0,1fr)]'>
+        <div className='grid min-h-[720px] w-full grid-cols-1 lg:grid-cols-[clamp(420px,40vw,760px)_minmax(0,1fr)]'>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -335,7 +335,7 @@ export function Cooperation() {
             </h2>
 
             <div
-              className={`${titleContentGapClass} flex w-full flex-col gap-[30px] md:w-[260px]`}
+              className={`${titleContentGapClass} flex w-full max-w-[260px] flex-col gap-[30px]`}
             >
               {cooperationCategories.map((category, index) => {
                 const isActive = index === activeCategoryIndex
@@ -394,7 +394,7 @@ export function Cooperation() {
               src={getAssetPath('/cooperation-partnerships-bg.png')}
               alt='产学研合作背景'
               fill
-              sizes='(min-width: 1024px) calc(100vw - 760px), 100vw'
+              sizes='(min-width: 1024px) 60vw, 100vw'
               className='object-cover object-center'
             />
 
@@ -414,7 +414,7 @@ export function Cooperation() {
 
               <div
                 key={activeCategory.title}
-                className='mt-[50px] grid grid-cols-1 gap-5 xl:grid-cols-[457px_457px] xl:gap-x-[50px] xl:gap-y-[30px]'
+                className='mt-[50px] grid w-full grid-cols-1 gap-5 min-[1180px]:grid-cols-2 lg:gap-x-6 lg:gap-y-[30px] 2xl:gap-x-[50px]'
               >
                 {activeCategory.institutions.map((institution) => (
                   <InstitutionCard key={institution} name={institution} />
