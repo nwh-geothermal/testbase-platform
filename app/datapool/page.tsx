@@ -46,7 +46,7 @@ const dataSets = [
 
 export default function DataPoolPage() {
   return (
-    <div className='min-h-screen bg-gradient-to-br from-slate-50 to-blue-50'>
+    <div className='flex flex-1 flex-col bg-gradient-to-br from-slate-50 to-blue-50'>
       <div className='relative py-20 overflow-hidden'>
         <div
           className='absolute inset-0 opacity-90'
@@ -80,21 +80,22 @@ export default function DataPoolPage() {
         </div>
       </div>
 
-      <div className='max-w-6xl mx-auto px-4 py-16 sm:px-6 lg:px-8 space-y-10'>
+      <div className='flex flex-1 px-3 sm:px-4 lg:px-6 pt-16 pb-16'>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeInOut' }}
           viewport={{ once: true, amount: 0.2 }}
+          className='mx-auto flex w-full max-w-6xl flex-1'
         >
-          <Card className='shadow-2xl border-none min-h-[700px] flex flex-col'>
+          <Card className='flex flex-1 flex-col border-none shadow-2xl'>
             <CardHeader className='flex flex-col md:flex-row md:items-center md:justify-between gap-4'>
               <div className='flex items-center gap-3'>
                 <ShoppingCart className='w-5 h-5 text-geothermal-orange' />
                 <CardTitle className='text-xl md:text-2xl'>数据产品</CardTitle>
               </div>
             </CardHeader>
-            <CardContent className='grid grid-cols-1 md:grid-cols-2 gap-6 flex-1'>
+            <CardContent className='grid flex-1 grid-cols-1 gap-6 md:grid-cols-2'>
               {dataSets.map((set, idx) => (
                 <motion.div
                   key={set.title}
