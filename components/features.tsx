@@ -41,7 +41,7 @@ const features = [
   },
   {
     title: '服务清单',
-    description: '整合关键资源与能力服务目录，提供一站式服务导航',
+    description: '整合关键资源与中试能力，提供一站式服务导航',
     iconSrc: getAssetPath('/feature-card-services.svg'),
     iconAlt: '服务清单图标',
     cardNodeId: '13:247',
@@ -52,7 +52,7 @@ const features = [
   },
   {
     title: '数据共享',
-    description: '建立标准化数据共享机制，促进多方协同与价值释放',
+    description: '建立数据共享机制，促进多方协同与产业链价值创造',
     iconSrc: getAssetPath('/feature-card-data.svg'),
     iconAlt: '数据共享图标',
     cardNodeId: '13:246',
@@ -63,7 +63,7 @@ const features = [
   },
   {
     title: '地热协会',
-    description: '链接行业资源与政策信息，促进交流合作与标准共建',
+    description: '链接政策信息与资源，促进企业合作与地热行业标准共建',
     iconSrc: getAssetPath('/feature-card-association.svg'),
     iconAlt: '地热协会图标',
     cardNodeId: '13:249',
