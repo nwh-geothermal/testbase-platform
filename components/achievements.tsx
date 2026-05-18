@@ -41,28 +41,28 @@ const researchCards: ResearchCard[] = [
   {
     iconSrc: getAssetPath('/research-icon-patent.svg'),
     iconAlt: '核心专利技术图标',
-    count: '10+',
+    count: '40+',
     title: '核心专利技术',
     description: '获得发明专利和实用新型专利',
     items: [
-      '地热能高效换热技术专利',
-      '数字孪生系统控制专利',
-      '智能运维算法专利',
-      '一种地热储量的动态计算方法'
+      '一种地热储量的动态计算方法',
+      '一种混凝土非规则裂缝表征与计算方法',
+      '基于多时间尺度预测的多层级地热井协同调度方法及系统',
+      '多级地热井群系统的故障识别及维护方法及系统、设备'
     ],
     variant: 'featured'
   },
   {
     iconSrc: getAssetPath('/research-icon-paper.svg'),
     iconAlt: '学术论文发表图标',
-    count: '20+',
+    count: '50+',
     title: '学术论文发表',
     description: '在国内外期刊发表高质量论文',
     items: [
-      'SCI期刊论文5篇',
-      'EI期刊论文3篇',
-      '国际会议论文2篇',
-      '专著出版3部'
+      'SCI期刊论文 8 篇',
+      'EI期刊论文 9 篇',
+      '中文核心期刊论文 10 篇',
+      '专著出版 3 部'
     ],
     variant: 'default'
   },
@@ -72,20 +72,20 @@ const researchCards: ResearchCard[] = [
     count: '100+',
     title: '人才培养',
     description: '培养地热能领域专业人才',
-    items: ['博士研究生5人', '硕士研究生20余人', '工程技术人员80余人'],
+    items: ['博士研究生 5 人', '硕士研究生 20 余人', '工程技术人员 80 余人'],
     variant: 'default'
   },
   {
     iconSrc: getAssetPath('/research-icon-innovation.svg'),
     iconAlt: '技术创新图标',
-    count: '50+',
+    count: '20+',
     title: '技术创新',
     description: '突破关键技术瓶颈',
     items: [
-      '地热能开发利用效率提升30%',
-      '设备运行稳定性提升40%',
-      '维护成本降低25%',
-      '环境影响减少50%'
+      '地热能开发利用效率提升 20%',
+      '设备运行稳定性提升 30%',
+      '维护成本降低 25%',
+      '环境影响减少 30%'
     ],
     variant: 'default'
   }
@@ -212,7 +212,15 @@ const memberUnits: MemberUnit[] = [
   }
 ]
 
-function ResearchList({ items, dark }: { items: string[]; dark: boolean }) {
+function ResearchList({
+  items,
+  dark,
+  noWrap = false
+}: {
+  items: string[]
+  dark: boolean
+  noWrap?: boolean
+}) {
   return (
     <div className='space-y-0.5'>
       {items.map((item) => (
@@ -224,8 +232,8 @@ function ResearchList({ items, dark }: { items: string[]; dark: boolean }) {
           />
           <p
             className={`${miSansRegular.className} text-base leading-10 ${
-              dark ? 'text-white' : 'text-[#282828]'
-            }`}
+              noWrap ? 'whitespace-nowrap' : ''
+            } ${dark ? 'text-white' : 'text-[#282828]'}`}
           >
             {item}
           </p>
@@ -276,21 +284,21 @@ function FeaturedResearchCard({ card }: { card: ResearchCard }) {
           </div>
         </div>
 
-        <div className='mt-8 max-w-[230px]'>
+        <div className='mt-8'>
           <h3
-            className={`${miSansBold.className} text-2xl leading-none text-white`}
+            className={`${miSansBold.className} max-w-[230px] text-2xl leading-none text-white`}
           >
             {card.title}
           </h3>
 
           <p
-            className={`${miSansRegular.className} mt-3 text-base leading-normal text-white`}
+            className={`${miSansRegular.className} mt-3 max-w-[230px] text-base leading-normal text-white`}
           >
             {card.description}
           </p>
 
           <div className='mt-8'>
-            <ResearchList items={card.items} dark />
+            <ResearchList items={card.items} dark noWrap />
           </div>
         </div>
       </div>
@@ -929,7 +937,7 @@ export function Achievements() {
               <p
                 className={`${miSansRegular.className} mt-4 text-base leading-8 text-white sm:text-lg sm:leading-9`}
               >
-                通过持续创新和技术攻关，在地热能开发利用领域取得了一系列重要突破，为行业发展提供了强有力的技术支撑
+                通过持续创新和技术攻关，在地热能开发利用领域取得突破，为行业发展提供技术支撑
               </p>
             </motion.div>
 
