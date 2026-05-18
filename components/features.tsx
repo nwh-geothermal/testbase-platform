@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import Image from 'next/image'
+import { useState } from 'react'
 import { miSansBold, miSansRegular } from '@/app/fonts'
 import { getAssetPath } from '@/lib/utils'
 
@@ -14,8 +14,7 @@ const features = [
     cardNodeId: '13:244',
     iconNodeId: '13:264',
     titleNodeId: '13:251',
-    descriptionNodeId: '13:258',
-    variant: 'featured'
+    descriptionNodeId: '13:258'
   },
   {
     title: '成果展示',
@@ -25,8 +24,7 @@ const features = [
     cardNodeId: '13:245',
     iconNodeId: '13:266',
     titleNodeId: '13:252',
-    descriptionNodeId: '13:259',
-    variant: 'default'
+    descriptionNodeId: '13:259'
   },
   {
     title: '产学研合作',
@@ -36,8 +34,7 @@ const features = [
     cardNodeId: '13:248',
     iconNodeId: '13:268',
     titleNodeId: '13:255',
-    descriptionNodeId: '13:262',
-    variant: 'default'
+    descriptionNodeId: '13:262'
   },
   {
     title: '服务清单',
@@ -47,8 +44,7 @@ const features = [
     cardNodeId: '13:247',
     iconNodeId: '13:273',
     titleNodeId: '13:254',
-    descriptionNodeId: '13:261',
-    variant: 'default'
+    descriptionNodeId: '13:261'
   },
   {
     title: '数据共享',
@@ -58,8 +54,7 @@ const features = [
     cardNodeId: '13:246',
     iconNodeId: '13:275',
     titleNodeId: '13:253',
-    descriptionNodeId: '13:260',
-    variant: 'default'
+    descriptionNodeId: '13:260'
   },
   {
     title: '地热协会',
@@ -69,12 +64,13 @@ const features = [
     cardNodeId: '13:249',
     iconNodeId: '13:277',
     titleNodeId: '13:256',
-    descriptionNodeId: '13:263',
-    variant: 'default'
+    descriptionNodeId: '13:263'
   }
 ]
 
 export function Features() {
+  const [selectedFeatureIndex, setSelectedFeatureIndex] = useState(0)
+
   return (
     <section
       id='technology'
@@ -106,60 +102,61 @@ export function Features() {
           </motion.div>
 
           <div className='mt-12 grid grid-cols-1 gap-10 md:grid-cols-2 xl:grid-cols-3'>
-            {features.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.55, delay: index * 0.06 }}
-                viewport={{ once: true, amount: 0.3 }}
-                data-node-id={feature.cardNodeId}
-                className={`min-h-[170px] rounded-[8px] p-[30px] ${
-                  feature.variant === 'featured'
-                    ? 'bg-[#1A8E85]'
-                    : 'bg-[#F6F6F6]'
-                }`}
-              >
-                <div className='flex items-start justify-between gap-6'>
-                  <div className='max-w-[23.125rem]'>
-                    <h3
-                      data-node-id={feature.titleNodeId}
-                      className={`${miSansBold.className} text-2xl leading-none ${
-                        feature.variant === 'featured'
-                          ? 'text-white'
-                          : 'text-[#282828]'
-                      }`}
-                    >
-                      {feature.title}
-                    </h3>
+            {features.map((feature, index) => {
+              const isSelected = selectedFeatureIndex === index
 
-                    <p
-                      data-node-id={feature.descriptionNodeId}
-                      className={`${miSansRegular.className} mt-10 text-base leading-normal ${
-                        feature.variant === 'featured'
-                          ? 'text-white'
-                          : 'text-[#666666]'
-                      }`}
-                    >
-                      {feature.description}
-                    </p>
-                  </div>
+              return (
+                <motion.button
+                  key={feature.title}
+                  type='button'
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.55, delay: index * 0.06 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  aria-pressed={isSelected}
+                  onClick={() => setSelectedFeatureIndex(index)}
+                  data-node-id={feature.cardNodeId}
+                  className={`min-h-[170px] rounded-[8px] p-[30px] text-left transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1A8E85] ${
+                    isSelected ? 'bg-[#1A8E85]' : 'bg-[#F6F6F6]'
+                  }`}
+                >
+                  <div className='flex items-start justify-between gap-6'>
+                    <div className='max-w-[23.125rem]'>
+                      <h3
+                        data-node-id={feature.titleNodeId}
+                        className={`${miSansBold.className} text-2xl leading-none ${
+                          isSelected ? 'text-white' : 'text-[#282828]'
+                        }`}
+                      >
+                        {feature.title}
+                      </h3>
 
-                  <div
-                    data-node-id={feature.iconNodeId}
-                    className='relative h-[50px] w-[50px] shrink-0'
-                  >
-                    <Image
-                      src={feature.iconSrc}
-                      alt={feature.iconAlt}
-                      fill
-                      unoptimized
-                      sizes='50px'
+                      <p
+                        data-node-id={feature.descriptionNodeId}
+                        className={`${miSansRegular.className} mt-10 text-base leading-normal ${
+                          isSelected ? 'text-white' : 'text-[#666666]'
+                        }`}
+                      >
+                        {feature.description}
+                      </p>
+                    </div>
+
+                    <span
+                      data-node-id={feature.iconNodeId}
+                      className={`h-[50px] w-[50px] shrink-0 ${
+                        isSelected ? 'bg-white' : 'bg-[#1A8E85]'
+                      }`}
+                      style={{
+                        WebkitMask: `url(${feature.iconSrc}) center / contain no-repeat`,
+                        mask: `url(${feature.iconSrc}) center / contain no-repeat`
+                      }}
+                      aria-label={feature.iconAlt}
+                      role='img'
                     />
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.button>
+              )
+            })}
           </div>
         </div>
       </div>
