@@ -105,11 +105,6 @@ const demoProjects: DemoProject[] = [
         valueClassName: 'text-[32px] text-[#EF693A]'
       },
       {
-        value: '35%',
-        label: '成本节约',
-        valueClassName: 'text-[32px] text-[#308AFF]'
-      },
-      {
         value: '运行中',
         label: '项目状态',
         valueClassName: 'text-[26px] text-[#1A8E85]'
@@ -124,14 +119,9 @@ const demoProjects: DemoProject[] = [
     imageAlt: '西安高新区中央创新区6号能源站项目效果图',
     metrics: [
       {
-        value: '93%',
-        label: '系统效率',
+        value: '95%',
+        label: '锅炉效率',
         valueClassName: 'text-[32px] text-[#EF693A]'
-      },
-      {
-        value: '35%',
-        label: '成本节约',
-        valueClassName: 'text-[32px] text-[#308AFF]'
       },
       {
         value: '运行中',
@@ -151,11 +141,6 @@ const demoProjects: DemoProject[] = [
         value: '93%',
         label: '系统效率',
         valueClassName: 'text-[32px] text-[#EF693A]'
-      },
-      {
-        value: '35%',
-        label: '成本节约',
-        valueClassName: 'text-[32px] text-[#308AFF]'
       },
       {
         value: '运行中',
@@ -399,7 +384,7 @@ function DemoProjectCard({
         </div>
 
         {project.metrics?.length ? (
-          <div className='mt-[30px] grid grid-cols-3 gap-4'>
+          <div className='mt-[30px] grid grid-cols-2 gap-4'>
             {project.metrics.map((metric) => (
               <div
                 key={`${project.id}-${metric.label}`}
