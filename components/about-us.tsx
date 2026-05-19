@@ -18,7 +18,6 @@ import {
   Users,
   Award,
   Target,
-  Lightbulb,
   Building,
   Globe,
   TrendingUp,
@@ -109,19 +108,17 @@ export function AboutUs({
 
   const companyFeatures = [
     {
-      icon: Target,
       title: '专业领域',
-      description: '水利水电、新能源、地热能开发、工程咨询、环境保护等多个领域',
+      description:
+        '水电与抽水蓄能、新能源与电力、水利与生态环境、城乡建设与基础设施',
       color: 'bg-geothermal-blue'
     },
     {
-      icon: Lightbulb,
       title: '技术实力',
       description: '拥有国家级技术中心、博士后科研工作站，技术实力雄厚',
       color: 'bg-geothermal-green'
     },
     {
-      icon: Globe,
       title: '国际业务',
       description: '业务遍及亚洲、非洲、南美洲等多个国家和地区',
       color: 'bg-geothermal-orange'
@@ -154,14 +151,11 @@ export function AboutUs({
 
                   <div className='space-y-6 mb-8'>
                     {companyFeatures.map((feature, index) => {
-                      const IconComponent = feature.icon
                       return (
                         <div key={index} className='flex items-start space-x-4'>
                           <div
-                            className={`w-12 h-12 ${feature.color} rounded-lg flex items-center justify-center flex-shrink-0`}
-                          >
-                            <IconComponent className='w-6 h-6 text-white' />
-                          </div>
+                            className={`mt-2 h-2.5 w-2.5 ${feature.color} rounded-full flex-shrink-0`}
+                          />
                           <div>
                             <h4 className='font-semibold text-gray-900 mb-2'>
                               {feature.title}

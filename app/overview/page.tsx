@@ -38,7 +38,7 @@ export default function OverviewPage() {
       icon: Cpu,
       title: '技术攻关',
       description: '关键技术突破，核心算法开发',
-      achievements: ['数字孪生技术', '高效换热技术', '智能控制算法'],
+      achievements: ['数字孪生技术', '高效换热技术', '智能调度算法'],
       color: 'bg-purple-500'
     },
     {
@@ -286,8 +286,9 @@ export default function OverviewPage() {
                 发展愿景
               </CardTitle>
               <CardDescription className='text-lg text-gray-700 max-w-4xl mx-auto leading-relaxed'>
-                致力于建设成为国内领先、国际先进的地热能技术创新中心，推动地热能产业高质量发展，
-                为实现碳达峰、碳中和目标贡献力量，成为陕西省乃至全国地热能技术创新的重要引擎。
+                致力于建设成为国内地热能技术创新的重要引擎，推动地热能产业高质量发展，
+                <br />
+                为实现碳达峰、碳中和目标贡献力量。
               </CardDescription>
             </CardContent>
           </Card>

@@ -15,7 +15,7 @@ const technologyStages = [
     icon: Cpu,
     title: '技术攻关',
     description: '关键技术突破，核心算法开发',
-    achievements: ['数字孪生技术', '高效换热技术', '智能控制算法'],
+    achievements: ['数字孪生技术', '高效换热技术', '智能调度算法'],
     color: 'bg-purple-500'
   },
   {
@@ -114,7 +114,6 @@ export function TechnologyChain() {
             ))}
           </div>
         </div>
-
       </div>
     </section>
   )
