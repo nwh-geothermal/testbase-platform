@@ -10,11 +10,9 @@ import {
   Zap,
   Settings,
   FlaskConical,
-  MapPin,
   Layers,
   BarChart3,
   Cpu,
-  Gauge,
   TestTube
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -57,7 +55,7 @@ const services: Service[] = [
     ],
     icon: <Search className='w-8 h-8' />,
     category: '勘探评估',
-    image: getAssetPath('/proj1.jpg')
+    image: getAssetPath('/fig1.jpg')
   },
   {
     id: 'drilling-process',
@@ -74,7 +72,7 @@ const services: Service[] = [
     ],
     icon: <Hammer className='w-8 h-8' />,
     category: '钻井技术',
-    image: getAssetPath('/engine1.jpg')
+    image: getAssetPath('/drill.jpg')
   },
   {
     id: 'numerical-simulation',
@@ -90,7 +88,7 @@ const services: Service[] = [
     ],
     icon: <BarChart3 className='w-8 h-8' />,
     category: '数值模拟',
-    image: getAssetPath('/sim1.jpg')
+    image: getAssetPath('/sim6.png')
   },
   {
     id: 'multi-energy-system',
@@ -106,11 +104,11 @@ const services: Service[] = [
     ],
     icon: <Zap className='w-8 h-8' />,
     category: '系统集成',
-    image: getAssetPath('/lab1.jpg')
+    image: getAssetPath('/method1.png')
   },
   {
     id: 'intelligent-control',
-    title: '地热能运维智能化调控',
+    title: '多层级地热能智能化调度',
     description: '提供智能化的地热系统运行维护和自动调控解决方案。',
     features: [
       '智能监控系统',
@@ -122,7 +120,7 @@ const services: Service[] = [
     ],
     icon: <Cpu className='w-8 h-8' />,
     category: '智能运维',
-    image: getAssetPath('/lab2.jpg')
+    image: getAssetPath('/model1.png')
   },
   {
     id: 'rock-soil-testing',
@@ -138,39 +136,7 @@ const services: Service[] = [
     ],
     icon: <TestTube className='w-8 h-8' />,
     category: '实验测试',
-    image: getAssetPath('/lab3.jpg')
-  },
-  {
-    id: 'thermal-mapping',
-    title: '地热资源分布制图',
-    description: '制作详细的地热资源分布图，为区域开发规划提供科学依据。',
-    features: [
-      '地热资源制图',
-      'GIS空间分析',
-      '温度等值线图',
-      '资源分级评价',
-      '开发适宜性分析',
-      '规划建议报告'
-    ],
-    icon: <MapPin className='w-8 h-8' />,
-    category: '资源评价',
-    image: getAssetPath('/proj2.jpg')
-  },
-  {
-    id: 'system-performance',
-    title: '地热系统性能监测',
-    description: '全面的地热系统性能监测和评估服务，确保系统高效运行。',
-    features: [
-      '性能实时监测',
-      '能效比分析',
-      '热平衡计算',
-      '系统诊断评估',
-      '改进方案建议',
-      '年度性能报告'
-    ],
-    icon: <Gauge className='w-8 h-8' />,
-    category: '性能监测',
-    image: getAssetPath('/proj3.jpg')
+    image: getAssetPath('/lab2.jpg')
   }
 ]
 
@@ -180,9 +146,7 @@ const categories = [
   '数值模拟',
   '系统集成',
   '智能运维',
-  '实验测试',
-  '资源评价',
-  '性能监测'
+  '实验测试'
 ]
 
 export function ServicesList() {
