@@ -38,7 +38,7 @@ const serviceMapping: Record<string, string> = {
   'drilling-process': '地热能钻井工艺流程',
   'numerical-simulation': '地下高效取换热数值模拟',
   'multi-energy-system': '地热能多能互补及储换热系统',
-  'intelligent-control': '地热能运维智能化调控',
+  'intelligent-control': '多层级地热能智能化调度',
   'rock-soil-testing': '地下岩土物性参数测试实验',
   'thermal-mapping': '地热资源分布制图',
   'system-performance': '地热系统性能监测'
