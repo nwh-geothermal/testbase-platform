@@ -26,7 +26,7 @@ const footerContactItems = [
     iconNodeId: '13:12'
   },
   {
-    text: '邮箱：geothermal@nwh.cn',
+    text: '邮箱：xby02315@powerchina.cn',
     iconSrc: getAssetPath('/footer-mail.svg'),
     textNodeId: '13:230',
     iconNodeId: '13:382'
