@@ -69,7 +69,7 @@ export function LoginForm() {
   const isFormValid = formData.email && formData.password
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex items-center justify-center p-4'>
+    <div className='flex flex-1 items-center justify-center px-4 py-8 sm:py-10'>
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
